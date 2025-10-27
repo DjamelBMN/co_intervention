@@ -1,0 +1,589 @@
+/* Fichier : static/css/style.css - Ultra Polished & Moderne */
+
+/* Import de la police Inter depuis Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'); /* Ajout de 500 pour plus de flexibilité */
+
+/* Variables CSS pour une gestion facile des couleurs et des espacements */
+:root {
+    /* Couleurs - Ajustements pour un look plus premium et contrasté */
+    --color-primary: hsl(215, 80%, 40%); /* Un bleu profond et riche, légèrement plus saturé */
+    --color-primary-hover: hsl(215, 80%, 30%); /* Assombrissement pour le hover */
+    --color-secondary: hsl(210, 10%, 30%); /* Gris-bleu foncé pour les textes secondaires / icônes */
+    --color-text: hsl(220, 10%, 15%); /* Texte principal très foncé, presque noir pour un meilleur contraste */
+    --color-background: hsl(210, 15%, 97%); /* Arrière-plan très doux, presque blanc */
+    --color-card-bg: hsl(0, 0%, 100%); /* Fond des cartes blanc pur */
+    --color-border: hsl(210, 10%, 90%); /* Bordures légères et subtiles */
+    --color-border-strong: hsl(210, 10%, 80%); /* Bordures légèrement plus visibles */
+
+    --color-success: hsl(120, 50%, 40%); /* Vert profond pour le succès */
+    --color-error: hsl(0, 70%, 50%);   /* Rouge pur pour les erreurs */
+    --color-warning: hsl(40, 90%, 55%); /* Orange vif pour les avertissements/timer */
+
+    /* Ombres - Plus prononcées, plus douces et avec un léger effet de profondeur */
+    --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.1), 0 2px 5px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1); /* Grande ombre pour les éléments importants */
+
+    /* Espacement */
+    --spacing-xs: 0.5rem; /* 8px */
+    --spacing-sm: 1rem;   /* 16px */
+    --spacing-md: 1.5rem; /* 24px */
+    --spacing-lg: 2rem;   /* 32px */
+    --spacing-xl: 3rem;   /* 48px */
+    --spacing-xxl: 4rem;  /* 64px pour les grandes sections */
+
+    /* Rayon des bordures */
+    --border-radius-sm: 6px; /* Légèrement plus arrondi */
+    --border-radius-md: 10px; /* Plus doux */
+    --border-radius-lg: 14px; /* Pour les grands conteneurs */
+}
+
+/* --- Base & Reset --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth; /* Pour un défilement doux */
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    /* Dégradé de fond bleu-blanc très subtil et à peine visible */
+    background: linear-gradient(to bottom right,
+        hsl(210, 25%, 98%) 0%, /* Un bleu très très clair au début */
+        hsl(0, 0%, 100%) 80% /* Blanc pur vers la fin, rendant le bleu à peine visible */
+    );
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Global focus style for accessibility */
+:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--border-radius-sm); /* Pour les boutons et champs */
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--color-primary-hover);
+    text-decoration: underline;
+}
+
+
+/* --- Header --- */
+header {
+    background: var(--color-primary); /* Couleur de secours */
+    background-image: url('../assets/lycee.jpg'); /* Chemin vers l'image */
+    background-size: cover; /* L'image couvrira toute la zone */
+    background-position: center bottom;
+    background-repeat: no-repeat; /* Empêche la répétition de l'image */
+    position: relative; /* Nécessaire pour l'overlay */
+    color: var(--color-card-bg); /* Texte blanc pour le contraste */
+    padding: var(--spacing-xxl) var(--spacing-md); /* Plus de padding pour l'esthétique */
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    overflow: hidden; /* Pour s'assurer que l'image ne dépasse pas si des effets sont ajoutés */
+}
+
+/* Pseudo-élément pour l'overlay sombre */
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* Overlay noir semi-transparent (40%) */
+    z-index: 1; /* Place l'overlay entre l'image et le texte */
+}
+
+/* S'assurer que le contenu du header est au-dessus de l'overlay */
+header h1, header p {
+    position: relative;
+    z-index: 2; /* Au-dessus de l'overlay */
+    color: var(--color-card-bg); /* S'assurer que le texte reste blanc */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Petite ombre pour le texte */
+}
+
+header h1 {
+    font-size: 2.8rem; /* Légèrement plus grand pour un impact maximal */
+    font-weight: 700;
+    margin-bottom: var(--spacing-xs);
+    letter-spacing: -0.03em; /* Plus serré */
+}
+
+header p {
+    font-size: 1.25rem; /* Légèrement plus grand */
+    font-weight: 400;
+    opacity: 0.98; /* Plus opaque */
+    max-width: 700px; /* Plus large */
+    margin: 0 auto;
+}
+
+/* Ajustements pour la responsivité de l'image de fond */
+@media (max-width: 768px) {
+    header {
+        padding: var(--spacing-xl) var(--spacing-sm);
+    }
+    header h1 {
+        font-size: 2.2rem;
+    }
+    header p {
+        font-size: 1.1rem;
+    }
+}
+
+/* --- Main Content Container --- */
+main {
+    flex-grow: 1;
+    padding: var(--spacing-xl) var(--spacing-lg); /* Plus de padding autour du contenu */
+    max-width: 1024px; /* Largeur max pour plus d'espace */
+    margin: var(--spacing-xxl) auto; /* Plus d'espace au-dessus et en-dessous */
+    background: var(--color-card-bg);
+    border-radius: var(--border-radius-lg); /* Plus arrondi pour le bloc principal */
+    box-shadow: var(--shadow-lg); /* Ombre plus prononcée pour le bloc principal */
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Footer --- */
+footer {
+    text-align: center;
+    padding: var(--spacing-lg) var(--spacing-md); /* Plus de padding */
+    color: var(--color-secondary);
+    font-size: 0.95rem;
+    margin-top: auto;
+}
+
+/* --- Menu de navigation (index.html) --- */
+.menu {
+    text-align: center;
+    padding: var(--spacing-xxl) 0; /* Plus d'espace vertical */
+}
+
+.menu h2 {
+    font-size: 2rem; /* Plus grand */
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-lg); /* Plus d'espace */
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.menu ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md); /* Espacement entre les éléments de la liste */
+    align-items: center;
+}
+
+.menu li {
+    width: 100%;
+    max-width: 480px; /* Limite la largeur des boutons de menu */
+}
+
+/* --- Boutons --- */
+.button {
+    display: block;
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-lg); /* Plus de padding */
+    text-decoration: none;
+    border-radius: var(--border-radius-md); /* Plus arrondi */
+    font-size: 1.2rem; /* Plus grand */
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1); /* Transition plus douce et plus dynamique */
+    border: none;
+    box-shadow: var(--shadow-md); /* Utilisation de shadow-md par défaut */
+
+    background: var(--color-primary);
+    color: var(--color-card-bg);
+}
+
+.button:hover:not(.button-disabled) {
+    background-color: var(--color-primary-hover);
+    transform: translateY(-3px); /* Effet de "lift" plus prononcé */
+    box-shadow: var(--shadow-lg); /* Ombre plus grande au survol */
+}
+
+.button-secondary {
+    background: var(--color-secondary);
+    color: var(--color-card-bg);
+}
+
+.button-secondary:hover:not(.button-disabled) {
+    background-color: hsl(210, 10%, 20%); /* Légèrement plus foncé */
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.button-disabled {
+    background-color: var(--color-border-strong) !important; /* Gris plus clair et distinguable */
+    color: hsl(210, 5%, 55%) !important; /* Texte gris plus doux */
+    cursor: not-allowed !important;
+    opacity: 0.8; /* Légèrement moins transparent */
+    transform: none !important;
+    box-shadow: var(--shadow-sm) !important; /* Ombre légère mais visible */
+}
+
+/* --- Timer --- */
+.timer {
+    position: absolute;
+    top: var(--spacing-md); /* Légèrement plus bas */
+    right: var(--spacing-md);
+    background-color: var(--color-warning);
+    color: var(--color-card-bg);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-warning);
+    min-width: 60px; /* Pour une taille minimale cohérente */
+    text-align: center;
+    z-index: 10;
+    animation: pulse 1.5s infinite ease-in-out; /* Animation subtile */
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.02); opacity: 0.95; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+
+/* --- Blocs de Questions / Contenu d'Exercice --- */
+p.math-display {
+    text-align: center;
+    font-size: 1.4rem; /* Légèrement plus grand */
+    margin: var(--spacing-xl) 0; /* Plus d'espace autour */
+    padding: var(--spacing-md); /* Plus de padding */
+    background: var(--color-background);
+    border-left: 5px solid var(--color-primary); /* Barre plus épaisse */
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    overflow-x: auto;
+    font-weight: 500; /* Moins gras pour le contenu mathématique */
+}
+
+.part-title {
+    color: var(--color-primary);
+    font-size: 1.6rem; /* Plus grand */
+    margin-top: var(--spacing-xxl); /* Plus d'espace */
+    margin-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--color-border-strong); /* Bordure plus visible */
+    padding-bottom: var(--spacing-sm); /* Plus de padding */
+    font-weight: 700; /* Plus impactant */
+    letter-spacing: -0.01em;
+}
+
+.question-block {
+    margin-bottom: var(--spacing-lg); /* Plus d'espace entre les blocs */
+    padding: var(--spacing-lg); /* Plus de padding */
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s ease, transform 0.1s ease; /* Transition pour le hover */
+}
+
+.question-block:hover {
+    box-shadow: var(--shadow-md); /* Ombre plus grande au survol */
+    transform: translateY(-2px); /* Léger "lift" */
+}
+
+.question-block p strong {
+    font-weight: 600;
+    font-size: 1.15rem; /* Légèrement plus grand */
+    display: block;
+    margin-bottom: var(--spacing-md); /* Plus d'espace */
+}
+
+/* --- Options de Réponse (Radio Buttons) --- */
+.options-container label {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--spacing-sm); /* Espacement cohérent */
+    padding: var(--spacing-md); /* Plus de padding */
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md); /* Plus arrondi */
+    cursor: pointer;
+    transition: all 0.2s ease; /* Transition plus globale */
+    box-shadow: var(--shadow-sm); /* Ombre par défaut */
+}
+
+.options-container label:hover:not(.options-container input[type="radio"]:disabled + label) {
+    background-color: hsl(210, 15%, 93%); /* Un peu plus foncé */
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-md); /* Ombre plus grande au survol */
+    transform: translateY(-1px); /* Léger "lift" */
+}
+
+.options-container input[type="radio"] {
+    appearance: none; /* Cache l'apparence native */
+    width: 20px; /* Taille personnalisée */
+    height: 20px;
+    border: 2px solid var(--color-secondary); /* Bordure du radio */
+    border-radius: 50%; /* Forme ronde */
+    margin-right: var(--spacing-sm);
+    flex-shrink: 0;
+    position: relative;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.options-container input[type="radio"]:checked {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary);
+}
+
+.options-container input[type="radio"]:checked::before {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    background-color: var(--color-card-bg); /* Point blanc central */
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Style pour les inputs radio désactivés */
+.options-container input[type="radio"]:disabled {
+    cursor: not-allowed;
+    border-color: var(--color-border-strong);
+    background-color: hsl(210, 10%, 92%);
+}
+
+.options-container input[type="radio"]:disabled:checked {
+    background-color: var(--color-primary); /* Conserve la couleur si coché */
+    border-color: var(--color-primary);
+}
+.options-container input[type="radio"]:disabled:checked::before {
+    background-color: var(--color-card-bg);
+}
+
+.options-container input[type="radio"]:disabled + label {
+    cursor: not-allowed;
+    background-color: hsl(210, 10%, 92%); /* Gris clair */
+    color: hsl(210, 5%, 50%);
+    border-color: var(--color-border-strong);
+    box-shadow: none;
+    transform: none;
+}
+.options-container input[type="radio"]:disabled + label:hover {
+    background-color: hsl(210, 10%, 92%); /* Pas de changement au survol si désactivé */
+}
+
+
+/* --- Champs de Texte (si besoin, bien que maintenant tout soit QCM) --- */
+input[type="text"], textarea {
+    width: 100%;
+    padding: var(--spacing-md); /* Plus de padding */
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    font-size: 1.05rem; /* Légèrement plus grand */
+    font-family: 'Inter', sans-serif;
+    color: var(--color-text); /* Assure la couleur du texte */
+    background-color: var(--color-card-bg); /* Fond blanc */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="text"]:focus, textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px hsla(215, 80%, 40%, 0.3); /* Halo de focus plus doux */
+}
+
+/* --- Conteneurs de Résultats - Amélioré, Épuré et Aéré --- */
+.results-container {
+    margin-top: var(--spacing-xxl); /* Grand espace en haut pour séparer des autres sections */
+    padding-top: var(--spacing-xxl); /* Beaucoup d'air au-dessus du titre des résultats */
+    border-top: 1px solid var(--color-border); /* Une ligne de séparation plus fine et subtile */
+    /* On retire la bordure plus forte pour un look plus léger, la padding-top suffit à séparer */
+}
+
+.results-container h2 {
+    color: var(--color-primary);
+    text-align: center;
+    margin-bottom: var(--spacing-xxl); /* Espacement généreux en dessous du titre */
+    font-size: 2.5rem; /* Taille plus grande pour un titre impactant */
+    font-weight: 700;
+    letter-spacing: -0.02em; /* Légèrement plus serré pour un look moderne */
+    line-height: 1.2; /* Assure un bon espacement si le titre est sur plusieurs lignes */
+}
+
+.result-item {
+    background: var(--color-card-bg);
+    border: none; /* Supprimer la bordure par défaut pour un look plus épuré */
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg); /* Augmenter le padding pour plus d'air interne */
+    margin-bottom: var(--spacing-lg); /* Augmenter l'espacement entre les éléments de résultat */
+    box-shadow: var(--shadow-md); /* Utiliser une ombre de taille moyenne pour un bon "lift" */
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out; /* Ajout d'une transition pour le hover */
+}
+
+.result-item:hover {
+    transform: translateY(-3px); /* Effet de léger soulèvement au survol */
+    box-shadow: var(--shadow-lg); /* Ombre plus prononcée au survol */
+}
+
+.result-item p {
+    margin: 0.6rem 0; /* Plus d'espace entre les lignes de texte dans chaque item */
+    font-size: 1.05rem; /* Légèrement plus grand pour la lisibilité */
+    line-height: 1.6;
+}
+
+.result-item p strong {
+    font-weight: 600;
+    color: var(--color-secondary); /* Mettre en valeur les labels avec une couleur secondaire douce */
+}
+
+.correct {
+    color: var(--color-success);
+    font-weight: 700;
+    font-size: 1.1rem; /* Légèrement plus grand pour le statut */
+}
+
+.incorrect {
+    color: var(--color-error);
+    font-weight: 700;
+    font-size: 1.1rem; /* Légèrement plus grand
+
+/* --- Liens de Retour --- */
+.back-link {
+    text-align: center;
+    margin-top: var(--spacing-xl);
+}
+
+.back-link a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.back-link a:hover {
+    color: var(--color-primary-hover);
+    text-decoration: underline;
+}
+
+/* --- Styles pour la page de correction --- */
+#correction-content h2, #correction-content h3 {
+    color: var(--color-primary);
+    font-weight: 700; /* Plus impactant */
+    margin-bottom: var(--spacing-lg);
+    letter-spacing: -0.01em;
+}
+
+.correction-item {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-left: 6px solid var(--color-success); /* Barre verte plus épaisse sur le côté */
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg); /* Plus de padding */
+    margin-bottom: var(--spacing-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.correction-item p {
+    margin: 0.6rem 0; /* Plus d'espace entre les paragraphes */
+    font-size: 1.05rem;
+}
+
+.correction-item strong {
+    color: var(--color-text);
+}
+
+/* Message d'accès restreint */
+#correction-locked-message {
+    background: hsl(0, 50%, 95%); /* Rouge clair pour l'avertissement */
+    border-left: 6px solid var(--color-error); /* Bordure rouge plus épaisse */
+    color: var(--color-text);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    margin-top: var(--spacing-lg);
+}
+#correction-locked-message h2 {
+    color: var(--color-error);
+    font-size: 1.8rem;
+}
+
+/* Styles spécifiques pour MathJax (pour assurer la bonne couleur) */
+.MathJax_Display {
+    color: var(--color-text) !important; /* Force la couleur du texte MathJax */
+    background: var(--color-background); /* Assure un fond cohérent */
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+}
+
+/* Media Queries pour la responsivité */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2rem;
+    }
+
+    header p {
+        font-size: 1rem;
+    }
+
+    main {
+        padding: var(--spacing-lg) var(--spacing-sm);
+        margin: var(--spacing-lg) auto;
+        border-radius: var(--border-radius-md);
+    }
+
+    .menu h2 {
+        font-size: 1.6rem;
+    }
+
+    .button {
+        font-size: 1rem;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .timer {
+        font-size: 0.9rem;
+        padding: var(--spacing-xs) var(--spacing-xs);
+        top: var(--spacing-xs);
+        right: var(--spacing-xs);
+    }
+
+    p.math-display {
+        font-size: 1.1rem;
+        margin: var(--spacing-lg) 0;
+    }
+
+    .part-title {
+        font-size: 1.4rem;
+        margin-top: var(--spacing-xl);
+    }
+
+    .question-block p strong {
+        font-size: 1.05rem;
+    }
+
+    .score-summary {
+        font-size: 1.3rem;
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+}}

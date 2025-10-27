@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correction Détaillée - Evaluation</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- MathJax Configuration -->
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+            "HTML-CSS": { linebreaks: { automatic: true } },
+            "SVG": { linebreaks: { automatic: true } }
+        });
+    </script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Correction Détaillée de l'évalauation</h1>
+        <p>BTS CIEL2</p>
+    </header>
+    <main>
+        <div id="correction-content" style="display:none;">
+            <section>
+                <h2>Partie 1 : Exercice d'Optimisation - Outils Mathématiques - Solutions</h2>
+                <div id="qcm-correction-container"></div>
+            </section>
+
+            <section>
+                <h2>Partie 2 : Exercice d'Étude de la Température d'un Composant - Solutions Détaillées</h2>
+                <p>Un ingénieur étudie la température d'un composant électronique. La température $T(t)$, en degrés Celsius, est modélisée en fonction du temps $t$, en heures, par la fonction :</p>
+                <p class="math-display">$$T(t) = 20 + 30e^{-0.1t} \text{ pour } t \geq 0.$$</p>
+
+                <h3 class="part-title">Partie A : Étude de la fonction de température - Solutions</h3>
+                <div id="exercice-correction-part-a"></div>
+
+                <h3 class="part-title">Partie B : Surveillance et Gestion - Solutions</h3>
+                <div id="exercice-correction-part-b"></div>
+            </section>
+        </div>
+        <div id="correction-locked-message" class="results-container">
+            <h2>Accès à la correction restreint</h2>
+            <p>Pour des raisons d'évaluation, la correction détaillée n'est accessible qu'après avoir répondu à toutes les questions des deux exercices (Exercice 1 et Exercice 2).</p>
+            <p>Veuillez compléter toutes les parties de l'épreuve.</p>
+        </div>
+        <p class="back-link"><a href="index.html">Retour au menu principal</a></p>
+    </main>
+    <footer>
+        <p>&copy; M. MADANI - D. BENMAKHLOUF</p>
+    </footer>
+
+    <script src="static/js/qcm_data.js"></script>
+    <script src="static/js/exercice_data.js"></script>
+    <script src="static/js/correction_data.js"></script>
+    <script src="static/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+mon_application_exercices/
+├── index.html
+├── qcm.html                # Exercice 1
+├── exercice.html           # Exercice 2
+├── final_results.html
+├── correction.html
+├── static/
+│   ├── css/
+│   │   └── style.css
+│   └── js/
+│       ├── main.js
+│       ├── qcm_data.js
+│       ├── exercice_data.js
+│       ├── correction_data.js
+│       ├── answers_encoded.js
+│       └── html2pdf.bundle.min.js # Nouvelle librairie pour le PDF
+└── tools/
+    └── encode_answers.py

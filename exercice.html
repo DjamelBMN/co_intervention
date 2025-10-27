@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercice 2 : Étude de la Température - Evaluation</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- MathJax Configuration -->
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+        });
+    </script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Partie 2 : Exercice d'Étude de la Température d'un Composant</h1>
+        <p>Cochez la bonne réponse pour chaque question. (12 questions)</p>
+        <div id="timer-display" class="timer">Temps restant : 50:00</div>
+    </header>
+    <main>
+<section class="context-objectif">
+  <h2>🎯 Contexte et Objectif</h2>
+  <p>
+    Dans le domaine des <strong>systèmes embarqués</strong> ou de l'<strong>Internet des Objets (IoT)</strong> 
+    en environnement industriel (<em>contexte CIEL</em>), la surveillance de la température 
+    des composants électroniques est essentielle pour garantir leur <strong>fiabilité</strong> 
+    et leur <strong>durée de vie</strong>. Une température excessive peut entraîner 
+    des pannes ou une dégradation des performances.
+  </p>
+
+  <div class="math-block">
+    <span>Modèle de température :</span>
+    <p class="math-display">$$T(t) = 20 + 30e^{-0.1t} \quad \text{pour } t \geq 0$$</p>
+  </div>
+
+  <p>
+    Votre objectif est d’analyser ce modèle de température, de 
+    <strong>prédire son comportement au fil du temps</strong> et de 
+    <strong>déterminer des seuils critiques</strong> pour la gestion 
+    opérationnelle du composant.
+  </p>
+</section>
+        <form id="exercice-form">
+            <h3 class="part-title">Partie A : Étude de la fonction de température</h3>
+            <div id="exercice-container-part-a"></div>
+
+            <h3 class="part-title">Partie B : Surveillance et Gestion</h3>
+            <div id="exercice-container-part-b"></div>
+
+            <button type="submit" class="button" id="submit-exercice-button">Soumettre l'Exercice</button>
+        </form>
+        <div id="exercice-results" class="results-container"></div>
+        <p class="back-link"><a href="index.html">Retour au menu principal</a></p>
+    </main>
+    <footer>
+        <p>&copy; M. MADANI - D. BENMAKHLOUF</p>
+    </footer>
+
+    <script src="static/js/exercice_data.js"></script>
+    <script src="static/js/answers_encoded.js"></script>
+    <script src="static/js/main.js"></script>
+</body>
+</html>

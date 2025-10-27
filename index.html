@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluation - Analyse et Modélisation (BTS CIEL)</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- MathJax Configuration -->
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+        });
+    </script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Evaluation : Analyse et Modélisation</h1>
+        <p>BTS CIEL2</p>
+    </header>
+    <main>
+        <section class="menu">
+            <h2>Evaluation Maths - Infos</h2>
+<p><span style="color: red;"><strong>ATTENTION :</strong> Une fois le bouton "Démarrer l'épreuve" cliqué, un minuteur de 50 minutes se lancera. Vous n'aurez qu'une seule tentative par question et vous ne pourrez plus revenir en arrière.</span></p>            <br>
+            <ul>
+                <li><button id="start-exam-button" class="button">Démarrer l'épreuve (50 minutes)</button></li>
+                <li><a href="final_results.html" class="button button-secondary">Voir le Score Final</a></li>
+                <li><a href="correction.html" class="button button-secondary button-disabled" id="view-correction-button">Correction Détaillée (Verrouillée)</a></li>
+            </ul>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; M. MADANI - D. BENMAKHLOUF</p>
+    </footer>
+    <script src="static/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercice 1 : Optimisation - Evaluation</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- MathJax Configuration -->
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+        });
+    </script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+</head>
+<body>
+    <header>
+        <h1>EXERCICE 1. Mathématiques et Informatiques</h1>
+        <p>Cochez la bonne réponse pour chaque question. (20 questions)</p>
+        <div id="timer-display" class="timer">Temps restant : 50:00</div>
+    </header>
+    <main>
+<section class="context-objectif">
+  <h2>🎯 Contexte et Objectif</h2>
+  <p>
+    Une <strong>entreprise informatique</strong> (dans le cadre d’un 
+    <strong>BTS CIEL</strong>) cherche à optimiser le <strong>déploiement</strong> 
+    et la <strong>gestion de ses services numériques</strong>. 
+    Cela implique de comprendre et de prédire le comportement des systèmes, 
+    les flux de données, la consommation de ressources et les performances. 
+  </p>
+  <p>
+    Les <strong>outils mathématiques</strong>, notamment le 
+    <strong>calcul différentiel</strong> et <strong>intégral</strong>, 
+    sont essentiels pour <strong>modéliser ces phénomènes</strong> 
+    et <strong>prendre des décisions éclairées</strong>. 
+    Cet exercice évalue votre maîtrise de ces outils.
+  </p>
+
+  <div class="objectif-block">
+    <span>Objectif de l’étude :</span>
+    <p>
+      Appliquer les concepts de <strong>limites</strong>, 
+      <strong>dérivées</strong>, <strong>primitives</strong> 
+      et <strong>intégrales</strong> afin de résoudre des problèmes 
+      liés à :
+    </p>
+    <ul>
+      <li>l’analyse de systèmes,</li>
+      <li>la croissance ou la décroissance de phénomènes,</li>
+      <li>et la quantification de grandeurs cumulées.</li>
+    </ul>
+  </div>
+</section>
+<br>
+        <form id="qcm-form">
+            <div id="qcm-container"></div>
+            <button type="submit" class="button" id="submit-qcm-button">Soumettre l'Exercice</button>
+        </form>
+        <div id="qcm-results" class="results-container"></div>
+        <p class="back-link"><a href="index.html">Retour au menu principal</a></p>
+    </main>
+    <footer>
+        <p>&copy; M. MADANI - D. BENMAKHLOUF</p>
+    </footer>
+
+    <script src="static/js/qcm_data.js"></script>
+    <script src="static/js/answers_encoded.js"></script>
+    <script src="static/js/main.js"></script>
+</body>
+</html>
