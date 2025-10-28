@@ -86,15 +86,16 @@ const qcmCorrections = [
         ]
     },
     {
-        id: "qcm_q8",
-        question: "8. Une fonction $f(x)$ décrivant le gain d'un système possède un maximum local en $x_0$ si :",
-        correctAnswerId: "option_A",
-        explanation: "C'est la condition du second ordre pour un maximum local : la dérivée première est nulle et la dérivée seconde est négative.",
-        options: [
-            { id: "option_A", text: "$f'(x_0) = 0$ et $f''(x_0) < 0$" },
-            { id: "option_B", text: "$f'(x_0) = 0$ et $f''(x_0) > 0$" },
-            { id: "option_C", text: "$f'(x_0) > 0$" },
-            { id: "option_D", text: "$f'(x_0) < 0$" }
+        "id": "qcm_q_integrale_info",
+        "question": "La fonction $f(t) = 5t^2 + 2t$ représente le débit de transfert (en Go/s) d’un serveur en fonction du temps $t$ (en secondes). Quelle est la quantité totale de données transférées entre $t = 0$ et $t = 3$ s ?",
+        "correctAnswerId": "option_B",
+        "explanation": "La quantité totale de données transférées est donnée par l'intégrale du débit sur l'intervalle :\n\n$\\int_0^3 (5t^2 + 2t) \\, dt = [\\frac{5}{3}t^3 + t^2]_0^3 = (\\frac{5}{3} \\cdot 27 + 9) - 0 = 45 + 9 = 54$ Go.\nDonc la valeur correcte est 54 Go.",
+        "help": "Rappelez-vous que pour calculer la quantité totale de données transférées, vous devez intégrer le débit par rapport au temps. Commencez par trouver une primitive de $f(t)$, puis appliquez la formule de l'intégrale définie $\\int_a^b f(t) dt = F(b) - F(a)$.",
+        "options": [
+            { "id": "option_A", "text": "50 Go" },
+            { "id": "option_B", "text": "54 Go" },
+            { "id": "option_C", "text": "60 Go" },
+            { "id": "option_D", "text": "48 Go" }
         ]
     },
     {
@@ -194,15 +195,15 @@ const qcmCorrections = [
         ]
     },
     {
-        id: "qcm_q17",
-        question: "17. Le taux de variation instantané du volume $V = \\frac{4}{3}\\pi r^3$ (par exemple, le volume de données stockées dans un cluster de rayon $r$) par rapport à son rayon $r$ est :",
-        correctAnswerId: "option_B",
-        explanation: "Le taux de variation instantané est donné par la dérivée du volume par rapport au rayon : $\\frac{dV}{dr} = \\frac{d}{dr}\\left(\\frac{4}{3}\\pi r^3\\right) = \\frac{4}{3}\\pi (3r^2) = 4\\pi r^2$. C'est aussi la formule de la surface d'une sphère.",
-        options: [
-            { id: "option_A", text: "$\\frac{4}{3}\\pi r^2$" },
-            { id: "option_B", text: "$4\\pi r^2$" },
-            { id: "option_C", text: "$8\\pi r$" },
-            { id: "option_D", text: "$4\\pi r^3$" }
+        "id": "qcm_q17",
+        "question": "17. Dans un réseau informatique, on modélise la performance $P$ en fonction du nombre de connexions actives $n$ par la relation $P = k n^3$, où $k$ est une constante. Quelle est la dérivée $P'(n)$, c’est-à-dire la variation instantanée des performances par rapport au nombre de connexions ?",
+        "correctAnswerId": "option_B",
+        "explanation": "La dérivée de $P = k n^3$ par rapport à $n$ est $P'(n) = \\frac{d}{dn}(k n^3) = 3 k n^2$. Cela représente la variation instantanée des performances en fonction du nombre de connexions actives.",
+        "options": [
+            { "id": "option_A", "text": "$k n^2$" },
+            { "id": "option_B", "text": "$3k n^2$" },
+            { "id": "option_C", "text": "$k n^3$" },
+            { "id": "option_D", "text": "$6k n$" }
         ]
     },
     {

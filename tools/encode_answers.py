@@ -21,7 +21,7 @@ def encode_answers(qcm_answers, exercice_answers, output_file):
 if __name__ == "__main__":
     qcm_answers = {
         "qcm_q1": "option_B", "qcm_q2": "option_B", "qcm_q3": "option_C", "qcm_q4": "option_B", "qcm_q5": "option_C",
-        "qcm_q6": "option_A", "qcm_q7": "option_C", "qcm_q8": "option_A", "qcm_q9": "option_C", "qcm_q10": "option_A",
+        "qcm_q6": "option_A", "qcm_q7": "option_C", "qcm_q8": "option_B", "qcm_q9": "option_C", "qcm_q10": "option_A",
         "qcm_q11": "option_B", "qcm_q12": "option_B", "qcm_q13": "option_B", "qcm_q14": "option_C", "qcm_q15": "option_B",
         "qcm_q16": "option_B", "qcm_q17": "option_B", "qcm_q18": "option_B", "qcm_q19": "option_C", "qcm_q20": "option_B",
     }

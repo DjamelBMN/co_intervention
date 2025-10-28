@@ -73,13 +73,13 @@ const qcmQuestions = [
         ]
     },
     {
-        id: "qcm_q8",
-        text: "8. Une fonction $f(x)$ décrivant le gain d'un système possède un maximum local en $x_0$ si :",
-        options: [
-            { id: "option_A", text: "$f'(x_0)=0\\;\\text{ et }\\;f''(x_0)<0$" },
-            { id: "option_B", text: "$f'(x_0)=0\\;\\text{ et }\\;f''(x_0)>0$" },
-            { id: "option_C", text: "$f'(x_0)>0$" },
-            { id: "option_D", text: "$f'(x_0)<0$" }
+        "id": "qcm_q8",
+        "text": "8. La fonction $f(t) = 5t^2 + 2t$ représente le débit de transfert (en Go/s) d’un serveur en fonction du temps $t$ (en secondes). Quelle est la quantité totale de données transférées entre $t = 0$ et $t = 3$ s ?\n\n Indice : Pour trouver la quantité totale de données, vous devez calculer l'intégrale du débit sur l'intervalle de temps donné.",
+        "options": [
+            { "id": "option_A", "text": "50 Go" },
+            { "id": "option_B", "text": "54 Go" },
+            { "id": "option_C", "text": "60 Go" },
+            { "id": "option_D", "text": "48 Go" }
         ]
     },
     {
@@ -163,15 +163,14 @@ const qcmQuestions = [
         ]
     },
     {
-        "id": "qcm_q17",
-        "question": "17. Dans un réseau informatique, on modélise la performance $P$ en fonction du nombre de connexions actives $n$ par la relation $P = k n^3$, où $k$ est une constante. Quelle est la dérivée $P'(n)$, c’est-à-dire la variation instantanée des performances par rapport au nombre de connexions ?",
-        "correctAnswerId": "option_B",
-        "explanation": "La dérivée de $P = k n^3$ par rapport à $n$ est $P'(n) = \\frac{d}{dn}(k n^3) = 3 k n^2$. Cela représente la variation instantanée des performances en fonction du nombre de connexions actives.",
-        "options": [
-            { "id": "option_A", "text": "$k n^2$" },
-            { "id": "option_B", "text": "$3k n^2$" },
-            { "id": "option_C", "text": "$k n^3$" },
-            { "id": "option_D", "text": "$6k n$" }
+        id: "qcm_q17",
+        id: "qcm_q17",
+        text: "17. Dans un réseau informatique, on modélise la performance $P$ en fonction du nombre de connexions actives $n$ par la relation $P = k n^3$, où $k$ est une constante. Quelle est la dérivée $P'(n)$, c’est-à-dire la variation instantanée des performances par rapport au nombre de connexions ?",
+        options: [
+            { id: "option_A", text: "$k n^2$" },
+            { id: "option_B", text: "$3k n^2$" },   
+            { id: "option_C", text: "$k n^3$" },
+            { id: "option_D", text: "$6k n$" }
         ]
     },
     {
