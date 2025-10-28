@@ -26,9 +26,19 @@ if __name__ == "__main__":
         "qcm_q16": "option_B", "qcm_q17": "option_B", "qcm_q18": "option_B", "qcm_q19": "option_C", "qcm_q20": "option_B",
     }
     exercice_answers = {
-        "exercice_q1a": "option_C", "exercice_q1b": "option_A", "exercice_q2a": "option_D", "exercice_q2b": "option_B",
-        "exercice_q2c": "option_B", "exercice_q2d": "option_D", "exercice_q2e": "option_C", "exercice_q3a": "option_B",
-        "exercice_q3b": "option_C", "exercice_q4a": "option_C", "exercice_q5a": "option_A", "exercice_q5b": "option_B",
+    "exercice_q1a": "option_A", 
+    "exercice_q1b": "option_A", 
+    "exercice_q2a": "option_A", 
+    "exercice_q2b": "option_A", 
+    "exercice_q2c": "option_A", 
+    "exercice_q2d": "option_C", 
+    "exercice_q2e": "option_C", 
+    "exercice_q3a": "option_B", 
+    "exercice_q3b": "option_C",
+    "exercice_q4a": "option_A", 
+    "exercice_q5a": "option_C", 
+    "exercice_q5b": "option_B", 
     }
+
     output_path = "../static/js/answers_encoded.js"
     encode_answers(qcm_answers, exercice_answers, output_path)

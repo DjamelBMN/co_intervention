@@ -247,8 +247,8 @@ const exerciceCorrectionsPartA = [
     {
         id: "exercice_q1a",
         question: "1.a. Quelle est la température du composant au moment de l'allumage ($t=0$) ?",
-        correctAnswerId: "option_C",
-        explanation: "Pour $t=0$, $T(0) = 20 + 30e^{-0.1 \\times 0} = 20 + 30e^0 = 20 + 30(1) = 50 \\text{ °C}$.",
+        correctAnswerId: "option_A",
+        explanation: "Pour $t=0$, $T(0) = 50 - 30 e^{-0.1 \\times 0} = 50 - 30 \\times 1 = 20 \\text{ °C}$.",
         options: [
             { id: "option_A", text: "$20 \\text{ °C}$" },
             { id: "option_B", text: "$30 \\text{ °C}$" },
@@ -260,7 +260,7 @@ const exerciceCorrectionsPartA = [
         id: "exercice_q1b",
         question: "1.b. Comment interprétez-vous concrètement cette température initiale ?",
         correctAnswerId: "option_A",
-        explanation: "La température calculée pour $t=0$ représente la température du composant au tout début de son fonctionnement, c'est-à-dire au moment de son démarrage.",
+        explanation: "La température initiale $T(0)=20\\text{ °C}$ représente la température du composant avant tout fonctionnement, au moment de son démarrage.",
         options: [
             { id: "option_A", text: "C'est la température du composant avant tout fonctionnement, au moment de son démarrage." },
             { id: "option_B", text: "C'est la température ambiante de l'environnement du composant." },
@@ -270,21 +270,21 @@ const exerciceCorrectionsPartA = [
     },
     {
         id: "exercice_q2a",
-        question: "2.a. Quelle est la dérivée $T'(t)$ de la fonction $T(t) = 20 + 30e^{-0.1t}$ ?",
-        correctAnswerId: "option_D",
-        explanation: "La fonction est de la forme $T(t) = C + A e^{kt}$. Sa dérivée est $T'(t) = A k e^{kt}$.<br>Ici $C=20$, $A=30$, $k=-0.1$.<br>$T'(t) = 30 \\times (-0.1)e^{-0.1t} = -3e^{-0.1t}$.",
+        question: "2.a. Quelle est la dérivée $T'(t)$ de la fonction $T(t) = 50 - 30 e^{-0.1 t}$ ?",
+        correctAnswerId: "option_A",
+        explanation: "La dérivée de $T(t) = 50 - 30 e^{-0.1 t}$ est $T'(t) = -30 \\times (-0.1)e^{-0.1 t} = 3 e^{-0.1 t}$, toujours positive.",
         options: [
-            { id: "option_A", text: "$T'(t) = 30e^{-0.1t}$" },
-            { id: "option_B", text: "$T'(t) = -0.1e^{-0.1t}$" },
-            { id: "option_C", text: "$T'(t) = 20 - 3e^{-0.1t}$" },
-            { id: "option_D", text: "$T'(t) = -3e^{-0.1t}$" }
+            { id: "option_A", text: "$T'(t) = 3e^{-0.1t}$" },
+            { id: "option_B", text: "$T'(t) = -3e^{-0.1t}$" },
+            { id: "option_C", text: "$T'(t) = 30 e^{-0.1 t}$" },
+            { id: "option_D", text: "$T'(t) = -0.1 e^{-0.1 t}$" }
         ]
     },
     {
         id: "exercice_q2b",
         question: "2.b. Quel est le signe de $T'(t)$ pour $t \\geq 0$ ?",
-        correctAnswerId: "option_B",
-        explanation: "Pour tout $t \\geq 0$, $e^{-0.1t}$ est une exponentielle, donc toujours positive ($e^{-0.1t} > 0$).<br>Par conséquent, $T'(t) = -3e^{-0.1t}$ est toujours négatif ($T'(t) < 0$) car il est multiplié par $-3$.",
+        correctAnswerId: "option_A",
+        explanation: "Pour tout $t \\ge 0$, $e^{-0.1 t} > 0$, donc $T'(t) = 3 e^{-0.1 t} > 0$. La fonction est toujours croissante.",
         options: [
             { id: "option_A", text: "Toujours positif." },
             { id: "option_B", text: "Toujours négatif." },
@@ -295,8 +295,8 @@ const exerciceCorrectionsPartA = [
     {
         id: "exercice_q2c",
         question: "2.c. En déduisez-vous les variations de la fonction $T$ sur $[0, +\\infty[$ :",
-        correctAnswerId: "option_B",
-        explanation: "Puisque la dérivée $T'(t)$ est toujours négative sur l'intervalle $[0, +\\infty[$, la fonction $T$ est strictement décroissante sur cet intervalle.",
+        correctAnswerId: "option_A",
+        explanation: "Puisque la dérivée $T'(t)$ est toujours positive, la fonction $T$ est strictement croissante sur $[0,+\\infty[$.",
         options: [
             { id: "option_A", text: "La fonction $T$ est strictement croissante." },
             { id: "option_B", text: "La fonction $T$ est strictement décroissante." },
@@ -307,8 +307,8 @@ const exerciceCorrectionsPartA = [
     {
         id: "exercice_q2d",
         question: "2.d. Quelle est la limite de $T(t)$ lorsque $t$ tend vers $+ \\infty$ ?",
-        correctAnswerId: "option_D",
-        explanation: "Lorsque $t \\to +\\infty$, l'exposant $-0.1t \\to -\\infty$.<br>Par conséquent, $e^{-0.1t} \\to 0$.<br>Donc $\\lim_{t \\to +\\infty} T(t) = 20 + 30(0) = 20$.",
+        correctAnswerId: "option_C",
+        explanation: "Lorsque $t \\to +\\infty$, $e^{-0.1 t} \\to 0$, donc $T(t) \\to 50$ °C.",
         options: [
             { id: "option_A", text: "$+\\infty$" },
             { id: "option_B", text: "$30$" },
@@ -320,11 +320,11 @@ const exerciceCorrectionsPartA = [
         id: "exercice_q2e",
         question: "2.e. Comment interprétez-vous concrètement cette limite ?",
         correctAnswerId: "option_C",
-        explanation: "La limite de $T(t)$ étant $20 \\text{ °C}$ signifie qu'à long terme, la température du composant va tendre à se stabiliser autour de cette valeur (qui peut être la température ambiante par exemple).",
+        explanation: "La limite de 50 °C signifie qu'à long terme, la température du composant se stabilise autour de 50 °C.",
         options: [
             { id: "option_A", text: "À long terme, la température du composant devient infinie." },
             { id: "option_B", text: "La température du composant se stabilise à $30 \\text{ °C}$." },
-            { id: "option_C", text: "À long terme, la température du composant se stabilise à $20 \\text{ °C}$." },
+            { id: "option_C", text: "À long terme, la température du composant se stabilise à $50 \\text{ °C}$." },
             { id: "option_D", text: "La température du composant continue de chuter indéfiniment." }
         ]
     },
@@ -332,7 +332,7 @@ const exerciceCorrectionsPartA = [
         id: "exercice_q3a",
         question: "3.a. Calculez la température moyenne du composant pendant les 10 premières heures de son fonctionnement (valeur approchée à $10^{-2}$ près) :",
         correctAnswerId: "option_B",
-        explanation: "La température moyenne $M = \\frac{1}{10-0} \\int_0^{10} (20 + 30e^{-0.1t}) dt$.<br>Une primitive de $20 + 30e^{-0.1t}$ est $20t + 30 \\frac{e^{-0.1t}}{-0.1} = 20t - 300e^{-0.1t}$.<br>$M = \\frac{1}{10} [20t - 300e^{-0.1t}]_0^{10}$<br>$M = \\frac{1}{10} \\left[ (20 \\times 10 - 300e^{-0.1 \\times 10}) - (20 \\times 0 - 300e^{-0.1 \\times 0}) \\right]$<br>$M = \\frac{1}{10} \\left[ (200 - 300e^{-1}) - (0 - 300e^0) \\right]$<br>$M = \\frac{1}{10} \\left[ 200 - 300e^{-1} + 300 \\right]$<br>$M = \\frac{1}{10} \\left[ 500 - 300e^{-1} \\right]$<br>$M = 50 - 30e^{-1} \\approx 50 - 30 \\times 0.367879 \\approx 50 - 11.03637 \\approx 38.96363$.<br>La température moyenne est d'environ $38.96 \\text{ °C}$.",
+        explanation: "Température moyenne : $M = \\frac{1}{10} \\int_0^{10} (50 - 30 e^{-0.1 t}) dt = 50 - 30 \\frac{1 - e^{-1}}{0.1} /10 = 50 - 11.0363 \\approx 38.96$ °C.",
         options: [
             { id: "option_A", text: "$25.70 \\text{ °C}$" },
             { id: "option_B", text: "$38.96 \\text{ °C}$" },
@@ -344,7 +344,7 @@ const exerciceCorrectionsPartA = [
         id: "exercice_q3b",
         question: "3.b. Comment interprétez-vous concrètement cette valeur moyenne ?",
         correctAnswerId: "option_C",
-        explanation: "La valeur moyenne représente la température constante qu'aurait eue le composant pendant cette période pour avoir un effet thermique global équivalent à la température variable réelle. C'est une moyenne intégrale sur l'intervalle de temps.",
+        explanation: "La valeur moyenne représente la température constante qu'aurait eue le composant pour dégager la même quantité d'énergie thermique sur les 10 premières heures.",
         options: [
             { id: "option_A", text: "C'est la température que le composant atteindrait après 10 heures." },
             { id: "option_B", text: "C'est la température maximale atteinte pendant cette période." },
@@ -357,36 +357,36 @@ const exerciceCorrectionsPartA = [
 const exerciceCorrectionsPartB = [
     {
         id: "exercice_q4a",
-        question: "1. À partir de quel temps $t$ (en heures, valeur approchée à $10^{-2}$ près) la température du composant devient-elle inférieure ou égale à $22^{\\circ}\\text{C}$ ?",
-        correctAnswerId: "option_C",
-        explanation: "Nous cherchons $t$ tel que $T(t) \\leq 22$.<br>$20 + 30e^{-0.1t} \\leq 22$<br>$30e^{-0.1t} \\leq 2$<br>$e^{-0.1t} \\leq \\frac{2}{30} = \\frac{1}{15}$<br>On applique la fonction $\\ln$ (qui est croissante) :<br>$\\ln(e^{-0.1t}) \\leq \\ln\\left(\\frac{1}{15}\\right)$<br>$-0.1t \\leq -\\ln(15)$<br>On multiplie par $-10$ (et on inverse le sens de l'inégalité) :<br>$t \\geq 10 \\ln(15)$<br>Avec une calculatrice : $10 \\ln(15) \\approx 10 \\times 2.70805 \\approx 27.0805$.<br>Donc $t \\approx 27.08 \\text{ h}$.",
+        question: "1. À partir de quel temps $t$ (en heures, valeur approchée à $10^{-2}$ près) la température du composant devient-elle supérieure ou égale à $45^{\\circ}\\text{C}$ ?",
+        correctAnswerId: "option_A",
+        explanation: "On cherche $t$ tel que $T(t) \\ge 45$ :<br>$50 - 30 e^{-0.1 t} \\ge 45$<br>$-30 e^{-0.1 t} \\ge -5$<br>$e^{-0.1 t} \\le 1/6$<br>$-0.1 t \\le \\ln(1/6)$<br>$t \\ge 10 \\ln(6) \\approx 17.918$ h (valeur approchée à 2 décimales : $17.92$ h).",
         options: [
-            { id: "option_A", text: "$t \\approx 18.23 \\text{ h}$" },
-            { id: "option_B", text: "$t \\approx 20.00 \\text{ h}$" },
-            { id: "option_C", text: "$t \\approx 27.08 \\text{ h}$" },
-            { id: "option_D", text: "$t \\approx 30.00 \\text{ h}$" }
+            { id: "option_A", text: "$t \\approx 17.92 \\text{ h}$" },
+            { id: "option_B", text: "$t \\approx 10.00 \\text{ h}$" },
+            { id: "option_C", text: "$t \\approx 20.00 \\text{ h}$" },
+            { id: "option_D", text: "$t \\approx 15.00 \\text{ h}$" }
         ]
     },
     {
         id: "exercice_q5a",
-        question: "2.a. Parmi les fonctions suivantes, laquelle pourrait être une modélisation alternative $S(t)$ respectant $S(0) = T(0)$ et $S(t) \\to 20$ lorsque $t \\to +\\infty$ ?",
-        correctAnswerId: "option_A",
-        explanation: "Vérifions les conditions pour $S(t) = 20 + \\frac{30}{1 + 0.1t}$ :<br>Au démarrage ($t=0$) : $S(0) = 20 + \\frac{30}{1 + 0.1 \\times 0} = 20 + \\frac{30}{1} = 50$. Condition $S(0)=T(0)$ respectée.<br>Comportement asymptotique ($t \\to +\\infty$) : Quand $t \\to +\\infty$, $1 + 0.1t \\to +\\infty$, donc $\\frac{30}{1 + 0.1t} \\to 0$. Par conséquent, $S(t) \\to 20$. Condition asymptotique respectée.<br>Les autres fonctions ne respectent pas les deux conditions simultanément.",
+        question: "2.a. Parmi les fonctions suivantes, laquelle pourrait être une modélisation alternative $S(t)$ respectant $S(0) = T(0)$ et $S(t) \\to 50$ lorsque $t \\to +\\infty$ ?",
+        correctAnswerId: "option_C",
+        explanation: "Vérification : $S(0)=50-30 e^0 = 20 = T(0)$ et $S(t) \\to 50$ lorsque $t\\to+\\infty$. Les autres fonctions ne respectent pas ces conditions simultanément.",
         options: [
-            { id: "option_A", text: "$S(t) = 20 + \\frac{30}{1 + 0.1t}$" },
-            { id: "option_B", text: "$S(t) = 20 + 30t$" },
-            { id: "option_C", text: "$S(t) = 50 - 30e^{-0.1t}$" },
-            { id: "option_D", "text": "$S(t) = 20 + 30\\sin(t)$" }
+            { id: "option_A", text: "$S(t) = 20 + \\frac{30}{1 + 0.1 t}$" },
+            { id: "option_B", text: "$S(t) = 20 + 30 t$" },
+            { id: "option_C", text: "$S(t) = 50 - 30 e^{-0.1 t}$" },
+            { id: "option_D", text: "$S(t) = 20 + 30 \\sin(t)$" }
         ]
     },
     {
         id: "exercice_q5b",
-        question: "2.b. Quel est un avantage principal de la modélisation exponentielle $T(t)$ par rapport à une modélisation du type $S(t) = 20 + \\frac{30}{1 + kt}$ pour un phénomène de refroidissement ?",
+        question: "2.b. Quel est un avantage principal de la modélisation exponentielle $T(t)$ par rapport à une modélisation du type $S(t) = 50 - \\frac{30}{1 + k t}$ pour un phénomène de chauffage ?",
         correctAnswerId: "option_B",
-        explanation: "La loi de refroidissement de Newton établit que le taux de perte de chaleur d'un objet est proportionnel à la différence de température entre l'objet et son environnement. Cette loi conduit naturellement à une modélisation exponentielle, rendant la fonction $T(t)$ plus représentative physiquement pour ces phénomènes.",
+        explanation: "La loi de chauffage ou de refroidissement de Newton est mieux modélisée par une exponentielle, donc $T(t)$ est plus fidèle physiquement pour ce type de phénomène.",
         options: [
             { id: "option_A", text: "Elle est plus facile à calculer sans calculatrice." },
-            { id: "option_B", text: "Elle est souvent plus fidèle aux lois physiques de refroidissement (Loi de Newton)." },
+            { id: "option_B", text: "Elle est souvent plus fidèle aux lois physiques de chauffage (Loi de Newton)." },
             { id: "option_C", text: "Elle atteint sa limite plus rapidement." },
             { id: "option_D", text: "Elle permet des températures négatives." }
         ]
