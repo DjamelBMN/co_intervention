@@ -76,10 +76,10 @@ const qcmQuestions = [
         id: "qcm_q8",
         text: "8. Une fonction $f(x)$ décrivant le gain d'un système possède un maximum local en $x_0$ si :",
         options: [
-            { id: "option_A", text: "$f'(x_0) = 0$ et $f''(x_0) < 0$" },
-            { id: "option_B", text: "$f'(x_0) = 0$ et $f''(x_0) > 0$" },
-            { id: "option_C", text: "$f'(x_0) > 0$" },
-            { id: "option_D", text: "$f'(x_0) < 0$" }
+            { id: "option_A", text: "$f'(x_0)=0\\;\\text{ et }\\;f''(x_0)<0$" },
+            { id: "option_B", text: "$f'(x_0)=0\\;\\text{ et }\\;f''(x_0)>0$" },
+            { id: "option_C", text: "$f'(x_0)>0$" },
+            { id: "option_D", text: "$f'(x_0)<0$" }
         ]
     },
     {
@@ -163,13 +163,15 @@ const qcmQuestions = [
         ]
     },
     {
-        id: "qcm_q17",
-        text: "17. Le taux de variation instantané du volume $V = \\frac{4}{3}\\pi r^3$ (par exemple, le volume de données stockées dans un cluster de rayon $r$) par rapport à son rayon $r$ est :",
-        options: [
-            { id: "option_A", text: "$\\frac{4}{3}\\pi r^2$" },
-            { id: "option_B", text: "$4\\pi r^2$" },
-            { id: "option_C", text: "$8\\pi r$" },
-            { id: "option_D", text: "$4\\pi r^3$" }
+        "id": "qcm_q17",
+        "question": "17. Dans un réseau informatique, on modélise la performance $P$ en fonction du nombre de connexions actives $n$ par la relation $P = k n^3$, où $k$ est une constante. Quelle est la dérivée $P'(n)$, c’est-à-dire la variation instantanée des performances par rapport au nombre de connexions ?",
+        "correctAnswerId": "option_B",
+        "explanation": "La dérivée de $P = k n^3$ par rapport à $n$ est $P'(n) = \\frac{d}{dn}(k n^3) = 3 k n^2$. Cela représente la variation instantanée des performances en fonction du nombre de connexions actives.",
+        "options": [
+            { "id": "option_A", "text": "$k n^2$" },
+            { "id": "option_B", "text": "$3k n^2$" },
+            { "id": "option_C", "text": "$k n^3$" },
+            { "id": "option_D", "text": "$6k n$" }
         ]
     },
     {

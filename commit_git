@@ -1,0 +1,174 @@
+Parfait 😎 Je vais te donner **un guide complet et prêt à copier-coller** pour gérer ton projet Git/GitHub, **du premier dépôt aux mises à jour futures**.
+
+---
+
+# ⚡ GUIDE GIT / GITHUB – LIGNE DE COMMANDE
+
+### 1️⃣ Initialiser le projet et faire le premier commit
+
+Depuis le dossier de ton projet (`C:\Users\nanod\desktop\cointer` ou autre) :
+
+```bash
+# Se placer dans le dossier du projet
+cd C:\Users\nanod\desktop\cointer
+
+# Initialiser le dépôt Git local
+git init
+
+# Ajouter tous les fichiers au suivi de Git
+git add .
+
+# Faire le premier commit
+git commit -m "Premier commit : ajout de mon application d’exercices"
+```
+
+---
+
+### 2️⃣ Créer le dépôt sur GitHub
+
+1. Aller sur [https://github.com/new](https://github.com/new)
+2. Nom du dépôt : `co_intervention` (ou ton choix)
+3. Laisser **Public** ou **Private**
+4. Ne pas cocher **README**, **.gitignore**, ni licence
+5. Cliquer sur **Create repository**
+
+Tu auras alors une URL comme :
+
+```
+https://github.com/DjamelBMN/co_intervention.git
+```
+
+---
+
+### 3️⃣ Lier le dépôt local à GitHub
+
+```bash
+# Supprimer un ancien remote si nécessaire
+git remote remove origin
+
+# Ajouter le remote vers ton dépôt GitHub
+git remote add origin https://github.com/DjamelBMN/co_intervention.git
+
+# Renommer la branche principale en 'main' (recommandé)
+git branch -M main
+
+# Envoyer ton projet sur GitHub
+git push -u origin main
+```
+
+💡 À ce moment, Git peut demander de **t’authentifier via le navigateur**. C’est normal.
+
+---
+
+### 4️⃣ Mettre à jour le projet sur GitHub après modification du code
+
+Chaque fois que tu modifies ton projet et veux pousser les changements :
+
+```bash
+# Vérifier l'état du dépôt
+git status
+
+# Ajouter les fichiers modifiés au suivi
+git add .
+
+# Créer un commit avec un message descriptif
+git commit -m "Description de la modification"
+
+# Envoyer les modifications sur GitHub
+git push origin main
+```
+
+💡 **Conseil :**
+
+* `git status` → montre quels fichiers ont changé
+* `git add fichier` → ajoute uniquement un fichier spécifique
+* `git add .` → ajoute **tous** les fichiers modifiés
+
+---
+
+### 5️⃣ Récupérer les mises à jour depuis GitHub (si tu travailles sur plusieurs machines)
+
+```bash
+git pull origin main
+```
+
+* Toujours faire un `git pull` avant de commencer à travailler, pour éviter les conflits.
+
+---
+
+### ✅ Résumé rapide des commandes principales
+
+| Action                               | Commande                                                         |
+| ------------------------------------ | ---------------------------------------------------------------- |
+| Initialiser dépôt local              | `git init`                                                       |
+| Ajouter fichiers                     | `git add .`                                                      |
+| Premier commit                       | `git commit -m "message"`                                        |
+| Lier à GitHub                        | `git remote add origin URL`                                      |
+| Renommer branche principale          | `git branch -M main`                                             |
+| Envoyer sur GitHub                   | `git push -u origin main`                                        |
+| Ajouter et commit après modification | `git add .` → `git commit -m "message"` → `git push origin main` |
+| Récupérer les mises à jour           | `git pull origin main`                                           |
+
+---
+
+Si tu veux, je peux te créer **un mini-script prêt à copier-coller** pour **initialiser un projet GitHub avec toutes ces étapes automatiquement**, ça évite de tout taper à chaque fois.
+
+Veux‑tu que je fasse ça ?
+
+
+
+# --- CONFIGURATION --- #
+# Remplace ces valeurs par les tiennes
+$NomProjetLocal = "cointer"                    # Nom du dossier local
+$NomDepotGitHub = "co_intervention"           # Nom du dépôt GitHub
+$UtilisateurGitHub = "DjamelBMN"              # Ton pseudo GitHub
+$EmailGit = "djamel.benmakhlouf@gmail.com"    # Ton email Git
+
+# --- CHEMIN DU PROJET --- #
+Set-Location "C:\Users\nanod\desktop\$NomProjetLocal"
+
+# --- INITIALISER GIT LOCAL --- #
+git init
+
+# Configurer l'utilisateur Git (global)
+git config --global user.name $UtilisateurGitHub
+git config --global user.email $EmailGit
+
+# Ajouter tous les fichiers et faire le premier commit
+git add .
+git commit -m "Premier commit : ajout de mon projet $NomProjetLocal"
+
+# --- LIER LE DEPOT GITHUB --- #
+git remote remove origin 2>$null      # Supprime l'ancien remote si existant
+git remote add origin https://github.com/$UtilisateurGitHub/$NomDepotGitHub.git
+
+# Renommer la branche principale
+git branch -M main
+
+# --- PUSH INITIAL --- #
+git push -u origin main
+
+
+
+
+
+
+                    **Script pour mettre à jour ton dépôt après modification**
+
+
+
+
+# Se placer dans le dossier du projet
+Set-Location "C:\Users\nanod\desktop\cointer"
+
+# Vérifier l'état des fichiers
+git status
+
+# Ajouter tous les fichiers modifiés
+git add .
+
+# Créer un commit avec un message descriptif
+git commit -m "Description de la modification"
+
+# Envoyer les changements sur GitHub
+git push origin main
