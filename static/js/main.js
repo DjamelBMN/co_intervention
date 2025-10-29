@@ -312,19 +312,19 @@ function displayFinalResults() {
     if (qcmScoreData && qcmScoreData.completed) {
         totalCorrect += qcmScoreData.rawScore;
         totalPossible += totalQCMQuestions; // Utilise le total réel des questions
-        qcmFinalScoreDiv.innerHTML = `<p><strong>Partie 1 (Exercice d'Optimisation) :</strong> ${qcmScoreData.rawScore} / ${totalQCMQuestions} correctes.</p>`;
+        qcmFinalScoreDiv.innerHTML = `<p><strong>Partie 1 (Exercice d'Optimisation - Maths - Info) :</strong> ${qcmScoreData.rawScore} / ${totalQCMQuestions} correctes.</p>`;
     } else {
         totalPossible += totalQCMQuestions; // Inclut les questions non répondues dans le total possible
-        qcmFinalScoreDiv.innerHTML = `<p><strong>Partie 1 (Exercice d'Optimisation) :</strong> Non complétée ou non soumise.</p>`;
+        qcmFinalScoreDiv.innerHTML = `<p><strong>Partie 1 (Exercice d'Optimisation - Maths - Info) :</strong> Non complétée ou non soumise.</p>`;
     }
 
     if (exerciceScoreData && exerciceScoreData.completed) {
         totalCorrect += exerciceScoreData.rawScore;
         totalPossible += totalExerciceQuestionsCombined; // Utilise le total réel des questions
-        exerciceFinalScoreDiv.innerHTML = `<p><strong>Partie 2 (Étude de la Température) :</strong> ${exerciceScoreData.rawScore} / ${totalExerciceQuestionsCombined} correctes.</p>`;
+        exerciceFinalScoreDiv.innerHTML = `<p><strong>Partie 2 (Température d'un composant informatique) :</strong> ${exerciceScoreData.rawScore} / ${totalExerciceQuestionsCombined} correctes.</p>`;
     } else {
         totalPossible += totalExerciceQuestionsCombined; // Inclut les questions non répondues dans le total possible
-        exerciceFinalScoreDiv.innerHTML = `<p><strong>Partie 2 (Étude de la Température) :</strong> Non complétée ou non soumise.</p>`;
+        exerciceFinalScoreDiv.innerHTML = `<p><strong>Partie 2 (Température d'un composant informatique) :</strong> Non complétée ou non soumise.</p>`;
     }
 
     // Vérifie si toutes les parties sont complétées pour afficher le score final et le bouton PDF

@@ -1,54 +1,87 @@
-/* Fichier : static/css/style.css - Ultra Polished & Moderne */
+                                                   /* Fichier : static/css/style.css - D. BENMAKHLOUF Novembre 2025 */
+
+/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+
+                                                    /* 
+
+                                                    Ah, te voilà… étudiant, collègue ou simplement explorateur du code 🕵️‍♂️
+                                                    
+                                                    Tu viens d’ouvrir le grimoire du CSS — un territoire capricieux où chaque ligne a son humeur.
+                                                    
+                                                    Si le layout bouge sans prévenir, considère cela comme un signe d’indépendance.
+                                                    
+                                                    C’est ta curiosité qui t’a mené ici, et je la respecte profondément.
+                                                    
+                                                    Mais chaque modification sauvage sera facturée en café ☕ !!!!!
+
+                                                                            
+                                                   — Djamel BENMAKHLOUF —   Projet assisté par IA (comme tout ce qui se fait de nos jours)
+
+                                                   
+                                                                      .....  et un "peu" de travail 😊 ....
+
+                                                    */
+
+
+/* --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                                            
+
 
 /* Import de la police Inter depuis Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap'); /* Ajout de 900 pour des titres encore plus percutants */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-/* Variables CSS pour une gestion facile des couleurs et des espacements - NOUVEAUX CHOIX pour un look premium */
+/* Variables CSS - Palette Premium Sophistiquée */
 :root {
-    /* Couleurs - Plus riches, plus profondes, avec un accent plus marqué */
-    --color-primary: hsl(218, 85%, 42%);     /* Un bleu saphir vibrant et sophistiqué */
-    --color-primary-hover: hsl(218, 85%, 32%); /* Assombrissement puissant pour le hover */
-    --color-primary-light: hsl(218, 85%, 95%); /* Une nuance très claire du primaire */
-    --color-secondary: hsl(210, 15%, 20%);   /* Gris très foncé, presque anthracite, pour contraste et profondeur */
-    --color-text: hsl(220, 10%, 12%);        /* Noir de texte profond pour une lisibilité maximale */
-    --color-background: hsl(210, 25%, 98.8%); /* Arrière-plan subtilement bleuté, lumineux */
-    --color-card-bg: hsl(0, 0%, 100%);       /* Blanc pur et éclatant pour les cartes */
-    --color-border: hsl(210, 15%, 90%);      /* Bordures claires et nettes */
-    --color-border-strong: hsl(210, 15%, 80%); /* Bordures structurelles plus définies */
-
-    --color-success: hsl(145, 63%, 37%);     /* Vert apaisant pour le succès */
-    --color-error: hsl(0, 75%, 58%);         /* Rouge franc pour les erreurs, plus "alerte" */
-    --color-warning: hsl(38, 95%, 52%);      /* Jaune-orange dynamique pour les avertissements */
-
-    /* Ombres - Subtiles mais percutantes, créant une impression de flottement léger */
-    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
-    --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.08);
-    --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.12);
-    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.18);
-    --shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.25); /* Dramatique pour les éléments principaux */
-    --shadow-inset: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Pour un léger enfoncement */
-
-    /* Espacement (conservation des échelles) */
-    --spacing-xs: 0.5rem;   /* 8px */
-    --spacing-sm: 0.8rem;   /* 12.8px */
-    --spacing-md: 1.25rem;  /* 20px */
-    --spacing-lg: 1.8rem;   /* 28.8px */
-    --spacing-xl: 2.5rem;   /* 40px */
-    --spacing-xxl: 3.5rem;  /* 56px */
-    --spacing-xxxl: 5rem;   /* 80px */
-
-
-    /* Rayon des bordures - Courbes élégantes et modernes */
-    --border-radius-sm: 8px;
-    --border-radius-md: 14px; /* Plus doux */
-    --border-radius-lg: 20px; /* Grande courbure pour les contenants principaux */
-
-    /* Durées de transition standard pour la consistance et fluidité*/
-    --transition-speed-fast: 0.2s;
-    --transition-speed-normal: 0.3s;
-    --transition-speed-slow: 0.4s;
-    --transition-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1); /* Plus dynamique */
-    --transition-ease-elastic: cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Pour effets rebond */
+    /* Couleurs - Palette vibrante et moderne */
+    --color-primary: hsl(230, 90%, 55%);
+    --color-primary-hover: hsl(230, 90%, 45%);
+    --color-primary-light: hsl(230, 95%, 96%);
+    --color-secondary: hsl(210, 20%, 15%);
+    --color-text: hsl(220, 15%, 10%);
+    --color-background: hsl(0, 0%, 100%);
+    --color-card-bg: hsl(0, 0%, 100%);
+    --color-border: hsl(220, 15%, 92%);
+    --color-border-strong: hsl(220, 15%, 85%);
+    
+    --color-success: hsl(136, 90%, 39%);
+    --color-error: hsl(0, 94%, 58%);
+    --color-warning: hsl(38, 94%, 53%);
+    
+    /* Dégradés premium */
+    --gradient-primary: linear-gradient(135deg, hsl(230, 90%, 55%) 0%, hsla(241, 66%, 55%, 0.781) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(214, 16%, 9%) 0%, hsl(220, 25%, 25%) 100%);
+    --gradient-shimmer: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    
+    /* Ombres - Architecture de profondeur */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.243);
+    --shadow-xl: 0 25px 60px rgba(0, 0, 0, 0.22);
+    --shadow-glow: 0 0 30px rgba(88, 101, 242, 0.3);
+    --shadow-glow-hover: 0 0 50px rgba(88, 101, 242, 0.5);
+    
+    /* Espacement */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 0.875rem;
+    --spacing-md: 1.25rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    --spacing-xxl: 4rem;
+    --spacing-xxxl: 6rem;
+    
+    /* Border Radius */
+    --border-radius-sm: 10px;
+    --border-radius-md: 16px;
+    --border-radius-lg: 24px;
+    --border-radius-xl: 32px;
+    
+    /* Transitions */
+    --transition-fast: 0.15s;
+    --transition-normal: 0.3s;
+    --transition-slow: 0.5s;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-elastic: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* --- Base & Reset --- */
@@ -56,18 +89,16 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    /* Optimisation pour les animations GPU - Réduit les artefacts de rendu */
-    will-change: transform, opacity, background-color, box-shadow;
 }
 
 html {
     scroll-behavior: smooth;
-    overflow-x: hidden; /* Empêche les barres de défilement horizontales non désirées */
+    overflow-x: hidden;
 }
 
 body {
-    font-family: 'Inter', sans-serif;
-    line-height: 1.75; /* Ligne-hauteur légèrement augmentée pour un confort de lecture optimal */
+    font-family: 'Cambria', sans-serif;
+    line-height: 1.7;
     background: var(--color-background);
     color: var(--color-text);
     -webkit-font-smoothing: antialiased;
@@ -75,215 +106,246 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    position: relative; /* Nécessaire pour les effets d'overlay */
+    position: relative;
     overflow-x: hidden;
-
-    /* Dégradé de fond subtil, animé et interactif (pourrait nécessiter JS pour la réaction au mouvement souris) */
-    background: radial-gradient(at 0% 0%, var(--color-primary-light) 0%, transparent 50%),
-                radial-gradient(at 100% 100%, hsl(200, 30%, 97%) 0%, transparent 50%),
-                linear-gradient(135deg, var(--color-background), hsl(210, 20%, 97%));
-    background-size: 200% 200%;
-    animation: backgroundShift 30s var(--transition-ease-in-out) infinite alternate;
+    
+    /* Fond animé avec dégradé de particules */
+    background: 
+        radial-gradient(circle at 15% 20%, rgba(88, 101, 242, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(151, 119, 193, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(77, 85, 173, 0.03) 0%, transparent 60%),
+        linear-gradient(135deg, hsl(220, 20%, 98%) 0%, hsl(230, 25%, 97%) 50%, hsl(220, 20%, 98%) 100%);
+    background-size: 400% 400%, 400% 400%, 400% 400%, 100% 100%;
+    animation: gradientShift 20s var(--ease-smooth) infinite;
 }
 
-@keyframes backgroundShift {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 100% 100%; }
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%, 100% 50%, 50% 50%, 0% 0%; }
+    50% { background-position: 100% 50%, 0% 50%, 50% 50%, 0% 0%; }
 }
 
-
-/* --- PRELOADER GLOBAL POUR EFFET WOW --- */
-/* Pour un effet "wow" ultime, ce div doit envelopper TOUT le contenu principal de votre <body>
-   Le preloader sera un écran avant le body-content
-   HTML Structure suggérée :
-   <body>
-       <div id="preloader-overlay">
-           <div class="preloader-spinner"></div>
-           <p class="preloader-text">Chargement expert...</p>
-       </div>
-       <div id="main-content-wrapper">
-           <header>...</header>
-           <main>...</main>
-           <footer>...</footer
-       </div>
-   </body>
-   Le #main-content-wrapper commencera caché et apparaîtra avec une belle animation
-*/
-
+/* --- PRELOADER SPECTACULAIRE --- */
 #preloader-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--color-primary); /* Couleur du preloader */
+    background: var(--gradient-primary);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* Toujours au-dessus de tout */
-    transition: opacity 0.8s var(--transition-ease-in-out), visibility 0.8s var(--transition-ease-in-out);
-    color: white; /* Couleur du texte dans le preloader */
+    z-index: 9999;
+    transition: opacity 0.8s var(--ease-out-expo), visibility 0.8s;
 }
 
 .preloader-spinner {
-    width: 60px;
-    height: 60px;
-    border: 6px solid rgba(255, 255, 255, 0.2);
-    border-top-color: #fff;
+    width: 80px;
+    height: 80px;
+    position: relative;
+    margin-bottom: var(--spacing-lg);
+}
+
+.preloader-spinner::before,
+.preloader-spinner::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 4px solid transparent;
+    border-top-color: rgba(255, 255, 255, 0.9);
     border-radius: 50%;
-    animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    margin-bottom: var(--spacing-md);
+    animation: spinPulse 1.5s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.preloader-spinner::after {
+    border-top-color: rgba(255, 255, 255, 0.4);
+    animation-duration: 2s;
+    animation-direction: reverse;
+}
+
+@keyframes spinPulse {
+    0% { transform: rotate(0deg) scale(1); opacity: 1; }
+    50% { transform: rotate(180deg) scale(1.1); opacity: 0.8; }
+    100% { transform: rotate(360deg) scale(1); opacity: 1; }
 }
 
 .preloader-text {
-    font-family: 'Inter', sans-serif;
     font-size: 1.5rem;
-    font-weight: 500;
-    opacity: 0; /* Invisible au début */
-    animation: fadePulse 1.8s var(--transition-ease-in-out) infinite forwards 0.3s;
+    font-weight: 600;
+    color: white;
+    letter-spacing: 0.05em;
+    animation: textPulse 2s ease-in-out infinite;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-@keyframes fadePulse {
-    0% { opacity: 0.7; transform: scale(1); }
+@keyframes textPulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
     50% { opacity: 1; transform: scale(1.05); }
-    100% { opacity: 0.7; transform: scale(1); }
 }
 
-/* Class added by JS when page is loaded */
 #preloader-overlay.hidden {
     opacity: 0;
     visibility: hidden;
 }
 
-/* CONTENEUR PRINCIPAL APPARITION */
+/* CONTENEUR PRINCIPAL - APPARITION CINÉMATIQUE */
 #main-content-wrapper {
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 1s var(--transition-ease-in-out) 0.6s, transform 1s var(--transition-ease-in-out) 0.6s;
-    min-height: 100vh; /* Pour que le footer reste en bas */
+    transform: translateY(30px) scale(0.98);
+    transition: opacity 1.2s var(--ease-out-expo) 0.5s, 
+                transform 1.2s var(--ease-out-expo) 0.5s;
+    min-height: 80vh;
     display: flex;
     flex-direction: column;
 }
 
 #main-content-wrapper.show {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
 
-
-/* Global focus style for accessibility - plus prononcé */
+/* Focus Style Premium */
 :focus-visible {
-    outline: 4px solid var(--color-primary); /* Bordure encore plus épaisse et distincte */
-    outline-offset: 4px;
+    outline: 3px solid var(--color-primary);
+    outline-offset: 3px;
     border-radius: var(--border-radius-sm);
-    transition: outline-color var(--transition-speed-fast) var(--transition-ease-in-out);
 }
 
+/* Liens avec animation de ligne */
 a {
     color: var(--color-primary);
     text-decoration: none;
-    transition: color var(--transition-speed-normal) var(--transition-ease-in-out),
-                transform var(--transition-speed-fast) var(--transition-ease-in-out);
     position: relative;
-    /* Souslignement dynamique */
-    &::after {
-        content: '';
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background-color: var(--color-primary-hover);
-        transition: width var(--transition-speed-normal) var(--transition-ease-in-out);
-    }
+    transition: color var(--transition-normal) var(--ease-smooth);
+}
+
+a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gradient-primary);
+    transition: width var(--transition-normal) var(--ease-out-expo);
 }
 
 a:hover {
     color: var(--color-primary-hover);
-    transform: translateY(-2px); /* Léger soulèvement */
-    &::after {
-        width: 100%;
-    }
 }
 
-/* --- Header --- */
+a:hover::after {
+    width: 100%;
+}
+
+/* --- HEADER ÉPOUSTOUFLANT --- */
 header {
-    background-color: var(--color-primary);
-    background-image: url('../assets/lycee.jpg'); /* Chemin vers l'image */
+    background: var(--color-primary);
+    background-image: url('../assets/lycee.jpg');
     background-size: cover;
-    background-position: center 60%; /* Ajusté pour centrer la partie intéressante */
+    background-position: center 60%;
     background-repeat: no-repeat;
     position: relative;
-    color: var(--color-card-bg);
-    padding: var(--spacing-xxxl) var(--spacing-xl);
+    color: white;
+    padding: var(--spacing-xxl) var(--spacing-xl); /* Réduit le padding */
     text-align: center;
     box-shadow: var(--shadow-xl);
     overflow: hidden;
-    min-height: 50vh; /* Hauteur plus généreuse pour un effet visuel saisissant */
+    min-height: 50vh; /* Réduit de 65vh à 50vh */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-attachment: fixed; /* Parallax subtil */
+    background-attachment: fixed;
 }
 
-/* Overlay sombre plus dynamique */
+/* Overlay dynamique avec animation */
 header::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%);
+    inset: 0;
+    background: linear-gradient(135deg, 
+        rgba(88, 101, 242, 0.555) 0%, 
+        rgba(143, 68, 242, 0.493) 50%,
+        rgba(88, 101, 242, 0.486) 100%);
     z-index: 1;
+    animation: overlayPulse 8s ease-in-out infinite;
 }
 
-/* Ajout d'une surcouche "grain" ou "texture" */
+@keyframes overlayPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.9; }
+}
+
+/* Particules flottantes */
 header::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zm1 5v1H5zM0 0L6 6V0z'/%3E%3C/g%3E%3C/svg%3E");
-    z-index: 2; /* Au-dessus de l'overlay mais sous le texte */
+    inset: 0;
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 100px 100px, 150px 150px, 80px 80px;
+    animation: particlesFloat 30s linear infinite;
+    z-index: 2;
     pointer-events: none;
 }
 
+@keyframes particlesFloat {
+    from { transform: translateY(0); }
+    to { transform: translateY(-100px); }
+}
+
+/* Titres avec effets spectaculaires */
 header h1, header p {
     position: relative;
-    z-index: 3; /* Assure que le texte est bien au-dessus */
-    color: var(--color-card-bg);
-    text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.7); /* Ombre plus intense */
-    opacity: 0; /* Géré par les animations individuelles ci-dessous */
-    transform: translateY(30px);
+    z-index: 3;
+    color: white;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 header h1 {
-    font-size: 4rem; /* Encore plus grand, impact maximal */
-    font-weight: 900; /* Extra bold */
-    margin-bottom: var(--spacing-sm);
-    letter-spacing: -0.05em;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 900;
+    margin-bottom: var(--spacing-md);
+    letter-spacing: -0.04em;
     line-height: 1.1;
-    /* Animation d'entrée sophistiquée pour le titre */
-    animation: fadeInSlideUpBounce 1s var(--transition-ease-elastic) forwards 1s; /* Démarre après le preloader */
+    opacity: 1;
+    transform: translateY(50px) scale(0.9);
+    animation: heroTitleEntrance 1.2s var(--ease-out-expo) forwards 0.8s;
+    background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.545) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes heroTitleEntrance {
+    0% { 
+        opacity: 0; 
+        transform: translateY(50px) scale(0.9) rotateX(20deg); 
+    }
+    60% { 
+        opacity: 1; 
+        transform: translateY(-10px) scale(1.02) rotateX(-5deg); 
+    }
+    100% { 
+        opacity: 1; 
+        transform: translateY(0) scale(1) rotateX(0); 
+    }
 }
 
 header p {
-    font-size: 1.6rem; /* Très lisible */
+    font-size: clamp(1.1rem, 3vw, 1.8rem);
     font-weight: 400;
-    opacity: 0.95;
     max-width: 900px;
     margin: var(--spacing-md) auto;
-    /* Animation pour le sous-titre */
-    animation: fadeInSlideUp 0.8s var(--transition-ease-in-out) forwards 1.2s; /* En cascade */
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInSlideUp 1s var(--ease-out-expo) forwards 1.2s;
+    line-height: 1.6;
 }
 
 @keyframes fadeInSlideUp {
@@ -291,39 +353,46 @@ header p {
     to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes fadeInSlideUpBounce {
-    0% { opacity: 0; transform: translateY(100px); }
-    60% { opacity: 1; transform: translateY(-20px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
-
-
-/* --- Main Content Container --- */
+/* --- MAIN CONTENT - CARTE FLOTTANTE --- */
 main {
     flex-grow: 1;
-    padding: var(--spacing-xxxl) var(--spacing-xxl); /* Padding extrêmement généreux */
-    max-width: 1200px; /* Plus de largeur pour les écrans larges */
-    margin: var(--spacing-xxxl) auto;
+    padding: var(--spacing-xxl) var(--spacing-xl); /* Réduit le padding */
+    max-width: 1400px; /* Augmenté pour plus d'espace */
+    margin: calc(var(--spacing-xxl) * -0.8) auto var(--spacing-xxl); /* Réduit le décalage négatif */
     background: var(--color-card-bg);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-xl); /* Ombre ultra-premium pour le bloc principal */
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-xl);
     position: relative;
-    z-index: 1;
-
-    /* Pas d'animation directe ici car c'est géré par #main-content-wrapper */
+    z-index: 10;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
 }
 
-/* --- Footer --- */
+main::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: var(--gradient-primary);
+    border-radius: var(--border-radius-xl);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity var(--transition-normal) var(--ease-smooth);
+}
+
+main:hover::before {
+    opacity: 0.1;
+}
+
+/* --- FOOTER --- */
 footer {
     text-align: center;
     padding: var(--spacing-xl) var(--spacing-md);
     color: var(--color-secondary);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     margin-top: auto;
     border-top: 1px solid var(--color-border);
     opacity: 0;
-    /* Animation pour le footer */
-    animation: fadeIn 0.8s var(--transition-ease-in-out) forwards 1.8s;
+    animation: fadeIn 0.8s var(--ease-smooth) forwards 2s;
 }
 
 @keyframes fadeIn {
@@ -331,431 +400,534 @@ footer {
     to { opacity: 1; }
 }
 
-
-/* --- Menu de navigation (index.html) --- */
+/* --- MENU NAVIGATION --- */
 .menu {
     text-align: center;
     padding: var(--spacing-xxxl) 0;
 }
 
 .menu h2 {
-    font-size: 2.8rem; /* Titre du menu bien plus grand */
+    font-size: clamp(2rem, 5vw, 3.2rem);
     color: var(--color-primary);
     margin-bottom: var(--spacing-xxl);
     font-weight: 900;
     letter-spacing: -0.03em;
     opacity: 0;
     transform: translateY(20px);
-    animation: fadeInSlideUp 0.8s var(--transition-ease-in-out) forwards 1.4s;
+    animation: fadeInSlideUp 0.8s var(--ease-out-expo) forwards 1.4s;
+    position: relative;
+    display: inline-block;
+}
+
+.menu h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 4px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+    animation: expandWidth 1s var(--ease-out-expo) forwards 1.8s;
+    transform-origin: center;
+    opacity: 0;
+}
+
+@keyframes expandWidth {
+    from { width: 0; opacity: 0; }
+    to { width: 60%; opacity: 1; }
 }
 
 .menu ul {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-xl); /* Espacement plus aéré entre les options */
+    gap: var(--spacing-lg);
     align-items: center;
 }
 
 .menu li {
     width: 100%;
-    max-width: 580px; /* Largeur maximale augmentée pour les boutons de menu */
+    max-width: 650px;
     opacity: 0;
-    transform: translateY(30px) scale(0.9);
-    animation: zoomInSlideUp 0.8s var(--transition-ease-in-out) forwards; /* Effet de zoom-in */
+    transform: translateY(40px) scale(0.95);
+    animation: cardEntrance 0.8s var(--ease-out-expo) forwards;
 }
-/* Staggering des animations des éléments de menu */
+
 .menu li:nth-child(1) { animation-delay: 1.6s; }
-.menu li:nth-child(2) { animation-delay: 1.7s; }
-.menu li:nth-child(3) { animation-delay: 1.8s; }
-.menu li:nth-child(4) { animation-delay: 1.9s; }
-.menu li:nth-child(5) { animation-delay: 2.0s; } /* Ajouter au besoin */
+.menu li:nth-child(2) { animation-delay: 1.75s; }
+.menu li:nth-child(3) { animation-delay: 1.9s; }
+.menu li:nth-child(4) { animation-delay: 2.05s; }
+.menu li:nth-child(5) { animation-delay: 2.2s; }
 
-@keyframes zoomInSlideUp {
-    from { opacity: 0; transform: translateY(50px) scale(0.8); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes cardEntrance {
+    0% { 
+        opacity: 0; 
+        transform: translateY(40px) scale(0.95) rotateX(10deg); 
+    }
+    60% { 
+        opacity: 1; 
+        transform: translateY(-5px) scale(1.02) rotateX(-2deg); 
+    }
+    100% { 
+        opacity: 1; 
+        transform: translateY(0) scale(1) rotateX(0); 
+    }
 }
 
-
-/* --- Boutons --- */
+/* --- BOUTONS PREMIUM --- */
 .button {
     display: block;
     width: 100%;
     padding: var(--spacing-lg) var(--spacing-xl);
     text-decoration: none;
     border-radius: var(--border-radius-md);
-    font-size: 1.4rem; /* Plus grand et très lisible */
+    font-size: 1.5rem;
     font-weight: 700;
     text-align: center;
     cursor: pointer;
-    transition: all var(--transition-speed-normal) var(--transition-ease-in-out);
+    transition: all var(--transition-normal) var(--ease-out-expo);
     border: none;
-    box-shadow: var(--shadow-md); /* Ombre de base */
-
-    /* Dégradé primaire moderne avec un léger relief */
-    background: linear-gradient(145deg, var(--color-primary), var(--color-primary-hover));
-    color: var(--color-card-bg);
+    box-shadow: var(--shadow-md);
+    background: var(--gradient-primary);
+    color: white;
     position: relative;
-    overflow: hidden; /* Pour les effets d'onde */
-    z-index: 1;
+    overflow: hidden;
+    transform-style: preserve-3d;
+}
 
-    /* Effet d'éclat lumineux au survol */
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.2);
-        transform: skewX(-20deg);
-        transition: transform var(--transition-speed-normal) var(--transition-ease-in-out);
-    }
+/* Effet de brillance */
+.button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-shimmer);
+    transition: left 0.6s var(--ease-out-expo);
+}
+
+.button::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--border-radius-md);
+    padding: 2px;
+    background: var(--gradient-primary);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity var(--transition-normal) var(--ease-smooth);
 }
 
 .button:hover:not(.button-disabled) {
-    transform: translateY(-8px) scale(1.02); /* Effet de "lift" très prononcé avec léger zoom */
-    box-shadow: var(--shadow-lg); /* Ombre amplifiée */
-    background: linear-gradient(145deg, var(--color-primary-hover), var(--color-primary)); /* Inversion pour un léger dynamisme */
-
-    &::before {
-        transform: translateX(200%) skewX(-20deg); /* L'éclat traverse le bouton */
-    }
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: var(--shadow-xl), var(--shadow-glow);
 }
+
+.button:hover:not(.button-disabled)::before {
+    left: 100%;
+}
+
+.button:hover:not(.button-disabled)::after {
+    opacity: 1;
+}
+
 .button:active:not(.button-disabled) {
-    transform: translateY(-2px) scale(0.99); /* Effet d'enfoncement subtil */
-    box-shadow: var(--shadow-sm); /* Réduit l'ombre au clic */
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: var(--shadow-md);
 }
-
 
 .button-secondary {
-    background: linear-gradient(145deg, var(--color-secondary), hsl(210, 20%, 30%)); /* Dégradé secondaire */
-    color: var(--color-card-bg);
-
-    &::before { /* L'effet d'éclat s'applique aussi aux boutons secondaires */
-        background: rgba(255, 255, 255, 0.15); /* Moins intense pour le secondaire */
-    }
-}
-
-.button-secondary:hover:not(.button-disabled) {
-    background: linear-gradient(145deg, hsl(210, 20%, 30%), var(--color-secondary));
+    background: var(--gradient-secondary);
 }
 
 .button-disabled {
-    background: hsl(210, 10%, 80%) !important;
-    color: hsl(210, 5%, 60%) !important;
+    background: linear-gradient(135deg, hsl(220, 10%, 85%) 0%, hsl(220, 10%, 75%) 100%) !important;
+    color: hsl(220, 5%, 50%) !important;
     cursor: not-allowed !important;
-    opacity: 0.8;
+    opacity: 0.7;
     transform: none !important;
     box-shadow: var(--shadow-sm) !important;
     pointer-events: none;
-    &::before {
-        display: none; /* Désactiver l'éclat sur les boutons désactivés */
-    }
 }
 
-
-/* --- Timer --- */
+/* --- TIMER ANIMÉ --- */
 .timer {
     position: absolute;
     top: var(--spacing-xl);
     right: var(--spacing-xl);
-    background-color: var(--color-warning);
-    color: var(--color-secondary); /* Couleur de texte sombre pour contraste sur avertissement */
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--border-radius-sm);
+    background: linear-gradient(135deg, var(--color-warning) 0%, hsl(45, 98%, 60%) 100%);
+    color: white;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius-md);
     font-weight: 800;
-    font-size: 1.25rem; /* Très lisible */
-    box-shadow: var(--shadow-md);
-    border: 2px solid var(--color-warning);
-    min-width: 80px;
+    font-size: 1.4rem;
+    box-shadow: var(--shadow-lg), 0 0 30px rgba(255, 193, 7, 0.4);
+    min-width: 100px;
     text-align: center;
-    z-index: 10;
-    /* Pulsation accentuée */
-    animation: timerPulse 2s cubic-bezier(0.4, 0, 0.2, 1) infinite,
-               fadeInDown 0.8s var(--transition-ease-elastic) forwards 1s; /* Apparition par le haut */
+    z-index: 100;
+    animation: timerEntrance 1s var(--ease-elastic) forwards 0.8s,
+               timerPulse 2s ease-in-out 1.8s infinite;
+    opacity: 0;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+@keyframes timerEntrance {
+    0% { opacity: 0; transform: translateY(-50px) rotateX(90deg); }
+    60% { opacity: 1; transform: translateY(5px) rotateX(-10deg); }
+    100% { opacity: 1; transform: translateY(0) rotateX(0); }
 }
 
 @keyframes timerPulse {
-    0% { transform: scale(1) translateY(0); opacity: 1; border-color: var(--color-warning); }
-    50% { transform: scale(1.05) translateY(-2px); opacity: 0.9; border-color: hsl(40, 100%, 60%); }
-    100% { transform: scale(1) translateY(0); opacity: 1; border-color: var(--color-warning); }
+    0%, 100% { 
+        transform: scale(1); 
+        box-shadow: var(--shadow-lg), 0 0 30px rgba(255, 193, 7, 0.4); 
+    }
+    50% { 
+        transform: scale(1.08); 
+        box-shadow: var(--shadow-xl), 0 0 50px rgba(255, 193, 7, 0.6); 
+    }
 }
 
-@keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-50px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-
-/* --- Blocs de Questions / Contenu d'Exercice --- */
+/* --- BLOCS MATHÉMATIQUES --- */
 p.math-display {
     text-align: center;
-    font-size: 1.6rem; /* Très lisible pour les maths */
-    margin: var(--spacing-xxl) 0;
-    padding: var(--spacing-lg) var(--spacing-xl); /* Padding généreux */
-    background: hsl(210, 15%, 97.5%);
-    border-left: 8px solid var(--color-primary); /* Barre latérale très forte */
+    font-size: 1.5rem; /* Réduit légèrement */
+    margin: var(--spacing-xl) 0; /* Réduit les marges */
+    padding: var(--spacing-lg) var(--spacing-xl); /* Réduit le padding */
+    background: linear-gradient(135deg, rgba(88, 101, 242, 0.03) 0%, rgba(142, 68, 242, 0.03) 100%);
+    border-left: 6px solid var(--color-primary);
     border-radius: var(--border-radius-md);
     box-shadow: var(--shadow-sm);
     overflow-x: auto;
+    overflow-y: visible; /* Permet l'affichage vertical complet */
     font-weight: 500;
-    line-height: 1.6;
-    color: var(--color-secondary); /* Un peu plus doux pour les maths */
+    line-height: 2.2; /* Augmenté pour les formules */
+    color: var(--color-text);
     position: relative;
-    /* Animation d'entrée pour chaque block math */
     opacity: 0;
-    transform: translateY(30px) scale(0.98);
-    animation: fadeInSlideUp 0.8s var(--transition-ease-in-out) forwards;
-}
-/* Décalage temporel des animations */
-/* Ex: Ajoutez data-delay="x" sur vos div dans le HTML */
-[data-animate-delay] {
-    animation-delay: var(--animate-delay-val, 0s) !important;
+    transform: translateY(30px);
+    animation: fadeInSlideUp 0.8s var(--ease-out-expo) forwards;
+    transition: all var(--transition-normal) var(--ease-smooth);
+    min-height: fit-content; /* Ajusté pour s'adapter au contenu */
 }
 
+p.math-display:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-left-color: var(--color-primary-hover);
+}
 
+/* Styles spécifiques pour MathJax dans tous les contextes */
+.math, .MathJax, mjx-container {
+    display: inline-block !important;
+    margin: 0.2em 0.3em !important;
+    overflow: visible !important;
+    max-width: 100% !important;
+}
+
+mjx-container[jax="SVG"] {
+    direction: ltr !important;
+    text-align: center !important;
+}
+
+mjx-container[jax="SVG"] > svg {
+    overflow: visible !important;
+    min-height: 1ex !important;
+    vertical-align: middle !important;
+}
+
+/* --- TITRES DE PARTIES --- */
 .part-title {
     color: var(--color-primary);
-    font-size: 2.2rem; /* Impact maximal pour les titres de section */
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
     margin-top: var(--spacing-xxxl);
     margin-bottom: var(--spacing-xl);
-    border-bottom: 3px solid var(--color-border-strong);
     padding-bottom: var(--spacing-md);
     font-weight: 900;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.02em;
     position: relative;
     opacity: 0;
-    transform: translateX(-30px);
-    animation: fadeInSlideRight 0.8s var(--transition-ease-in-out) forwards; /* Glisse depuis la gauche */
-
-    &::after { /* Bordure sous le texte pour un look moderne */
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: -3px; /* Juste en dessous de la bordure réelle */
-        width: 15%; /* Longueur par défaut */
-        height: 4px;
-        background: linear-gradient(to right, var(--color-primary), var(--color-primary-hover));
-        opacity: 0;
-        transition: width var(--transition-speed-normal) var(--transition-ease-in-out), opacity var(--transition-speed-normal);
-        animation: growBorder 1s var(--transition-ease-in-out) forwards 0.3s; /* Anime la barre lors de l'apparition */
-    }
+    transform: translateX(-40px);
+    animation: slideInFromLeft 0.8s var(--ease-out-expo) forwards;
 }
-@keyframes fadeInSlideRight {
-    from { opacity: 0; transform: translateX(-30px); }
+
+@keyframes slideInFromLeft {
+    from { opacity: 0; transform: translateX(-40px); }
     to { opacity: 1; transform: translateX(0); }
 }
 
-@keyframes growBorder {
-    from { width: 0; opacity: 0; }
-    to { width: 100%; opacity: 1; } /* S'étend sur toute la largeur initialement */
+.part-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+    animation: growLine 1s var(--ease-out-expo) forwards 0.3s;
 }
 
-/* Hover sur le titre de partie - Peut re-animer le pseudo-élément */
-.part-title:hover::after {
-    width: 100%; /* S'étend sur 100% au survol aussi */
-    opacity: 1;
+@keyframes growLine {
+    from { width: 0; }
+    to { width: 100%; }
 }
 
+/* --- BLOCS DE QUESTIONS --- */
 .question-block {
-    margin-bottom: var(--spacing-xxl); /* Très espacé */
-    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-xxl);
+    padding: var(--spacing-xl) var(--spacing-xxl);
     background: var(--color-card-bg);
     border: 1px solid var(--color-border);
-    border-radius: var(--border-radius-md);
-    box-shadow: var(--shadow-md);
-    transition: all var(--transition-speed-normal) var(--transition-ease-in-out);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal) var(--ease-out-expo);
     opacity: 0;
-    transform: translateY(30px) perspective(1000px) rotateX(5deg); /* Perspective et rotation pour l'effet wow */
-    animation: fadeInRotateX 1s var(--transition-ease-in-out) forwards;
+    transform: translateY(40px) rotateX(5deg);
+    animation: questionEntrance 1s var(--ease-out-expo) forwards;
+    position: relative;
+    overflow: visible; /* Changé pour permettre l'affichage des formules MathJax */
+}
+
+@keyframes questionEntrance {
+    0% { 
+        opacity: 0; 
+        transform: translateY(40px) rotateX(5deg); 
+    }
+    60% { 
+        opacity: 1; 
+        transform: translateY(-5px) rotateX(-2deg); 
+    }
+    100% { 
+        opacity: 1; 
+        transform: translateY(0) rotateX(0); 
+    }
+}
+
+.question-block::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: var(--gradient-primary);
+    border-radius: var(--border-radius-lg);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity var(--transition-normal) var(--ease-smooth);
 }
 
 .question-block:hover {
+    transform: translateY(-8px) scale(1.01);
     box-shadow: var(--shadow-lg);
-    transform: translateY(-5px) perspective(1000px) rotateX(0deg); /* Revient droit et monte légèrement */
-    border-color: var(--color-primary); /* Accentuation de la bordure */
 }
 
-@keyframes fadeInRotateX {
-    from { opacity: 0; transform: translateY(50px) perspective(1000px) rotateX(15deg); }
-    to { opacity: 1; transform: translateY(0) perspective(1000px) rotateX(0deg); }
-}
-
-
-.question-block p {
-    font-size: 1.15rem; /* Un peu plus grand pour la clarté */
-    line-height: 1.8;
+.question-block:hover::before {
+    opacity: 0.08;
 }
 
 .question-block p strong {
     font-weight: 700;
-    font-size: 1.25rem; /* Questions très bien mises en évidence */
+    font-size: 1.2rem; /* Réduit légèrement */
     display: block;
     margin-bottom: var(--spacing-md);
+    color: var(--color-primary);
+    line-height: 1.8; /* Ajout pour meilleur espacement */
+}
+
+/* Styles pour les formules mathématiques dans les questions */
+.question-block .math,
+.question-block .MathJax,
+.question-block .MathJax_Display,
+.question-block mjx-container {
+    display: inline !important;
+    margin: 0 0.3em !important;
+    color: var(--color-text) !important;
+    font-size: 1.1em !important;
+}
+
+.question-block p {
+    font-size: 1.1rem; /* Ajusté pour meilleur rendu */
+    line-height: 2; /* Plus d'espace entre les lignes pour les formules */
     color: var(--color-text);
 }
 
-
-/* --- Options de Réponse (Radio Buttons) ---*/
+/* --- OPTIONS DE RÉPONSE --- */
 .options-container label {
     display: flex;
     align-items: center;
-    margin-bottom: var(--spacing-sm);
-    padding: var(--spacing-md) var(--spacing-lg); /* Padding ajusté */
-    background: var(--color-background);
-    border: 1px solid var(--color-border);
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(250, 250, 252, 0.9) 100%);
+    border: 2px solid var(--color-border);
     border-radius: var(--border-radius-md);
     cursor: pointer;
-    transition: all var(--transition-speed-fast) var(--transition-ease-in-out);
+    transition: all var(--transition-fast) var(--ease-out-expo);
     box-shadow: var(--shadow-xs);
     position: relative;
-    color: var(--color-text);
-
-    &:hover:not(.options-container input[type="radio"]:disabled + label) {
-        background-color: hsl(210, 15%, 95%); /* Clair */
-        border-color: var(--color-primary);
-        box-shadow: var(--shadow-sm);
-        transform: translateY(-2px); /* Léger "lift" */
-    }
+    overflow: hidden;
 }
 
+.options-container label::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-primary);
+    opacity: 0;
+    transition: opacity var(--transition-fast) var(--ease-smooth);
+}
+
+.options-container label:hover:not(.options-container input[type="radio"]:disabled + label) {
+    transform: translateX(8px);
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-md);
+}
+
+.options-container label:hover:not(.options-container input[type="radio"]:disabled + label)::before {
+    opacity: 0.05;
+}
 
 .options-container input[type="radio"] {
     appearance: none;
-    width: 24px; /* Taille généreuse */
-    height: 24px;
-    border: 2px solid var(--color-secondary);
+    width: 26px;
+    height: 26px;
+    border: 3px solid var(--color-border-strong);
     border-radius: 50%;
-    margin-right: var(--spacing-sm);
+    margin-right: var(--spacing-md);
     flex-shrink: 0;
     position: relative;
     cursor: pointer;
-    transition: all var(--transition-speed-fast) var(--transition-ease-in-out);
-    display: grid;
-    place-content: center;
-    background-color: var(--color-card-bg);
-
-    &::before {
-        content: '';
-        width: 14px; /* Plus grand */
-        height: 14px;
-        border-radius: 50%;
-        transform: scale(0);
-        transition: transform var(--transition-speed-fast) var(--transition-ease-in-out);
-        background-color: var(--color-primary); /* Point central dynamique */
-        box-shadow: var(--shadow-inset); /* Léger enfoncement du point */
-    }
-    &:checked {
-        border-color: var(--color-primary);
-        &::before {
-            transform: scale(1); /* Apparaît */
-        }
-    }
-
-    &:focus-visible { /* Style de focus uniquement sur le radio, pas le label */
-        outline: none;
-        box-shadow: 0 0 0 3px hsla(218, 85%, 42%, 0.3);
-    }
-
-    &:disabled {
-        cursor: not-allowed;
-        border-color: var(--color-border);
-        background-color: hsl(210, 10%, 94%);
-        &::before {
-            background-color: var(--color-border-strong);
-        }
-    }
-    &:disabled + label {
-        cursor: not-allowed;
-        background-color: hsl(210, 10%, 94%);
-        color: hsl(210, 5%, 65%);
-        border-color: var(--color-border);
-        box-shadow: none;
-        transform: none;
-        opacity: 0.9;
-    }
-    &:disabled + label:hover {
-        background-color: hsl(210, 10%, 94%);
-        border-color: var(--color-border);
-    }
+    transition: all var(--transition-fast) var(--ease-smooth);
+    background: white;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-/* --- Champs de Texte --- */
+.options-container input[type="radio"]::before {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    transform: scale(0);
+    transition: transform var(--transition-fast) var(--ease-elastic);
+    box-shadow: 0 0 10px rgba(88, 101, 242, 0.5);
+}
+
+.options-container input[type="radio"]:checked {
+    border-color: var(--color-primary);
+}
+
+.options-container input[type="radio"]:checked::before {
+    transform: scale(1);
+}
+
+/* --- CHAMPS DE TEXTE --- */
 input[type="text"], textarea {
     width: 100%;
     padding: var(--spacing-md) var(--spacing-lg);
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius-sm);
+    border: 2px solid var(--color-border);
+    border-radius: var(--border-radius-md);
     font-size: 1.15rem;
     font-family: 'Inter', sans-serif;
     color: var(--color-text);
-    background-color: var(--color-card-bg);
+    background: white;
     box-shadow: var(--shadow-xs);
-    transition: all var(--transition-speed-fast) var(--transition-ease-in-out);
-
-    &:focus {
-        outline: none;
-        border-color: var(--color-primary);
-        box-shadow: var(--shadow-sm), 0 0 0 4px hsla(218, 85%, 42%, 0.2);
-    }
+    transition: all var(--transition-fast) var(--ease-smooth);
 }
 
+input[type="text"]:focus, textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-md), 0 0 0 4px rgba(88, 101, 242, 0.15);
+    transform: translateY(-2px);
+}
 
-/* --- Conteneurs de Résultats - Amélioré, Épuré et Aéré --- */
+/* --- CONTENEUR DE RÉSULTATS --- */
 .results-container {
     margin-top: var(--spacing-xxxl);
     padding-top: var(--spacing-xxxl);
-    border-top: 1px solid var(--color-border);
+    border-top: 2px solid var(--color-border);
 }
 
 .results-container h2 {
     color: var(--color-primary);
     text-align: center;
     margin-bottom: var(--spacing-xxxl);
-    font-size: 3rem; /* Très grand, impactant */
+    font-size: clamp(2rem, 5vw, 3.5rem);
     font-weight: 900;
     letter-spacing: -0.04em;
     line-height: 1.2;
     opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInSlideUp 1s var(--transition-ease-elastic) forwards 0.8s; /* Plus rebondissant */
+    transform: translateY(30px) scale(0.95);
+    animation: heroTitleEntrance 1s var(--ease-elastic) forwards 0.8s;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .result-item {
     background: var(--color-card-bg);
-    border: none;
-    border-radius: var(--border-radius-md);
-    padding: var(--spacing-xl) var(--spacing-xxl); /* Encore plus de padding */
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl) var(--spacing-xxl);
     margin-bottom: var(--spacing-lg);
-    box-shadow: var(--shadow-md);
-    transition: all var(--transition-speed-normal) var(--transition-ease-in-out);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal) var(--ease-out-expo);
     opacity: 0;
-    transform: scale(0.95);
-    animation: zoomIn 0.8s var(--transition-ease-in-out) forwards;
+    transform: scale(0.92) rotateY(5deg);
+    animation: resultItemEntrance 0.8s var(--ease-out-expo) forwards;
+    position: relative;
+    overflow: hidden;
+}
+
+@keyframes resultItemEntrance {
+    0% { 
+        opacity: 0; 
+        transform: scale(0.92) rotateY(5deg); 
+    }
+    60% { 
+        opacity: 1; 
+        transform: scale(1.02) rotateY(-2deg); 
+    }
+    100% { 
+        opacity: 1; 
+        transform: scale(1) rotateY(0); 
+    }
+}
+
+.result-item::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: var(--gradient-primary);
+    border-radius: var(--border-radius-lg);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity var(--transition-normal) var(--ease-smooth);
 }
 
 .result-item:hover {
-    transform: translateY(-5px) scale(1.01); /* Effet plus distinct */
-    box-shadow: var(--shadow-lg);
-    border: 1px solid var(--color-primary); /* Révèle une bordure colorée au survol */
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-xl);
 }
 
-/* Délai d'animation pour chaque élément de résultat */
+.result-item:hover::before {
+    opacity: 0.1;
+}
+
 .result-item:nth-of-type(1) { animation-delay: 1.2s; }
-.result-item:nth-of-type(2) { animation-delay: 1.3s; }
-.result-item:nth-of-type(3) { animation-delay: 1.4s; }
-.result-item:nth-of-type(4) { animation-delay: 1.5s; }
-.result-item:nth-of-type(5) { animation-delay: 1.6s; }
-
-@keyframes zoomIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
-}
+.result-item:nth-of-type(2) { animation-delay: 1.35s; }
+.result-item:nth-of-type(3) { animation-delay: 1.5s; }
+.result-item:nth-of-type(4) { animation-delay: 1.65s; }
+.result-item:nth-of-type(5) { animation-delay: 1.8s; }
 
 .result-item p {
     margin: 0.8rem 0;
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     line-height: 1.8;
 }
 
@@ -767,86 +939,134 @@ input[type="text"], textarea {
 .correct {
     color: var(--color-success);
     font-weight: 800;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+    display: inline-block;
+    animation: successPulse 0.6s var(--ease-elastic) forwards;
+}
+
+@keyframes successPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
 }
 
 .incorrect {
     color: var(--color-error);
     font-weight: 800;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+    display: inline-block;
+    animation: errorShake 0.5s ease forwards;
 }
 
+@keyframes errorShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}
 
-/* --- Liens de Retour --- */
+/* --- LIENS DE RETOUR --- */
 .back-link {
     text-align: center;
     margin-top: var(--spacing-xxl);
     opacity: 0;
-    animation: fadeIn 0.8s var(--transition-ease-in-out) forwards 1.8s;
+    animation: fadeIn 0.8s var(--ease-smooth) forwards 2s;
 }
 
 .back-link a {
     color: var(--color-primary);
     text-decoration: none;
     font-weight: 700;
-    transition: color var(--transition-speed-normal) var(--transition-ease-in-out), text-decoration var(--transition-speed-normal) var(--transition-ease-in-out);
+    font-size: 1.2rem;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--border-radius-md);
+    display: inline-block;
     position: relative;
-
-    &::after {
-        content: '';
-        position: absolute;
-        bottom: -6px;
-        left: 50%;
-        transform: translateX(-50%) scaleX(0);
-        width: 100%;
-        height: 3px;
-        background: linear-gradient(to right, var(--color-primary), var(--color-primary-hover));
-        transition: transform var(--transition-speed-normal) var(--transition-ease-in-out);
-    }
+    transition: all var(--transition-normal) var(--ease-out-expo);
+    background: linear-gradient(135deg, rgba(88, 101, 242, 0.05) 0%, rgba(142, 68, 242, 0.05) 100%);
 }
 
-.back-link a:hover::after {
-    transform: translateX(-50%) scaleX(1);
+.back-link a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--border-radius-md);
+    padding: 2px;
+    background: var(--gradient-primary);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity var(--transition-normal) var(--ease-smooth);
 }
 
-/* --- Styles pour la page de correction --- */
+.back-link a:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.back-link a:hover::before {
+    opacity: 1;
+}
+
+/* --- CORRECTION PAGE --- */
 #correction-content h2, #correction-content h3 {
     color: var(--color-primary);
     font-weight: 800;
     margin-bottom: var(--spacing-xl);
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
     opacity: 0;
-    transform: translateX(-20px);
-    animation: fadeInSlideRight 0.8s var(--transition-ease-in-out) forwards;
+    transform: translateX(-30px);
+    animation: slideInFromLeft 0.8s var(--ease-out-expo) forwards;
 }
 
 .correction-item {
     background: var(--color-card-bg);
-    border: 1px solid var(--color-border);
-    border-left: 10px solid var(--color-success); /* Barre plus large et visible */
+    border: 2px solid var(--color-border);
+    border-left: 8px solid var(--color-success);
     border-radius: var(--border-radius-md);
     padding: var(--spacing-lg) var(--spacing-xl);
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
     box-shadow: var(--shadow-sm);
-    transition: all var(--transition-speed-fast) var(--transition-ease-in-out);
+    transition: all var(--transition-normal) var(--ease-out-expo);
     opacity: 0;
-    transform: translateX(-20px);
-    animation: fadeInSlideRight 0.6s var(--transition-ease-in-out) forwards;
+    transform: translateX(-30px);
+    animation: slideInFromLeft 0.6s var(--ease-out-expo) forwards;
+    position: relative;
+    overflow: hidden;
+}
+
+.correction-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 8px;
+    background: linear-gradient(180deg, var(--color-success) 0%, hsl(145, 70%, 52%) 100%);
+    transition: width var(--transition-normal) var(--ease-out-expo);
 }
 
 .correction-item.incorrect-answer {
     border-left-color: var(--color-error);
 }
 
+.correction-item.incorrect-answer::before {
+    background: linear-gradient(180deg, var(--color-error) 0%, hsl(0, 80%, 70%) 100%);
+}
+
 .correction-item:hover {
-    transform: translateX(8px) translateY(-2px); /* Glisse et se lève légèrement */
+    transform: translateX(12px);
     box-shadow: var(--shadow-md);
+}
+
+.correction-item:hover::before {
+    width: 12px;
 }
 
 .correction-item p {
     margin: 0.7rem 0;
-    font-size: 1.1rem;
-    line-height: 1.7;
+    font-size: 1.15rem;
+    line-height: 1.8;
 }
 
 .correction-item strong {
@@ -854,296 +1074,671 @@ input[type="text"], textarea {
     font-weight: 700;
 }
 
-/* Message d'accès restreint */
+/* --- MESSAGE D'ACCÈS RESTREINT --- */
 #correction-locked-message {
-    background: hsl(0, 60%, 96%); /* Rouge très clair mais chaud */
+    background: linear-gradient(135deg, hsl(0, 70%, 96%) 0%, hsl(0, 60%, 94%) 100%);
     border-left: 8px solid var(--color-error);
+    border-radius: var(--border-radius-lg);
     color: var(--color-text);
     padding: var(--spacing-xxl);
-    border-radius: var(--border-radius-md);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-lg);
     margin-top: var(--spacing-xl);
-    animation: shakePulseWarning 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards infinite; /* Animation plus vive */
+    animation: warningPulse 2s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
 }
+
+@keyframes warningPulse {
+    0%, 100% { 
+        transform: scale(1); 
+        box-shadow: var(--shadow-lg);
+    }
+    50% { 
+        transform: scale(1.02); 
+        box-shadow: var(--shadow-xl), 0 0 40px rgba(230, 57, 70, 0.3);
+    }
+}
+
+#correction-locked-message::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(230, 57, 70, 0.1) 0%, transparent 70%);
+    animation: rotateGlow 10s linear infinite;
+}
+
+@keyframes rotateGlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 #correction-locked-message h2 {
     color: var(--color-error);
-    font-size: 2.2rem;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
     font-weight: 900;
     margin-bottom: var(--spacing-md);
+    position: relative;
+    z-index: 1;
 }
 
-/* Animation de "secouage" + pulsation */
-@keyframes shakePulseWarning {
-    0%, 100% { transform: translateX(0) scale(1); opacity: 1; }
-    25% { transform: translateX(-10px) scale(1.02); opacity: 0.95; }
-    50% { transform: translateX(10px) scale(1); opacity: 1; }
-    75% { transform: translateX(-5px) scale(1.01); opacity: 0.98; }
-}
-
-
-/* Styles spécifiques pour MathJax */
+/* --- STYLES MATHJAX --- */
 .MathJax_Display {
     color: var(--color-text) !important;
-    background: hsl(210, 15%, 97%) !important;
+    background: transparent !important; /* Changé pour éviter de cacher les formules */
     padding: var(--spacing-sm);
-    border-radius: var(--border-radius-sm);
-    box-shadow: var(--shadow-xs);
-    transition: all var(--transition-speed-fast) var(--transition-ease-in-out);
+    border-radius: var(--border-radius-md);
+    transition: all var(--transition-fast) var(--ease-smooth);
+    overflow: visible !important;
+    display: block !important;
+    text-align: center !important;
+    margin: 1em 0 !important;
 }
+
 .MathJax_Display:hover {
-    background: var(--color-card-bg) !important;
-    box-shadow: var(--shadow-sm);
+    background: rgba(88, 101, 242, 0.02) !important;
+    transform: scale(1.01);
 }
 
+/* Assurer la visibilité de MathJax inline */
+.MathJax, .MathJax_Preview, .MathJax_SVG {
+    display: inline-block !important;
+    overflow: visible !important;
+    line-height: normal !important;
+}
 
-/* Media Queries pour la responsivité */
+/* Pour les conteneurs SVG de MathJax */
+svg.MathJax_SVG {
+    overflow: visible !important;
+}
+
+/* Correction pour les formules qui pourraient être coupées */
+* {
+    overflow-wrap: normal;
+}
+
+.question-block *, 
+p.math-display * {
+    overflow: visible !important;
+}
+
+/* --- ANIMATIONS SPÉCIALES --- */
+.modern-blink-solid {
+    animation: glowPulse 2s ease-in-out infinite;
+    display: inline-block;
+    will-change: transform, filter;
+}
+
+@keyframes glowPulse {
+    0%, 100% {
+        filter: drop-shadow(0 0 0 rgba(230, 57, 70, 0));
+        transform: scale(1);
+    }
+    50% {
+        filter: drop-shadow(0 0 20px rgba(230, 57, 70, 0.8));
+        transform: scale(1.05);
+    }
+}
+
+/* --- CARTE CONTEXTUELLE --- */
+.context-card {
+    background: linear-gradient(135deg, #ffffff 0%, #fafbfccc 100%);
+    border: 2px solid rgba(230, 57, 70, 0.2);
+    border-left: 8px solid var(--color-error);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl) var(--spacing-xxl);
+    margin: var(--spacing-xl) 0;
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-normal) var(--ease-out-expo);
+    position: relative;
+    overflow: hidden;
+}
+
+.context-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-slow) var(--ease-out-expo);
+}
+
+.context-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.context-card:hover::before {
+    transform: scaleX(1);
+}
+
+.context-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--color-error);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* --- ANIMATIONS D'ENTRÉE --- */
+.fade-in {
+    animation: fadeIn 0.8s var(--ease-smooth) forwards;
+    opacity: 0;
+}
+
+/* --- MEDIA QUERIES --- */
 @media (max-width: 992px) {
     header h1 {
-        font-size: 3rem;
+        font-size: clamp(2rem, 6vw, 3.5rem);
     }
-    header p {
-        font-size: 1.3rem;
-    }
+    
     main {
         padding: var(--spacing-xxl) var(--spacing-xl);
         max-width: 95vw;
+        margin: calc(var(--spacing-xxl) * -1) auto var(--spacing-xxl);
     }
-    .menu h2 {
-        font-size: 2.2rem;
-    }
-    .button {
-        font-size: 1.25rem;
-        padding: var(--spacing-md) var(--spacing-lg);
-    }
+    
     .timer {
-        font-size: 1.1rem;
-        padding: var(--spacing-xs) var(--spacing-sm);
-        top: var(--spacing-lg);
-        right: var(--spacing-lg);
-    }
-    p.math-display {
-        font-size: 1.4rem;
-        padding: var(--spacing-md) var(--spacing-lg);
-    }
-    .part-title {
-        font-size: 1.8rem;
-    }
-    .question-block {
-        padding: var(--spacing-lg);
-    }
-    .question-block p strong {
-        font-size: 1.15rem;
-    }
-    .options-container input[type="radio"] {
-        width: 20px;
-        height: 20px;
-    }
-    .options-container input[type="radio"]::before {
-        width: 12px;
-        height: 12px;
-    }
-    .results-container h2 {
-        font-size: 2.5rem;
-    }
-    .result-item {
-        padding: var(--spacing-lg) var(--spacing-xl);
-    }
-    .result-item p {
-        font-size: 1.05rem;
-    }
-    #correction-locked-message h2 {
-        font-size: 1.8rem;
+        font-size: 1.2rem;
+        padding: var(--spacing-sm) var(--spacing-md);
     }
 }
 
 @media (max-width: 768px) {
-    body {
-        font-size: 0.95rem;
-        line-height: 1.6;
-    }
     header {
-        padding: var(--spacing-xl) var(--spacing-sm);
-        min-height: 35vh;
+        padding: var(--spacing-xxl) var(--spacing-md);
+        min-height: 50vh;
     }
-    header h1 {
-        font-size: 2.5rem;
-        letter-spacing: -0.04em;
-    }
-    header p {
-        font-size: 1.1rem;
-    }
+    
     main {
-        padding: var(--spacing-lg) var(--spacing-sm);
-        margin: var(--spacing-lg) auto;
-        border-radius: var(--border-radius-md);
+        padding: var(--spacing-lg) var(--spacing-md);
+        margin: calc(var(--spacing-lg) * -1) auto var(--spacing-lg);
     }
-    .menu h2 {
-        font-size: 1.8rem;
-        margin-bottom: var(--spacing-md);
-    }
+    
     .button {
-        font-size: 1.1rem;
-        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 1.3rem;
+        padding: var(--spacing-md) var(--spacing-lg);
     }
-    .timer {
-        font-size: 0.95rem;
-        padding: var(--spacing-xs) var(--spacing-xs);
-        top: var(--spacing-md);
-        right: var(--spacing-md);
-        min-width: 60px;
-    }
-    p.math-display {
-        font-size: 1.25rem;
-        margin: var(--spacing-lg) 0;
-        padding: var(--spacing-sm);
-        border-left-width: 6px;
-    }
-    .part-title {
-        font-size: 1.5rem;
-        margin-top: var(--spacing-xxl);
-        padding-bottom: var(--spacing-xs);
-        border-bottom-width: 2px;
-    }
+    
     .question-block {
         padding: var(--spacing-lg);
-        margin-bottom: var(--spacing-lg);
     }
-    .question-block p strong {
-        font-size: 1.05rem;
-        margin-bottom: var(--spacing-sm);
-    }
-    .options-container label {
-        padding: var(--spacing-sm);
-        font-size: 0.95rem;
-    }
-    .results-container h2 {
-        font-size: 2rem;
-        margin-bottom: var(--spacing-xl);
-    }
-    .result-item {
-        padding: var(--spacing-lg);
-    }
-    .result-item p {
-        font-size: 1rem;
-        margin: 0.5rem 0;
-    }
-    #correction-locked-message h2 {
-        font-size: 1.6rem;
-    }
-    .correction-item {
-        padding: var(--spacing-sm) var(--spacing-md);
-        border-left-width: 6px;
+    
+    p.math-display {
+        font-size: 1.4rem;
+        padding: var(--spacing-md);
     }
 }
 
 @media (max-width: 480px) {
-    header h1 {
-        font-size: 2rem;
+    header {
+        min-height: 40vh;
     }
-    header p {
-        font-size: 1rem;
-        margin: var(--spacing-xs) auto;
+    
+    .menu h2 {
+        font-size: clamp(1.5rem, 5vw, 2rem);
     }
+    
     .button {
+        font-size: 1.15rem;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    .timer {
+        top: var(--spacing-md);
+        right: var(--spacing-md);
         font-size: 1rem;
         padding: var(--spacing-xs) var(--spacing-sm);
     }
-    .menu h2 {
-        font-size: 1.6rem;
-    }
-    .part-title {
-        font-size: 1.3rem;
-        text-align: center;
-        margin-bottom: var(--spacing-md);
-    }
-    .question-block p strong {
-        font-size: 1rem;
-        text-align: left;
-    }
-    .options-container label {
-        flex-wrap: wrap; /* Permet au texte de passer à la ligne pour ne pas déborder */
-    }
-    .options-container input[type="radio"] {
-        margin-right: var(--spacing-xs);
-        width: 18px;
-        height: 18px;
-    }
-    .options-container input[type="radio"]::before {
-        width: 10px;
-        height: 10px;
-    }
-    .results-container h2 {
-        font-size: 1.8rem;
-        margin-bottom: var(--spacing-lg);
-    }
 }
 
-@keyframes modernBlinkSolid {
-  0%, 100% {
-    text-shadow: 0 0 0 rgba(255, 0, 0, 0);
-    transform: scale(1);
-  }
-  50% {
-    text-shadow: 0 0 12px rgba(255, 0, 0, 0.8);
-    transform: scale(1.03);
-  }
-}
-
-.modern-blink-solid {
-  animation: modernBlinkSolid 1s ease-in-out infinite;
-  animation-delay: var(--animate-delay-val, 0s);
-  display: inline-block;
-  will-change: transform, text-shadow;
-  backface-visibility: hidden;
-}
-
-/* pause on hover (optionnel) */
-.modern-blink-solid:hover {
-  animation-play-state: paused;
-}
-
-/* Respecte les réglages utilisateurs */
+/* --- ANIMATIONS DE PERFORMANCE --- */
 @media (prefers-reduced-motion: reduce) {
-  .modern-blink-solid {
-    animation: none;
-  }
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
 
-.context-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f9fafc 100%);
-  border: 2px solid rgba(220, 0, 0, 0.15);
-  border-left: 6px solid var(--color-error, #e63946);
-  border-radius: 16px;
-  padding: 1.5rem 2rem;
-  margin: 1.5rem 0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* --- OPTIMISATIONS FINALES --- */
+* {
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* petit effet au survol */
-.context-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+::selection {
+    background: rgba(88, 101, 242, 0.2);
+    color: var(--color-text);
 }
 
-.context-title {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: var(--color-error, #e63946);
-  margin-bottom: 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+::-webkit-scrollbar {
+    width: 12px;
 }
 
-/* Animation fade-in subtile */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+::-webkit-scrollbar-track {
+    background: var(--color-background);
 }
 
-.fade-in {
-  animation: fadeIn 0.8s ease forwards;
-  animation-delay: var(--animate-delay-val, 0s);
-  opacity: 0;
+::-webkit-scrollbar-thumb {
+    background: var(--gradient-primary);
+    border-radius: 6px;
+    border: 2px solid var(--color-background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--gradient-secondary);
+}
+
+/* ============================================
+   STYLES SPÉCIFIQUES POUR SCORE_FINAL.HTML
+   À ajouter à la fin de static/css/style.css
+   ============================================ */
+
+/* --- PAGE SCORE FINAL --- */
+
+/* Conteneur principal des résultats */
+#final-score-summary {
+    background: linear-gradient(135deg, rgba(88, 101, 242, 0.05) 0%, rgba(142, 68, 242, 0.05) 100%);
+    border: 2px solid var(--color-border);
+    border-left: 8px solid var(--color-primary);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xxl);
+    margin-bottom: var(--spacing-xxl);
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-normal) var(--ease-out-expo);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInSlideUp 0.8s var(--ease-out-expo) forwards 0.2s;
+}
+
+#final-score-summary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-slow) var(--ease-out-expo);
+}
+
+#final-score-summary:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+#final-score-summary:hover::before {
+    transform: scaleX(1);
+}
+
+#final-score-summary h2 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 800;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+#final-score-summary h2::before {
+    content: '📊';
+    font-size: 2rem;
+    animation: iconBounce 2s ease-in-out infinite;
+}
+
+@keyframes iconBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+#final-score-summary p {
+    font-size: 1.15rem;
+    color: var(--color-text);
+    line-height: 1.7;
+}
+
+/* Conteneur des résultats détaillés */
+#detailed-final-results {
+    background: var(--color-card-bg);
+    border: 2px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xxl);
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-normal) var(--ease-out-expo);
+    position: relative;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInSlideUp 0.8s var(--ease-out-expo) forwards 0.4s;
+}
+
+#detailed-final-results::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: var(--gradient-primary);
+    border-radius: var(--border-radius-lg);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity var(--transition-normal) var(--ease-smooth);
+}
+
+#detailed-final-results:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
+}
+
+#detailed-final-results:hover::before {
+    opacity: 0.08;
+}
+
+#detailed-final-results h3 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    color: var(--color-secondary);
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 3px solid var(--color-border);
+    position: relative;
+}
+
+#detailed-final-results h3::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: var(--gradient-primary);
+    transition: width var(--transition-slow) var(--ease-out-expo);
+}
+
+#detailed-final-results:hover h3::after {
+    width: 100%;
+}
+
+/* Scores par partie */
+#qcm-final-score,
+#exercice-final-score {
+    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+    border-left: 6px solid var(--color-primary);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal) var(--ease-out-expo);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(-30px);
+    animation: slideInFromLeft 0.6s var(--ease-out-expo) forwards;
+}
+
+#qcm-final-score {
+    animation-delay: 0.6s;
+    border-left-color: hsl(145, 70%, 45%);
+}
+
+#exercice-final-score {
+    animation-delay: 0.8s;
+    border-left-color: hsl(210, 90%, 55%);
+}
+
+#qcm-final-score::before {
+    content: '✓';
+    position: absolute;
+    left: var(--spacing-md);
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: hsl(145, 70%, 45%);
+    font-weight: 900;
+    opacity: 0.3;
+}
+
+#exercice-final-score::before {
+    content: '✓';
+    position: absolute;
+    left: var(--spacing-md);
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: hsl(210, 90%, 55%);
+    font-weight: 900;
+    opacity: 0.3;
+}
+
+#qcm-final-score:hover,
+#exercice-final-score:hover {
+    transform: translateX(8px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Score global - Effet spectaculaire */
+.score-summary {
+    background: var(--gradient-primary);
+    color: white;
+    padding: var(--spacing-xxl);
+    border-radius: var(--border-radius-lg);
+    text-align: center;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 800;
+    box-shadow: var(--shadow-xl), var(--shadow-glow);
+    position: relative;
+    overflow: hidden;
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    opacity: 0;
+    transform: scale(0.9);
+    animation: scoreEntrance 1s var(--ease-elastic) forwards 1s;
+}
+
+@keyframes scoreEntrance {
+    0% {
+        opacity: 0;
+        transform: scale(0.9) rotateY(-10deg);
+    }
+    60% {
+        opacity: 1;
+        transform: scale(1.05) rotateY(5deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotateY(0);
+    }
+}
+
+.score-summary::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    animation: rotateGlow 8s linear infinite;
+}
+
+@keyframes rotateGlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.score-summary::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-shimmer);
+    animation: shimmerSlide 3s ease-in-out infinite;
+}
+
+@keyframes shimmerSlide {
+    0% { left: -100%; }
+    50%, 100% { left: 100%; }
+}
+
+/* Animation de pulsation pour le score */
+.score-summary {
+    animation: scoreEntrance 1s var(--ease-elastic) forwards 1s,
+               scorePulse 3s ease-in-out 2s infinite;
+}
+
+@keyframes scorePulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: var(--shadow-xl), var(--shadow-glow);
+    }
+    50% {
+        transform: scale(1.02);
+        box-shadow: var(--shadow-xl), var(--shadow-glow-hover);
+    }
+}
+
+/* Bouton Export PDF */
+#export-pdf-button {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInSlideUp 0.8s var(--ease-out-expo) forwards 1.2s;
+    position: relative;
+    z-index: 1;
+}
+
+#export-pdf-button::before {
+    content: '📄';
+    margin-right: var(--spacing-sm);
+    font-size: 1.3em;
+    display: inline-block;
+    transition: transform var(--transition-normal) var(--ease-elastic);
+}
+
+#export-pdf-button:hover:not(.button-disabled)::before {
+    transform: scale(1.2) rotate(5deg);
+}
+
+/* États du bouton PDF */
+#export-pdf-button:not(.button-disabled) {
+    background: linear-gradient(135deg, hsl(145, 70%, 45%) 0%, hsl(145, 70%, 55%) 100%);
+    box-shadow: var(--shadow-md), 0 0 20px rgba(72, 187, 120, 0.3);
+}
+
+#export-pdf-button:not(.button-disabled):hover {
+    box-shadow: var(--shadow-xl), 0 0 40px rgba(72, 187, 120, 0.5);
+}
+
+/* Animation d'attention pour le bouton quand il devient actif */
+@keyframes buttonActivate {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.05); }
+    50% { transform: scale(0.98); }
+    75% { transform: scale(1.02); }
+}
+
+#export-pdf-button.just-activated {
+    animation: buttonActivate 0.6s var(--ease-elastic) forwards;
+}
+
+/* Responsive - Score Final */
+@media (max-width: 768px) {
+    #final-score-summary,
+    #detailed-final-results {
+        padding: var(--spacing-xl);
+    }
+    
+    #final-score-summary h2 {
+        font-size: clamp(1.5rem, 5vw, 2rem);
+    }
+    
+    .score-summary {
+        font-size: clamp(1.3rem, 5vw, 1.8rem);
+        padding: var(--spacing-xl);
+    }
+    
+    #qcm-final-score,
+    #exercice-final-score {
+        font-size: 1.1rem;
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+}
+
+@media (max-width: 480px) {
+    #final-score-summary,
+    #detailed-final-results {
+        padding: var(--spacing-lg);
+    }
+    
+    .score-summary {
+        font-size: 1.2rem;
+        padding: var(--spacing-lg);
+    }
+    
+    #export-pdf-button {
+        font-size: 1rem;
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+}
+
+/* Animation d'entrée globale pour la page */
+@keyframes pageEntrance {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ajout de micro-interactions */
+#detailed-final-results > div:not(.score-summary) {
+    cursor: default;
+}
+
+#detailed-final-results > div:not(.score-summary):active {
+    transform: scale(0.98);
+}
+
+/* État de chargement */
+.loading-state {
+    position: relative;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading-state::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border: 4px solid rgba(88, 101, 242, 0.3);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }

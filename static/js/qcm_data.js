@@ -4,7 +4,7 @@
 const qcmQuestions = [
     {
         id: "qcm_q1",
-        text: "1. Soit la fonction $f(t) = 5e^{-2t} + 3$ modélisant la décroissance d'un paramètre. Lorsque $t$ tend vers l'infini, la valeur stable de ce paramètre est :",
+        text: "1. Soit la fonction $f(t) = 5e^{-2t} + 3$ modélisant la décroissance d'un paramètre. Lorsque $t$ tend vers l'infini, la valeur stable (limite) de ce paramètre est :",
         options: [
             { id: "option_A", text: "$0$" },
             { id: "option_B", text: "$3$" },
@@ -73,14 +73,17 @@ const qcmQuestions = [
         ]
     },
     {
-        "id": "qcm_q8",
-        "text": "8. La fonction $f(t) = 5t^2 + 2t$ représente le débit de transfert (en Go/s) d’un serveur en fonction du temps $t$ (en secondes). Quelle est la quantité totale de données transférées entre $t = 0$ et $t = 3$ s ?\n\n Indice : Pour trouver la quantité totale de données, vous devez calculer l'intégrale du débit sur l'intervalle de temps donné.",
-        "options": [
-            { "id": "option_A", "text": "50 Go" },
-            { "id": "option_B", "text": "54 Go" },
-            { "id": "option_C", "text": "60 Go" },
-            { "id": "option_D", "text": "48 Go" }
-        ]
+
+            "id": "qcm_q8",
+            "text": "8. La fonction $f(t) = 5t^2 + 2t$ représente le débit de transfert (en Go/s) d’un serveur en fonction du temps $t$ (en secondes). Quelle est la quantité totale de données transférées entre $t = 0$ et $t = 3$ s ?\n\nIndice :\nPour trouver la quantité totale de données, vous devez calculer l'intégrale du débit sur l'intervalle de temps donné.",
+            "options": [
+                { "id": "option_A", "text": "50 Go" },
+                { "id": "option_B", "text": "54 Go" },
+                { "id": "option_C", "text": "60 Go" },
+                { "id": "option_D", "text": "48 Go" }
+            ]
+        
+
     },
     {
         id: "qcm_q9",
@@ -156,10 +159,11 @@ const qcmQuestions = [
         id: "qcm_q16",
         text: "16. La solution générale de l'équation différentielle $y' = 2y$ (modélisant une croissance exponentielle de données) est de la forme :",
         options: [
-            { id: "option_A", text: "$y = Ce^x$" },
-            { id: "option_B", text: "$y = Ce^{2x}$" },
-            { id: "option_C", text: "$y = 2Ce^x$" },
-            { id: "option_D", text: "$y = C/e^{2x}$" }
+            { id: "option_A", text: "$y = \\lambda e^x$" },
+            { id: "option_B", text: "$y = \\lambda e^{2x}$" },
+            { id: "option_C", text: "$y = 2\\lambda e^x$" },
+            { id: "option_D", text: "$y = \\lambda / e^{2x}$" }
+
         ]
     },
     {

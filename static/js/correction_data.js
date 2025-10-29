@@ -186,13 +186,15 @@ const qcmCorrections = [
         id: "qcm_q16",
         question: "16. La solution générale de l'équation différentielle $y' = 2y$ (modélisant une croissance exponentielle de données) est de la forme :",
         correctAnswerId: "option_B",
-        explanation: "Les solutions des équations différentielles de la forme $y' = ay$ sont $y = Ce^{ax}$, où $C$ est une constante arbitraire. Ici $a=2$, donc $y = Ce^{2x}$.",
+        explanation: "Les solutions des équations différentielles de la forme $y' = ay$ sont $y = \\lambda e^{ax}$, où $\\lambda$ est une constante arbitraire. Ici $a=2$, donc $y = \\lambda e^{2x}$.",
         options: [
-            { id: "option_A", text: "$y = Ce^x$" },
-            { id: "option_B", text: "$y = Ce^{2x}$" },
-            { id: "option_C", text: "$y = 2Ce^x$" },
-            { id: "option_D", text: "$y = C/e^{2x}$" }
+            { id: "option_A", text: "$y = \\lambda e^x$" },
+            { id: "option_B", text: "$y = \\lambda e^{2x}$" },
+            { id: "option_C", text: "$y = 2\\lambda e^x$" },
+            { id: "option_D", text: "$y = \\lambda / e^{2x}$" }
         ]
+
+        
     },
     {
         "id": "qcm_q17",
@@ -375,7 +377,7 @@ const exerciceCorrectionsPartB = [
         options: [
             { id: "option_A", text: "$S(t) = 20 + \\frac{30}{1 + 0.1 t}$" },
             { id: "option_B", text: "$S(t) = 20 + 30 t$" },
-            { id: "option_C", text: "$S(t) = 50 - 30 e^{-0.1 t}$" },
+            { id: "option_C", text: "$S(t) = 20 + 30(1-e^{-0.1 t}$)" },
             { id: "option_D", text: "$S(t) = 20 + 30 \\sin(t)$" }
         ]
     },

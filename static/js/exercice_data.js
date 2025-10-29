@@ -111,7 +111,7 @@ const exerciceQuestionsPartB = [
         options: [
             { id: "option_A", text: "$S(t) = 50 - \\frac{30}{1 + 0.1t}$" },
             { id: "option_B", text: "$S(t) = 20 + 30t$" },
-            { id: "option_C", text: "$S(t) = 50 - 30e^{-0.1t}$" },
+            { id: "option_C", text: "$S(t) = 20 + 30(1-e^{-0.1 t}$)" },
             { id: "option_D", text: "$S(t) = 20 + 30\\sin(t)$" }
         ]
     },
