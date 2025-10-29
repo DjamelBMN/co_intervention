@@ -1,4 +1,4 @@
-mon_application_exercices (CIEL2025ADMIN)/
+mon_application_exercices/
 ├── index.html
 ├── qcm.html                # Exercice 1
 ├── exercice.html           # Exercice 2

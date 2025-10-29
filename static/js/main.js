@@ -1,11 +1,16 @@
 // Fichier : static/js/main.js
-const EXAM_DURATION_MINUTES = 50; // Durée de l'épreuve en minutes
+const EXAM_DURATION_MINUTES = 50;
 
 // ============================================
-// SYSTÈME DE SÉCURITÉ ANTI-RETOUR EN ARRIÈRE
+// SYSTÈME DE SÉCURITÉ ANTI-RETOUR
+
+// // 🔒 Code protégé — ingénierie inverse interdite.
+// Toute tentative de décryptage sera vaine… mais merci pour l’effort 😉
+
+                // D. BENMAKHLOUF
+
 // ============================================
 
-// Génère un ID unique pour chaque session d'examen (impossible à régénérer)
 function generateExamSessionId() {
     const timestamp = Date.now();
     const random = Math.random().toString(36).substring(2, 15);
@@ -13,25 +18,18 @@ function generateExamSessionId() {
     return btoa(`${timestamp}-${random}-${userAgent}`).substring(0, 32);
 }
 
-// Stockage triple redondant (localStorage + sessionStorage + cookie permanent)
 function setSecureStorage(key, value) {
     const data = JSON.stringify(value);
-    
-    // 1. localStorage
     try {
         localStorage.setItem(key, data);
     } catch (e) {
         console.error("Erreur localStorage:", e);
     }
-    
-    // 2. sessionStorage (survit aux actualisations mais pas à la fermeture d'onglet)
     try {
         sessionStorage.setItem(key, data);
     } catch (e) {
         console.error("Erreur sessionStorage:", e);
     }
-    
-    // 3. Cookie permanent (365 jours, survit même après suppression du cache)
     try {
         const expiryDate = new Date();
         expiryDate.setDate(expiryDate.getDate() + 365);
@@ -41,23 +39,16 @@ function setSecureStorage(key, value) {
     }
 }
 
-// Récupération depuis n'importe quelle source de stockage
 function getSecureStorage(key) {
     let value = null;
-    
-    // Essayer localStorage
     try {
         value = localStorage.getItem(key);
         if (value) return JSON.parse(value);
     } catch (e) {}
-    
-    // Essayer sessionStorage
     try {
         value = sessionStorage.getItem(key);
         if (value) return JSON.parse(value);
     } catch (e) {}
-    
-    // Essayer cookie
     try {
         const cookies = document.cookie.split(';');
         for (let cookie of cookies) {
@@ -67,17 +58,14 @@ function getSecureStorage(key) {
             }
         }
     } catch (e) {}
-    
     return null;
 }
 
-// Vérification de l'état de l'examen avec détection de tentative de fraude
 function checkExamLockStatus() {
     const examSessionId = getSecureStorage('examSessionId');
     const examStartTime = getSecureStorage('examStartTime');
     const examActive = getSecureStorage('examActive');
     
-    // Si un ID de session existe, l'examen a été démarré (IMPOSSIBLE À CONTOURNER)
     if (examSessionId) {
         console.warn("🔒 Session d'examen détectée. Retour en arrière bloqué.");
         return {
@@ -87,69 +75,63 @@ function checkExamLockStatus() {
             active: examActive
         };
     }
-    
     return { locked: false };
 }
 
-// Initialise le verrouillage permanent de l'examen
 function initializeExamLock() {
     const lockStatus = checkExamLockStatus();
-    
     if (!lockStatus.locked) {
-        // Première fois : créer l'ID de session unique
         const sessionId = generateExamSessionId();
         setSecureStorage('examSessionId', sessionId);
-        console.log("🔐 Session d'examen initialisée et verrouillée:", sessionId);
+        console.log("🔐 Session d'examen initialisée:", sessionId);
     }
-    
-    // Désactiver le bouton "Précédent" du navigateur
     disableBrowserBack();
 }
 
-// Désactive complètement le bouton retour du navigateur
+// Variable globale pour contrôler beforeunload
+let allowNavigation = false;
+
 function disableBrowserBack() {
-    // Méthode 1 : History manipulation
     history.pushState(null, null, location.href);
     window.onpopstate = function () {
         history.go(1);
-        alert("⚠️ Le retour en arrière est désactivé pendant l'examen. Toute tentative sera signalée.");
+        alert("⚠️ Le retour en arrière est désactivé pendant l'examen.");
     };
     
-    // Méthode 2 : Beforeunload warning
-    window.addEventListener('beforeunload', function (e) {
-        if (getSecureStorage('examActive')) {
-            e.preventDefault();
-            e.returnValue = 'L\'examen est en cours. Êtes-vous sûr de vouloir quitter ?';
-            return e.returnValue;
-        }
-    });
+    // CORRECTION: Ne bloquer beforeunload QUE si on est sur une page d'exercice ET qu'on n'a pas autorisé la navigation
+    const isExercisePage = document.getElementById('qcm-form') || document.getElementById('exercice-form');
     
-    // Méthode 3 : Empêcher les raccourcis clavier de navigation
+    if (isExercisePage) {
+        window.addEventListener('beforeunload', function (e) {
+            // Ne bloquer QUE si l'examen est actif ET qu'on n'a pas autorisé la navigation
+            if (getSecureStorage('examActive') && !allowNavigation) {
+                e.preventDefault();
+                e.returnValue = 'L\'examen est en cours. Êtes-vous sûr de vouloir quitter ?';
+                return e.returnValue;
+            }
+        });
+    }
+    
     document.addEventListener('keydown', function(e) {
-        // Alt+Flèche gauche (retour)
         if (e.altKey && e.key === 'ArrowLeft') {
             e.preventDefault();
-            alert("⚠️ Raccourci de navigation désactivé pendant l'examen.");
+            alert("⚠️ Raccourci de navigation désactivé.");
         }
-        // Backspace sur autre chose qu'un input
         if (e.key === 'Backspace' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) {
             e.preventDefault();
         }
     });
 }
 
-// Redirection forcée selon l'état de l'examen (appelé sur TOUTES les pages)
 function enforceExamFlow() {
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     const lockStatus = checkExamLockStatus();
     
-    // Si l'examen est verrouillé (démarré)
     if (lockStatus.locked) {
         const qcmCompleted = getSecureStorage('qcmScore')?.completed;
         const exerciceCompleted = getSecureStorage('exerciceScore')?.completed;
         const examActive = getSecureStorage('examActive');
         
-        // Calculer où l'étudiant devrait être
         let correctPage;
         if (!qcmCompleted && examActive) {
             correctPage = 'qcm.html';
@@ -158,17 +140,15 @@ function enforceExamFlow() {
         } else if (qcmCompleted && exerciceCompleted) {
             correctPage = 'final_results.html';
         } else {
-            correctPage = 'final_results.html'; // Par défaut si état incohérent
+            correctPage = 'final_results.html';
         }
         
-        // Si l'étudiant essaie d'accéder à index.html après avoir démarré
         if (currentPage === 'index.html') {
             alert("⛔ L'examen a déjà été démarré. Vous ne pouvez pas revenir à la page d'accueil.");
             window.location.replace(correctPage);
             return;
         }
         
-        // Si l'étudiant essaie d'accéder à une page qu'il a déjà complétée
         if (currentPage === 'qcm.html' && qcmCompleted) {
             alert("⛔ Vous avez déjà complété cette partie. Redirection...");
             window.location.replace(correctPage);
@@ -176,7 +156,7 @@ function enforceExamFlow() {
         }
         
         if (currentPage === 'exercice.html' && !qcmCompleted) {
-            alert("⛔ Vous devez d'abord compléter la partie 1.");
+            alert("⛔ Vous devez d'abord compléter la Partie 1.");
             window.location.replace('qcm.html');
             return;
         }
@@ -184,45 +164,41 @@ function enforceExamFlow() {
 }
 
 // ============================================
-// FONCTIONS UTILITAIRES MODIFIÉES
+// FONCTIONS UTILITAIRES
 // ============================================
 
 function setLocalStorageItem(key, value) {
-    setSecureStorage(key, value); // Utilise le stockage sécurisé triple
+    setSecureStorage(key, value);
 }
 
 function getLocalStorageItem(key) {
-    return getSecureStorage(key); // Utilise la récupération sécurisée
+    return getSecureStorage(key);
 }
 
-// --- Décodage des réponses ---
-function decodeAnswers(encodedString) {
-    try {
-        const decoded = atob(encodedString);
-        return JSON.parse(decoded);
-    } catch (e) {
-        console.error("Erreur lors du décodage ou du parsing des réponses :", e);
-        return null;
-    }
-}
+// CORRECTION: Vérifier si decodeAnswers existe déjà (chargé par answers_encoded.js)
+const answers = typeof decodeAnswers !== 'undefined' && typeof encodedAnswers !== 'undefined' 
+    ? decodeAnswers(encodedAnswers) 
+    : null;
 
-const answers = typeof encodedAnswers !== 'undefined' ? decodeAnswers(encodedAnswers) : null;
 if (!answers) {
-    console.warn("Impossible de charger les réponses. Le quiz ne peut pas être corrigé automatiquement.");
+    console.error("❌ ERREUR CRITIQUE: Impossible de charger les réponses!");
+    console.error("Vérifiez que answers_encoded.js est chargé AVANT main.js");
+} else {
+    console.log("✅ Réponses chargées avec succès:", answers);
 }
 
-// --- Fonctions de Timer ---
+// ============================================
+// TIMER
+// ============================================
+
 let timerInterval;
 
-// NOUVEAU : Demander nom et prénom avant de démarrer
 function showStudentNameModal() {
-    // Vérifier si le nom est déjà enregistré
     const existingName = getSecureStorage('studentName');
     if (existingName) {
-        return true; // Nom déjà saisi
+        return true;
     }
 
-    // Créer le modal
     const modal = document.createElement('div');
     modal.id = 'student-name-modal';
     modal.style.cssText = `
@@ -348,7 +324,6 @@ function showStudentNameModal() {
     modal.appendChild(modalContent);
     document.body.appendChild(modal);
 
-    // Ajouter les animations CSS
     const style = document.createElement('style');
     style.textContent = `
         @keyframes fadeIn {
@@ -365,15 +340,17 @@ function showStudentNameModal() {
                 opacity: 1; 
             }
         }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
     `;
     document.head.appendChild(style);
 
-    // Focus sur le premier champ
     setTimeout(() => {
         document.getElementById('student-lastname').focus();
     }, 100);
 
-    // Gérer la validation
     return new Promise((resolve) => {
         document.getElementById('validate-student-name').onclick = () => {
             const lastname = document.getElementById('student-lastname').value.trim().toUpperCase();
@@ -385,10 +362,8 @@ function showStudentNameModal() {
                 return;
             }
 
-            // Capitaliser le prénom
             const formattedFirstname = firstname.charAt(0).toUpperCase() + firstname.slice(1).toLowerCase();
 
-            // Sauvegarder les informations
             const studentInfo = {
                 lastname: lastname,
                 firstname: formattedFirstname,
@@ -398,7 +373,6 @@ function showStudentNameModal() {
 
             setSecureStorage('studentName', studentInfo);
 
-            // Fermer le modal avec animation
             modal.style.animation = 'fadeOut 0.3s ease';
             setTimeout(() => {
                 document.body.removeChild(modal);
@@ -406,7 +380,6 @@ function showStudentNameModal() {
             }, 300);
         };
 
-        // Permettre validation avec Entrée
         ['student-lastname', 'student-firstname'].forEach(id => {
             document.getElementById(id).addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
@@ -415,48 +388,32 @@ function showStudentNameModal() {
             });
         });
     });
-
-    const fadeOutStyle = document.createElement('style');
-    fadeOutStyle.textContent = `
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-    `;
-    document.head.appendChild(fadeOutStyle);
 }
 
 async function startTimer() {
-    // ÉTAPE 1 : Demander le nom/prénom
     const nameProvided = await showStudentNameModal();
     
     if (!nameProvided) {
-        alert("⚠️ Vous devez renseigner votre nom et prénom pour commencer l'évaluation.");
+        alert("⚠️ Vous devez renseigner votre nom et prénom.");
         return;
     }
 
     const studentInfo = getSecureStorage('studentName');
     console.log("🎓 Étudiant identifié :", studentInfo.fullName);
 
-    // ÉTAPE 2 : Démarrer l'examen
     const startTime = Date.now();
-    
-    // Initialiser le verrouillage AVANT tout
     initializeExamLock();
     
     setLocalStorageItem('examStartTime', startTime);
     setLocalStorageItem('examActive', true);
-    // Initialiser les réponses stockées pour chaque partie vide au démarrage de l'examen
     setLocalStorageItem('qcmUserAnswers', {});
     setLocalStorageItem('exerciceUserAnswers', {});
-    // Marquer les parties comme non complétées au début
     setLocalStorageItem('qcmScore', {completed: false});
     setLocalStorageItem('exerciceScore', {completed: false});
     setLocalStorageItem('examCompletedGlobally', false);
 
-    console.log("🚀 Examen démarré et verrouillé définitivement pour", studentInfo.fullName);
+    console.log("🚀 Examen démarré pour", studentInfo.fullName);
     
-    // Utiliser replace au lieu de href pour empêcher le retour
     window.location.replace('qcm.html');
 }
 
@@ -489,11 +446,11 @@ function updateTimerDisplay() {
         const exerciceData = getLocalStorageItem('exerciceScore');
 
         if (!qcmData?.completed && document.getElementById('qcm-form')) {
-            console.log("Soumission automatique de l'Exercice 1 (QCM).");
+            console.log("Soumission automatique QCM");
             handleSubmit(new Event('submit'), qcmQuestions, 'qcm', 'qcm-results', true);
         }
         if (!exerciceData?.completed && document.getElementById('exercice-form')) {
-            console.log("Soumission automatique de l'Exercice 2.");
+            console.log("Soumission automatique Exercice 2");
             const allExerciceQuestions = [...exerciceQuestionsPartA, ...exerciceQuestionsPartB];
             handleSubmit(new Event('submit'), allExerciceQuestions, 'exercice', 'exercice-results', true);
         }
@@ -501,7 +458,7 @@ function updateTimerDisplay() {
         setLocalStorageItem('examActive', false);
 
         setTimeout(() => {
-            window.location.replace('final_results.html'); // replace au lieu de href
+            window.location.replace('final_results.html');
         }, 3000);
     }
 }
@@ -511,7 +468,6 @@ function initializeTimer() {
     const timerDisplay = document.getElementById('timer-display');
     const studentInfo = getSecureStorage('studentName');
 
-    // Afficher le nom de l'étudiant dans le header si disponible
     if (studentInfo && timerDisplay) {
         const studentNameDisplay = document.createElement('div');
         studentNameDisplay.style.cssText = `
@@ -542,7 +498,9 @@ function initializeTimer() {
     }
 }
 
-// --- Fonctions de chargement et soumission des questions ---
+// ============================================
+// CHARGEMENT ET SOUMISSION DES QUESTIONS
+// ============================================
 
 function disableQuestion(questionId, parentContainer) {
     const inputs = parentContainer.querySelectorAll(`input[name="${questionId}"]`);
@@ -554,11 +512,11 @@ function disableQuestion(questionId, parentContainer) {
 function loadQuestions(containerId, questionsArray, answersCategory) {
     const container = document.getElementById(containerId);
     if (!container) {
-        console.error(`Erreur: Le conteneur HTML avec l'ID "${containerId}" est introuvable.`);
+        console.error(`Conteneur "${containerId}" introuvable.`);
         return;
     }
     if (!questionsArray || questionsArray.length === 0) {
-        console.warn(`Avertissement: Le tableau de questions pour le conteneur "${containerId}" est vide ou non défini.`);
+        console.warn(`Questions vides pour "${containerId}".`);
         return;
     }
 
@@ -598,28 +556,46 @@ function loadQuestions(containerId, questionsArray, answersCategory) {
         }
     });
 
-    MathJax.Hub.Queue(["Typeset", MathJax.Hub, container]);
+    if (typeof MathJax !== 'undefined' && MathJax.Hub) {
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, container]);
+    }
 }
 
 function handleSubmit(event, questionsArray, answersCategory, resultsDivId, autoSubmit = false) {
     event.preventDefault();
 
+    console.log("🔄 handleSubmit appelé pour:", answersCategory);
+    console.log("📊 Réponses disponibles:", answers);
+
+    if (!answers) {
+        alert("❌ ERREUR: Les réponses ne sont pas chargées. Vérifiez que answers_encoded.js est bien inclus.");
+        console.error("answers est null ou undefined");
+        return;
+    }
+
     if (!autoSubmit) {
-        const confirmSubmission = confirm("Êtes-vous sûr(e) de vouloir soumettre ? Une fois soumis, vous ne pourrez plus modifier vos réponses pour cette partie.");
+        const confirmSubmission = confirm("Êtes-vous sûr(e) de vouloir soumettre ?");
         if (!confirmSubmission) {
             return;
         }
     }
 
     if (!autoSubmit && getRemainingTime() <= 0) {
-        alert("Le temps est écoulé ! Vos réponses ont été soumises automatiquement.");
+        alert("Le temps est écoulé !");
         window.location.replace('final_results.html');
         return;
     }
 
     let score = 0;
     const resultsDiv = document.getElementById(resultsDivId);
+    
+    if (!resultsDiv) {
+        console.error(`❌ Div de résultats "${resultsDivId}" introuvable!`);
+        return;
+    }
+    
     resultsDiv.innerHTML = '<h2>Vos Résultats :</h2>';
+    resultsDiv.style.display = 'block'; // CORRECTION: Forcer l'affichage
 
     const detailedResults = [];
     let userAnswersForStorage = getLocalStorageItem(`${answersCategory}UserAnswers`) || {};
@@ -638,7 +614,6 @@ function handleSubmit(event, questionsArray, answersCategory, resultsDivId, auto
 
         const resultItem = document.createElement('div');
         resultItem.classList.add('result-item');
-        let status = '';
         
         const inputsForQuestionDiv = document.querySelector(`.question-block:has(input[name="${question.id}"])`);
         let userAnswerText = 'Aucune réponse';
@@ -650,12 +625,13 @@ function handleSubmit(event, questionsArray, answersCategory, resultsDivId, auto
         const correctOptionText = question.options.find(opt => opt.id === correctAnswerId)?.text || 'N/A';
 
         let isCorrect = false;
+        let status = '';
         if (userAnswerId === correctAnswerId) {
             score++;
-            status = `<span class="correct">Correct !</span> Votre réponse: ${userAnswerText}.`;
+            status = `<span class="correct">✓ Correct !</span> Votre réponse: ${userAnswerText}.`;
             isCorrect = true;
         } else {
-            status = `<span class="incorrect">Incorrect.</span> Votre réponse: ${userAnswerText}. La bonne réponse était : ${correctOptionText}.`;
+            status = `<span class="incorrect">✗ Incorrect.</span> Votre réponse: ${userAnswerText}. La bonne réponse: ${correctOptionText}.`;
         }
 
         detailedResults.push({
@@ -676,7 +652,7 @@ function handleSubmit(event, questionsArray, answersCategory, resultsDivId, auto
     const totalQuestions = questionsArray.length;
     const totalScoreDiv = document.createElement('div');
     totalScoreDiv.classList.add('score-summary');
-    totalScoreDiv.innerHTML = `<p><strong>Score pour cette partie : ${score} / ${totalQuestions}</strong></p>`;
+    totalScoreDiv.innerHTML = `<p><strong>Score: ${score} / ${totalQuestions}</strong></p>`;
     resultsDiv.prepend(totalScoreDiv);
 
     setLocalStorageItem(`${answersCategory}UserAnswers`, userAnswersForStorage);
@@ -688,15 +664,201 @@ function handleSubmit(event, questionsArray, answersCategory, resultsDivId, auto
         completed: true
     });
 
+    console.log("✅ Score sauvegardé:", answersCategory, score);
+
     const submitButton = document.getElementById(`submit-${answersCategory}-button`);
     if (submitButton) {
         submitButton.style.display = 'none';
     }
 
-    MathJax.Hub.Queue(["Typeset", MathJax.Hub, resultsDiv]);
+    // NOUVEAU : Afficher les boutons de navigation appropriés
+    if (answersCategory === 'qcm') {
+        createNextExerciseButton();
+    } else if (answersCategory === 'exercice') {
+        createFinalResultsButton();
+    }
+
+    if (typeof MathJax !== 'undefined' && MathJax.Hub) {
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, resultsDiv]);
+    }
+    
+    // CORRECTION: Scroll automatique vers les résultats
+    resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// --- Fonctions d'affichage des scores finaux et PDF ---
+// ============================================
+// BOUTON NAVIGATION VERS EXERCICE 2
+// ============================================
+
+function createNextExerciseButton() {
+    // Vérifier si le bouton existe déjà
+    if (document.getElementById('next-exercise-button')) {
+        return;
+    }
+
+    // Trouver le lien "Retour au menu principal" et le cacher
+    const backLinks = document.querySelectorAll('.back-link');
+    backLinks.forEach(link => {
+        link.style.display = 'none';
+    });
+
+    // Créer le nouveau bouton
+    const buttonContainer = document.createElement('div');
+    buttonContainer.id = 'next-exercise-container';
+    buttonContainer.style.cssText = `
+        text-align: center;
+        margin: 40px auto;
+        padding: 30px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        max-width: 600px;
+    `;
+
+    buttonContainer.innerHTML = `
+        <div style="color: white; margin-bottom: 20px;">
+            <h3 style="margin: 0 0 10px 0; font-size: 24px; font-weight: 800;">
+                ✅ Exercice 1 terminé !
+            </h3>
+            <p style="margin: 0; font-size: 16px; opacity: 0.9;">
+                Votre score a été enregistré. Passez maintenant à l'Exercice 2.
+            </p>
+        </div>
+        <button 
+            id="next-exercise-button"
+            style="
+                padding: 18px 40px;
+                background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+                color: white;
+                border: none;
+                border-radius: 12px;
+                font-size: 18px;
+                font-weight: bold;
+                cursor: pointer;
+                box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+                font-family: 'Inter', sans-serif;
+            "
+            onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(46, 204, 113, 0.6)';"
+            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(46, 204, 113, 0.4)';"
+        >
+            ➡️ Passer à l'Exercice 2
+        </button>
+    `;
+
+    // Insérer après les résultats
+    const resultsDiv = document.getElementById('qcm-results');
+    if (resultsDiv && resultsDiv.parentNode) {
+        resultsDiv.parentNode.insertBefore(buttonContainer, resultsDiv.nextSibling);
+    }
+
+    // Ajouter l'événement de clic
+    const nextButton = document.getElementById('next-exercise-button');
+    if (nextButton) {
+        nextButton.addEventListener('click', () => {
+            // IMPORTANT: Autoriser la navigation pour éviter le popup
+            allowNavigation = true;
+            
+            // Animation de transition
+            nextButton.innerHTML = '⏳ Chargement...';
+            nextButton.disabled = true;
+            nextButton.style.background = 'linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%)';
+            
+            setTimeout(() => {
+                window.location.replace('exercice.html');
+            }, 500);
+        });
+    }
+}
+
+// ============================================
+// BOUTON NAVIGATION VERS RÉSULTATS FINAUX
+// ============================================
+
+function createFinalResultsButton() {
+    // Vérifier si le bouton existe déjà
+    if (document.getElementById('final-results-button')) {
+        return;
+    }
+
+    // Trouver et cacher le lien "Retour au menu principal"
+    const backLinks = document.querySelectorAll('.back-link');
+    backLinks.forEach(link => {
+        link.style.display = 'none';
+    });
+
+    // Créer le bouton
+    const buttonContainer = document.createElement('div');
+    buttonContainer.id = 'final-results-container';
+    buttonContainer.style.cssText = `
+        text-align: center;
+        margin: 40px auto;
+        padding: 30px;
+        background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(46, 204, 113, 0.3);
+        max-width: 600px;
+    `;
+
+    buttonContainer.innerHTML = `
+        <div style="color: white; margin-bottom: 20px;">
+            <h3 style="margin: 0 0 10px 0; font-size: 24px; font-weight: 800;">
+                🎉 Exercice 2 terminé !
+            </h3>
+            <p style="margin: 0; font-size: 16px; opacity: 0.9;">
+                Félicitations ! Vous avez terminé l'évaluation complète.
+            </p>
+        </div>
+        <button 
+            id="final-results-button"
+            style="
+                padding: 18px 40px;
+                background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+                color: white;
+                border: none;
+                border-radius: 12px;
+                font-size: 18px;
+                font-weight: bold;
+                cursor: pointer;
+                box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+                font-family: 'Inter', sans-serif;
+            "
+            onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(243, 156, 18, 0.6)';"
+            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(243, 156, 18, 0.4)';"
+        >
+            📊 Accéder à votre score final
+        </button>
+    `;
+
+    // Insérer après les résultats
+    const resultsDiv = document.getElementById('exercice-results');
+    if (resultsDiv && resultsDiv.parentNode) {
+        resultsDiv.parentNode.insertBefore(buttonContainer, resultsDiv.nextSibling);
+    }
+
+    // Ajouter l'événement de clic
+    const finalButton = document.getElementById('final-results-button');
+    if (finalButton) {
+        finalButton.addEventListener('click', () => {
+            // IMPORTANT: Autoriser la navigation
+            allowNavigation = true;
+            
+            // Animation
+            finalButton.innerHTML = '⏳ Calcul du score...';
+            finalButton.disabled = true;
+            finalButton.style.background = 'linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%)';
+            
+            setTimeout(() => {
+                window.location.replace('final_results.html');
+            }, 800);
+        });
+    }
+}
+
+// ============================================
+// AFFICHAGE RÉSULTATS FINAUX
+// ============================================
 
 function displayFinalResults() {
     const finalScoreSummaryDiv = document.getElementById('final-score-summary');
@@ -705,7 +867,6 @@ function displayFinalResults() {
     const overallScoreDisplay = document.getElementById('overall-score-display');
     const exportPdfButton = document.getElementById('export-pdf-button');
 
-    // Récupérer et afficher le nom de l'étudiant
     const studentInfo = getSecureStorage('studentName');
     if (studentInfo && finalScoreSummaryDiv) {
         const studentNameHeader = document.createElement('div');
@@ -741,19 +902,19 @@ function displayFinalResults() {
     if (qcmScoreData && qcmScoreData.completed) {
         totalCorrect += qcmScoreData.rawScore;
         totalPossible += totalQCMQuestions;
-        qcmFinalScoreDiv.innerHTML = `<p><strong>Partie 1 (Exercice d'Optimisation - Maths - Info) :</strong> ${qcmScoreData.rawScore} / ${totalQCMQuestions} correctes.</p>`;
+        qcmFinalScoreDiv.innerHTML = `<p><strong>Partie 1:</strong> ${qcmScoreData.rawScore} / ${totalQCMQuestions}</p>`;
     } else {
         totalPossible += totalQCMQuestions;
-        qcmFinalScoreDiv.innerHTML = `<p><strong>Partie 1 (Exercice d'Optimisation - Maths - Info) :</strong> Non complétée ou non soumise.</p>`;
+        qcmFinalScoreDiv.innerHTML = `<p><strong>Partie 1:</strong> Non complétée</p>`;
     }
 
     if (exerciceScoreData && exerciceScoreData.completed) {
         totalCorrect += exerciceScoreData.rawScore;
         totalPossible += totalExerciceQuestionsCombined;
-        exerciceFinalScoreDiv.innerHTML = `<p><strong>Partie 2 (Température d'un composant informatique) :</strong> ${exerciceScoreData.rawScore} / ${totalExerciceQuestionsCombined} correctes.</p>`;
+        exerciceFinalScoreDiv.innerHTML = `<p><strong>Partie 2:</strong> ${exerciceScoreData.rawScore} / ${totalExerciceQuestionsCombined}</p>`;
     } else {
         totalPossible += totalExerciceQuestionsCombined;
-        exerciceFinalScoreDiv.innerHTML = `<p><strong>Partie 2 (Température d'un composant informatique) :</strong> Non complétée ou non soumise.</p>`;
+        exerciceFinalScoreDiv.innerHTML = `<p><strong>Partie 2:</strong> Non complétée</p>`;
     }
 
     const allPartsCompleted = (qcmScoreData?.completed && exerciceScoreData?.completed);
@@ -761,25 +922,28 @@ function displayFinalResults() {
 
     if (allPartsCompleted) {
         const finalScoreOutOf20 = (totalCorrect / totalPossible) * 20;
-        overallScoreDisplay.innerHTML = `<p><strong>Total des bonnes réponses : ${totalCorrect} / ${totalPossible}</strong></p>
-                                        <p class="score-summary">Votre note finale sur 20 est : <strong>${finalScoreOutOf20.toFixed(2)} / 20</strong></p>`;
+        overallScoreDisplay.innerHTML = `<p><strong>Total: ${totalCorrect} / ${totalPossible}</strong></p>
+                                        <p class="score-summary">Note finale: <strong>${finalScoreOutOf20.toFixed(2)} / 20</strong></p>`;
         exportPdfButton.classList.remove('button-disabled');
     } else {
         overallScoreDisplay.innerHTML = `
-            <p><strong>Total des bonnes réponses : ${totalCorrect} / ${totalPossible}</strong></p>
-            <p>Complétez les deux exercices pour obtenir votre note finale sur 20.</p>`;
+            <p><strong>Total: ${totalCorrect} / ${totalPossible}</strong></p>
+            <p>Complétez les deux exercices pour obtenir votre note finale.</p>`;
         exportPdfButton.classList.add('button-disabled');
     }
 }
 
-// --- Fonctions PDF (inchangées) ---
+// ============================================
+// EXPORT PDF
+// ============================================
+
 function generatePdfContent() {
     let contentHtml = `
         <div style="font-family: 'Arial', sans-serif; color: #000; line-height: 1.5;">
             <div style="text-align: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 3px solid #007bff;">
-                <h1 style="color: #007bff; margin: 0 0 8px 0; font-size: 22px; font-weight: bold;">Evaluation Maths_Infos - Correction Personnalisée</h1>
+                <h1 style="color: #007bff; margin: 0 0 8px 0; font-size: 22px; font-weight: bold;">Evaluation Maths_Infos - Correction</h1>
                 <h2 style="color: #333; margin: 0 0 8px 0; font-size: 18px; font-weight: bold;">BTS CIEL2</h2>
-                <p style="color: #666; margin: 0; font-size: 13px;">Date d'export : ${new Date().toLocaleDateString('fr-FR')}</p>
+                <p style="color: #666; margin: 0; font-size: 13px;">Date: ${new Date().toLocaleDateString('fr-FR')}</p>
             </div>
     `;
 
@@ -809,15 +973,11 @@ function generatePdfContent() {
     if (totalPossible > 0) {
         const finalScoreOutOf20 = (totalCorrect / totalPossible) * 20;
         contentHtml += `
-            <div style="background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); padding: 18px; border-radius: 8px; margin-bottom: 25px; border: 2px solid #28a745; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                <table style="width: 100%; border-collapse: collapse;">
-                    <tr>
-                        <td style="text-align: center;">
-                            <div style="font-size: 16px; color: #155724; font-weight: bold; margin-bottom: 8px;">📊 Votre Note Globale : ${finalScoreOutOf20.toFixed(2)} / 20</div>
-                            <div style="font-size: 13px; color: #155724;">Total des bonnes réponses : <strong>${totalCorrect} / ${totalPossible}</strong></div>
-                        </td>
-                    </tr>
-                </table>
+            <div style="background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); padding: 18px; border-radius: 8px; margin-bottom: 25px; border: 2px solid #28a745;">
+                <div style="text-align: center;">
+                    <div style="font-size: 16px; color: #155724; font-weight: bold; margin-bottom: 8px;">Note: ${finalScoreOutOf20.toFixed(2)} / 20</div>
+                    <div style="font-size: 13px; color: #155724;">Total: <strong>${totalCorrect} / ${totalPossible}</strong></div>
+                </div>
             </div>
         `;
     }
@@ -825,93 +985,68 @@ function generatePdfContent() {
     contentHtml += `
         <div style="margin-bottom: 25px;">
             <h2 style="color: #007bff; border-bottom: 3px solid #007bff; padding: 8px 0; margin: 20px 0 15px 0; font-size: 16px; font-weight: bold;">
-                📝 Partie 1 : Exercice d'Optimisation
+                Partie 1: Optimisation
             </h2>
-            <p style="font-weight: bold; margin: 0 0 15px 0; font-size: 13px; color: #333;">Score : ${qcmScoreData?.rawScore || 0} / ${totalQCMQuestions}</p>
+            <p style="font-weight: bold; margin: 0 0 15px 0; font-size: 13px;">Score: ${qcmScoreData?.rawScore || 0} / ${totalQCMQuestions}</p>
     `;
     
     if (qcmScoreData && qcmScoreData.detailedResults && qcmScoreData.detailedResults.length > 0) {
         qcmScoreData.detailedResults.forEach((res, index) => {
-            const originalQuestion = qcmQuestions.find(q => q.text === res.questionText);
-            const correction = qcmCorrections ? qcmCorrections.find(c => c.id === originalQuestion?.id) : null;
-
             const bgColor = res.isCorrect ? '#d4edda' : '#f8d7da';
             const borderColor = res.isCorrect ? '#28a745' : '#dc3545';
-            const textColor = res.isCorrect ? '#155724' : '#721c24';
             const icon = res.isCorrect ? '✓' : '✗';
 
             contentHtml += `
                 <div style="margin-bottom: 12px; padding: 10px 12px; background-color: ${bgColor}; 
-                            border-left: 4px solid ${borderColor}; border-radius: 4px; page-break-inside: avoid;">
-                    <p style="font-weight: bold; margin: 0 0 6px 0; color: #000; font-size: 12px;">
-                        <span style="display: inline-block; width: 20px; color: ${borderColor}; font-weight: bold;">${icon}</span> Question ${index + 1} : ${originalQuestion?.text || res.questionText}
+                            border-left: 4px solid ${borderColor}; border-radius: 4px;">
+                    <p style="font-weight: bold; margin: 0 0 6px 0; font-size: 12px;">
+                        <span style="color: ${borderColor};">${icon}</span> Q${index + 1}: ${res.questionText}
                     </p>
-                    <p style="margin: 4px 0 4px 20px; color: ${textColor}; font-size: 11px;">
-                        <strong>Votre réponse :</strong> ${res.userAnswer}
+                    <p style="margin: 4px 0 4px 20px; font-size: 11px;">
+                        <strong>Votre réponse:</strong> ${res.userAnswer}
                     </p>
-                    <p style="margin: 4px 0 4px 20px; color: #000; font-size: 11px;">
-                        <strong>Réponse correcte :</strong> ${res.correctAnswer}
+                    <p style="margin: 4px 0 4px 20px; font-size: 11px;">
+                        <strong>Réponse correcte:</strong> ${res.correctAnswer}
                     </p>
-                    ${correction ? `
-                        <div style="margin: 6px 0 0 20px; padding-top: 6px; border-top: 1px solid rgba(0,0,0,0.1);">
-                            <p style="margin: 0; color: #333; font-size: 11px; line-height: 1.4;">
-                                <strong>💡 Explication :</strong> ${correction.explanation}
-                            </p>
-                        </div>
-                    ` : ''}
                 </div>
             `;
         });
     } else {
-        contentHtml += `<p style="color: #666; font-style: italic; font-size: 11px; margin: 10px 0;">Aucune réponse enregistrée.</p>`;
+        contentHtml += `<p style="color: #666; font-style: italic; font-size: 11px;">Aucune réponse.</p>`;
     }
     contentHtml += `</div>`;
 
     contentHtml += `
-        <div style="margin-top: 25px; page-break-before: auto;">
+        <div style="margin-top: 25px;">
             <h2 style="color: #007bff; border-bottom: 3px solid #007bff; padding: 8px 0; margin: 20px 0 15px 0; font-size: 16px; font-weight: bold;">
-                🌡️ Partie 2 : Température d'un Composant
+                Partie 2: Température
             </h2>
-            <p style="font-weight: bold; margin: 0 0 15px 0; font-size: 13px; color: #333;">Score : ${exerciceScoreData?.rawScore || 0} / ${totalExerciceQuestionsCombined}</p>
+            <p style="font-weight: bold; margin: 0 0 15px 0; font-size: 13px;">Score: ${exerciceScoreData?.rawScore || 0} / ${totalExerciceQuestionsCombined}</p>
     `;
     
     if (exerciceScoreData && exerciceScoreData.detailedResults && exerciceScoreData.detailedResults.length > 0) {
-        const allExerciceQuestions = [...exerciceQuestionsPartA, ...exerciceQuestionsPartB];
-        
         exerciceScoreData.detailedResults.forEach((res, index) => {
-            const originalQuestion = allExerciceQuestions.find(q => q.text === res.questionText);
-            const correction = (exerciceCorrectionsPartA ? exerciceCorrectionsPartA.find(c => c.id === originalQuestion?.id) : null) ||
-                             (exerciceCorrectionsPartB ? exerciceCorrectionsPartB.find(c => c.id === originalQuestion?.id) : null);
-
             const bgColor = res.isCorrect ? '#d4edda' : '#f8d7da';
             const borderColor = res.isCorrect ? '#28a745' : '#dc3545';
-            const textColor = res.isCorrect ? '#155724' : '#721c24';
             const icon = res.isCorrect ? '✓' : '✗';
 
             contentHtml += `
                 <div style="margin-bottom: 12px; padding: 10px 12px; background-color: ${bgColor}; 
-                            border-left: 4px solid ${borderColor}; border-radius: 4px; page-break-inside: avoid;">
-                    <p style="font-weight: bold; margin: 0 0 6px 0; color: #000; font-size: 12px;">
-                        <span style="display: inline-block; width: 20px; color: ${borderColor}; font-weight: bold;">${icon}</span> Question ${index + 1} : ${originalQuestion?.text || res.questionText}
+                            border-left: 4px solid ${borderColor}; border-radius: 4px;">
+                    <p style="font-weight: bold; margin: 0 0 6px 0; font-size: 12px;">
+                        <span style="color: ${borderColor};">${icon}</span> Q${index + 1}: ${res.questionText}
                     </p>
-                    <p style="margin: 4px 0 4px 20px; color: ${textColor}; font-size: 11px;">
-                        <strong>Votre réponse :</strong> ${res.userAnswer}
+                    <p style="margin: 4px 0 4px 20px; font-size: 11px;">
+                        <strong>Votre réponse:</strong> ${res.userAnswer}
                     </p>
-                    <p style="margin: 4px 0 4px 20px; color: #000; font-size: 11px;">
-                        <strong>Réponse correcte :</strong> ${res.correctAnswer}
+                    <p style="margin: 4px 0 4px 20px; font-size: 11px;">
+                        <strong>Réponse correcte:</strong> ${res.correctAnswer}
                     </p>
-                    ${correction ? `
-                        <div style="margin: 6px 0 0 20px; padding-top: 6px; border-top: 1px solid rgba(0,0,0,0.1);">
-                            <p style="margin: 0; color: #333; font-size: 11px; line-height: 1.4;">
-                                <strong>💡 Explication :</strong> ${correction.explanation}
-                            </p>
-                        </div>
-                    ` : ''}
                 </div>
             `;
         });
     } else {
-        contentHtml += `<p style="color: #666; font-style: italic; font-size: 11px; margin: 10px 0;">Aucune réponse enregistrée.</p>`;
+        contentHtml += `<p style="color: #666; font-style: italic; font-size: 11px;">Aucune réponse.</p>`;
     }
     contentHtml += `</div></div>`;
 
@@ -920,31 +1055,25 @@ function generatePdfContent() {
 
 function exportToPdf() {
     if (typeof html2pdf === 'undefined') {
-        alert("Erreur : La bibliothèque html2pdf n'est pas chargée. Veuillez actualiser la page.");
-        console.error("html2pdf n'est pas défini.");
+        alert("Erreur: html2pdf non chargé.");
         return;
     }
 
     const element = document.createElement('div');
     element.innerHTML = generatePdfContent();
-    element.id = 'pdf-content-to-render';
     element.style.cssText = `
-        width: 100%;
-        max-width: 210mm;
+        width: 210mm;
         margin: 0 auto;
         padding: 15mm;
-        font-family: Arial, sans-serif;
+        font-family: Arial;
         font-size: 11pt;
-        line-height: 1.5;
         color: #000;
-        background-color: #fff;
-        box-sizing: border-box;
+        background: #fff;
     `;
 
     document.body.appendChild(element);
 
     const loadingMessage = document.createElement('div');
-    loadingMessage.id = 'pdf-loading';
     loadingMessage.style.cssText = `
         position: fixed;
         top: 50%;
@@ -960,89 +1089,36 @@ function exportToPdf() {
         font-weight: bold;
         text-align: center;
     `;
-    loadingMessage.innerHTML = '📄 Génération du PDF en cours...<br><span style="font-size: 14px; font-weight: normal;">Veuillez patienter</span>';
+    loadingMessage.innerHTML = '📄 Génération PDF...';
     document.body.appendChild(loadingMessage);
 
-    const doExport = () => {
-        const filename = `Evaluation_Maths_Infos_${new Date().toLocaleDateString('fr-FR').replace(/\//g, '-')}.pdf`;
-        
-        const opt = {
-            margin: [15, 15, 20, 15],
-            filename: filename,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { 
-                scale: 2,
-                logging: false,
-                dpi: 300,
-                letterRendering: true,
-                useCORS: true,
-                backgroundColor: '#ffffff'
-            },
-            jsPDF: { 
-                unit: 'mm',
-                format: 'a4',
-                orientation: 'portrait',
-                compress: true
-            },
-            pagebreak: { 
-                mode: ['avoid-all', 'css', 'legacy'],
-                avoid: 'div[style*="page-break-inside: avoid"]'
-            }
-        };
-
-        html2pdf()
-            .from(element)
-            .set(opt)
-            .toPdf()
-            .get('pdf')
-            .then((pdf) => {
-                const totalPages = pdf.internal.getNumberOfPages();
-                for (let i = 1; i <= totalPages; i++) {
-                    pdf.setPage(i);
-                    pdf.setFontSize(9);
-                    pdf.setTextColor(100);
-                    const pageText = `Page ${i} / ${totalPages}`;
-                    const pageWidth = pdf.internal.pageSize.getWidth();
-                    const pageHeight = pdf.internal.pageSize.getHeight();
-                    pdf.text(pageText, pageWidth - 25, pageHeight - 10, { align: 'right' });
-                    pdf.text('Evaluation Maths_Infos - Correction', 15, pageHeight - 10);
-                }
-            })
-            .save()
-            .then(() => {
-                loadingMessage.innerHTML = '✓ PDF téléchargé !';
-                loadingMessage.style.background = 'linear-gradient(135deg, #28a745 0%, #218838 100%)';
-                setTimeout(() => {
-                    if (document.body.contains(loadingMessage)) {
-                        document.body.removeChild(loadingMessage);
-                    }
-                }, 2500);
-            })
-            .catch((error) => {
-                console.error("Erreur PDF:", error);
-                loadingMessage.innerHTML = '✗ Erreur génération';
-                loadingMessage.style.background = 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)';
-                setTimeout(() => {
-                    if (document.body.contains(loadingMessage)) {
-                        document.body.removeChild(loadingMessage);
-                    }
-                }, 4000);
-            })
-            .finally(() => {
-                if (document.body.contains(element)) {
-                    document.body.removeChild(element);
-                }
-            });
+    const opt = {
+        margin: [15, 15, 20, 15],
+        filename: `Evaluation_${new Date().toLocaleDateString('fr-FR').replace(/\//g, '-')}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, logging: false },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
-    if (typeof MathJax !== 'undefined' && MathJax.Hub) {
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub, element, doExport]);
-    } else {
-        setTimeout(doExport, 100);
-    }
+    html2pdf()
+        .from(element)
+        .set(opt)
+        .save()
+        .then(() => {
+            loadingMessage.innerHTML = '✓ PDF téléchargé !';
+            loadingMessage.style.background = 'linear-gradient(135deg, #28a745 0%, #218838 100%)';
+            setTimeout(() => {
+                document.body.removeChild(loadingMessage);
+            }, 2500);
+        })
+        .finally(() => {
+            document.body.removeChild(element);
+        });
 }
 
-// --- Fonctions de correction ---
+// ============================================
+// CORRECTION
+// ============================================
 
 function checkCorrectionAccess() {
     const examGloballyCompleted = getLocalStorageItem('examCompletedGlobally');
@@ -1066,25 +1142,18 @@ function checkCorrectionAccess() {
         if (examGloballyCompleted) {
             viewCorrectionButton.classList.remove('button-disabled');
             viewCorrectionButton.href = 'correction.html';
-            viewCorrectionButton.textContent = 'Correction Détaillée';
-            viewCorrectionButton.onclick = null;
         } else {
             viewCorrectionButton.classList.add('button-disabled');
             viewCorrectionButton.href = '#';
-            viewCorrectionButton.textContent = 'Correction Détaillée (Verrouillée)';
             viewCorrectionButton.onclick = (e) => {
                 e.preventDefault();
-                alert("La correction est disponible après avoir complété tous les exercices.");
+                alert("Complétez d'abord tous les exercices.");
             };
         }
     }
 }
 
 function loadCorrectionContent() {
-    if (typeof qcmQuestions === 'undefined' || typeof exerciceQuestionsPartA === 'undefined' || typeof exerciceQuestionsPartB === 'undefined') {
-        console.error("ERREUR: Données des questions non définies.");
-        return;
-    }
     loadCorrection('qcm-correction-container', qcmCorrections, qcmQuestions);
     loadCorrection('exercice-correction-part-a', exerciceCorrectionsPartA, exerciceQuestionsPartA);
     loadCorrection('exercice-correction-part-b', exerciceCorrectionsPartB, exerciceQuestionsPartB);
@@ -1092,14 +1161,7 @@ function loadCorrectionContent() {
 
 function loadCorrection(containerId, correctionsArray, questionsSourceArray) {
     const container = document.getElementById(containerId);
-    if (!container) {
-        console.error(`Conteneur "${containerId}" introuvable.`);
-        return;
-    }
-    if (!correctionsArray || correctionsArray.length === 0) {
-        console.warn(`Corrections vides pour "${containerId}".`);
-        return;
-    }
+    if (!container || !correctionsArray) return;
 
     correctionsArray.forEach(corr => {
         const itemDiv = document.createElement('div');
@@ -1110,37 +1172,59 @@ function loadCorrection(containerId, correctionsArray, questionsSourceArray) {
 
         itemDiv.innerHTML = `
             <p><strong>${questionTextToDisplay}</strong></p>
-            <p><strong>Réponse correcte :</strong> ${corr.options.find(opt => opt.id === corr.correctAnswerId)?.text || 'N/A'}</p>
-            <p><strong>Explication :</strong> ${corr.explanation}</p>
+            <p><strong>Réponse:</strong> ${corr.options.find(opt => opt.id === corr.correctAnswerId)?.text || 'N/A'}</p>
+            <p><strong>Explication:</strong> ${corr.explanation}</p>
         `;
         container.appendChild(itemDiv);
     });
-    MathJax.Hub.Queue(["Typeset", MathJax.Hub, container]);
+    
+    if (typeof MathJax !== 'undefined' && MathJax.Hub) {
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, container]);
+    }
 }
 
 // ============================================
-// INITIALISATION PRINCIPALE - AVEC PROTECTION MAXIMALE
+// MASQUER LES LIENS "RETOUR AU MENU PRINCIPAL"
+// ============================================
+
+function hideBackToMenuLinks() {
+    // Masquer tous les liens "Retour au menu principal" sur toutes les pages
+    const backLinks = document.querySelectorAll('.back-link');
+    backLinks.forEach(link => {
+        link.style.display = 'none';
+    });
+    
+    // Aussi masquer les liens <a> qui contiennent "menu principal" ou "index.html"
+    const allLinks = document.querySelectorAll('a[href="index.html"]');
+    allLinks.forEach(link => {
+        // Ne pas cacher si c'est dans le header ou un élément de navigation légitime
+        if (!link.closest('header') && !link.closest('nav')) {
+            link.style.display = 'none';
+        }
+    });
+}
+
+// ============================================
+// INITIALISATION
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // ÉTAPE 1 : Vérifier et appliquer le verrouillage IMMÉDIATEMENT
     enforceExamFlow();
-    
-    // ÉTAPE 2 : Activer le blocage du bouton retour
     disableBrowserBack();
     
-    // Bouton de démarrage (index.html)
+    // NOUVEAU : Masquer les liens "Retour au menu principal" dès le chargement
+    hideBackToMenuLinks();
+    
     const startExamButton = document.getElementById('start-exam-button');
     if (startExamButton) {
         const lockStatus = checkExamLockStatus();
         
         if (lockStatus.locked) {
-            // Examen déjà démarré - bloquer le bouton et rediriger
             startExamButton.disabled = true;
             startExamButton.textContent = "⛔ Examen déjà démarré";
             startExamButton.classList.add('button-disabled');
             
-            alert("⚠️ Vous avez déjà démarré l'examen. Redirection en cours...");
+            alert("⚠️ Examen déjà démarré. Redirection...");
             setTimeout(() => {
                 const qcmData = getLocalStorageItem('qcmScore');
                 const exerciceData = getLocalStorageItem('exerciceScore');
@@ -1153,21 +1237,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }, 1500);
         } else {
-            // Première fois - permettre le démarrage
             startExamButton.addEventListener('click', startTimer);
         }
         
         checkCorrectionAccess();
     }
 
-    // Pages d'exercices
     if (document.getElementById('timer-display')) {
         initializeTimer();
         
-        // Protection supplémentaire : vérifier le verrouillage
         const lockStatus = checkExamLockStatus();
         if (!lockStatus.locked) {
-            alert("⛔ Accès interdit. Vous devez démarrer l'examen depuis la page d'accueil.");
+            alert("⛔ Accès interdit. Démarrez depuis l'accueil.");
             window.location.replace('index.html');
             return;
         }
@@ -1175,22 +1256,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!getLocalStorageItem('examActive') || getRemainingTime() <= 0) {
             if (getRemainingTime() <= 0 && getLocalStorageItem('examActive')) {
                 setLocalStorageItem('examActive', false);
-                alert("Le temps est écoulé !");
+                alert("Temps écoulé !");
                 window.location.replace('final_results.html');
                 return;
             }
-            alert("Examen non actif ou terminé.");
+            alert("Examen non actif.");
             window.location.replace('index.html');
             return;
         }
     }
 
-    // Exercice 1 (QCM)
     const qcmForm = document.getElementById('qcm-form');
     if (qcmForm) {
-        // Vérifier que l'étudiant n'a pas déjà complété cette partie
         if (getLocalStorageItem('qcmScore')?.completed) {
-            alert("⛔ Vous avez déjà complété cette partie. Redirection...");
+            alert("⛔ Partie déjà complétée.");
             window.location.replace('exercice.html');
             return;
         }
@@ -1203,25 +1282,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Exercice 2
     const exerciceForm = document.getElementById('exercice-form');
     if (exerciceForm) {
-        // Vérifier que l'Exercice 1 est complété
         if (!getLocalStorageItem('qcmScore')?.completed) {
-            alert("⛔ Vous devez d'abord compléter la Partie 1. Redirection...");
+            alert("⛔ Complétez d'abord la Partie 1.");
             window.location.replace('qcm.html');
             return;
         }
         
-        // Vérifier que cette partie n'est pas déjà complétée
         if (getLocalStorageItem('exerciceScore')?.completed) {
-            alert("⛔ Vous avez déjà complété cette partie. Redirection...");
+            alert("⛔ Partie déjà complétée.");
             window.location.replace('final_results.html');
-            return;
-        }
-        
-        if (typeof exerciceQuestionsPartA === 'undefined' || typeof exerciceQuestionsPartB === 'undefined') {
-            console.error("ERREUR: Données exercice non chargées.");
             return;
         }
         
@@ -1235,7 +1306,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Page de résultats finaux
     const finalResultsPage = document.getElementById('final-score-summary');
     if (finalResultsPage) {
         displayFinalResults();
@@ -1245,12 +1315,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Page de correction
     if (document.getElementById('correction-content')) {
         checkCorrectionAccess();
     }
     
-    // Message de sécurité dans la console
     console.log("%c🔒 SYSTÈME DE SÉCURITÉ ACTIF", "color: red; font-size: 20px; font-weight: bold;");
-    console.log("%cToute tentative de retour en arrière ou de manipulation est enregistrée.", "color: orange; font-size: 14px;");
 });

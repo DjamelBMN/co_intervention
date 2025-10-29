@@ -1,40 +1,83 @@
-// Configuration système - Ne pas modifier
-const _0x4a2b = ['50,242,189,203,96,210,187,26,193,240,220,96,188,243,71,50,109,149,69,185,0,149,207,52,47,237,93,63,20,248,233,188,36,69,153,222,227,31,247,92,119,184,192,247,15,244,160,217,244,118,225,63,7,121,32,77,244,235,131,70,49,88,157,163,182,236,41,114,129,99,73,229,147,43,188,213,95,120,176,110,182,148,56,72,29,148,9,176,2,12,18,224,38,36,135,75,79,58,67,10,156,184,129,182,103,119,89,148,176,201,205,194,228,109,13,233,52,13,96,213,182,9,207,10,52,203,245,49,240,181,6,35,236,16,84,52,246,175,182,71,172,159,84,6,62,191,150,210,5,98,71,219,22,111,47,190,37,125,185,108,124,59,144,164,249,113,251,59,47,87,129,185,146,30,236,174,250,230,90,13,25,86,172,70,217,10,130,125,63,82,255,60,78,198,206,133,152,248,89,221,156,96,144,247,80,157,182,1,202,211,33,148,71,33,78,62,178,212,21,184,210,57,167,62,126,236,101,135,182,163,210,135,91,253,227,144,114,26,239,175,78,200,178,21,106,50,247,11,25,217,63,12,229,148,144,39,67,122,146,84,61,200,18,196,84,232,27,21,237,89', '211,70,115,134,168,135,82,78,110,162,150,106,183,170,204,241,47,211,27,113,141,100,66,136,48,208,73,193,129,19,207,121,18,244,51,129,40,99,58,59,22,68,206,31,195,117,11,36,52,231,165,86,50,124,242,176,176,135,4,26,68,136,171,2,244,48,195,241,231,7,127,5,135,123,195,238,243,20,167,210,226,46,158,158,127,219,239,225,43,131,254,140,235,120,182,108,87,76,244,4,101,189,149,198,193,95,240,131,66,154,20,182,200,200,150,161,24,50,97,10,198,160,210,252,140,156,144,174,89,72,57,3,102,210,153,250,192,73,15,248,190,112,171,218,80,99,243,63,128,18,246,75,3,33,146,21,168,96,9,143,236,253,67,147,107,99,61,188,103,109,37,183,174,128,203,198,88,114,243,187,245,79,47,173,119,43,186,218,33,118,54,155,173,219,88,254,133,219,153,101,198,38,41,206,153,55,166,0,1,40,90,129,127,185,189,129,86,65,115,232,218,49,247,62,15,172,100,21,245,232,121,32,151,133,71,185,184,113,81,182,80,51,51,43,6,193,15,194,96,12,3,7,86,118,139,130,66,186,19,84,255,86,103,64,62,142,87,91,111,87', '174,247,227,58,91,227,70,213,164,31,236,179,10,94,147,65,13,87,33,245,223,173,38,205,81,171,70,224,152,98,240,227,53,214,122,39,93,0,151,187,103,65,205,71,183,210,48,145,52,5,255,120,251,141,208,239,141,126,77,182,56,37,211,172,164,188,200,152,218,188,12,153,63,13,104,61,243,85,182,36,104,110,76,218,203,181,19,15,227,105,247,181,168,176,60,41,42,231,59,24,157,15,156,246,73,26,74,250,10,225,187,194,172,232,76,228,53,8,218,31,241,85,184,205,10,144,170,152,7,199,11,241,155,48,193,104,29,180,135,164,166,172,198,141,52,114,72,69,56,40,160,49,12,71,175,147,202,225,241,56,104,77,7,163,211,78,186,100,86,114,121,199,119,183,138,51,36,126,69,5,178,112,89,17,101,200,153,88,5,138,11,210,69,189,26,116,224,38,242,188,57,229,96,125,251,42,67,92,178,126,153,87,213,61,109,7,92,113,131,150,147,117,184,60,237,109,146,11,158,183,204,170,1,155,38,201,90,32,198,230,130,231,226,54,93,249,43,231,207,104,220,214,11,206,3,17,78,121,208,32,204,197,231,154,150,188,19,93,106,156'];
-const _0x7c3d = '36,136,198,229,163,71,140,188,129,20,15,175,126,1,210,135,191,39,198,148,32,143,141,67,209,206,212,66,195,249,149,23,174,209,251,6,250,80,146,145,81,206,156,246,53,62,156,236,152,59';
-const _0x9e1f = 64774;
+// ============================================
+// SYSTÈME DE RÉPONSES SÉCURISÉ
+// Multi-couches: Base64 + Rotation + Inversion
+// ============================================
 
-function _0x2d4e() {
-    const _0x5f6a = _0x4a2b.join(',').split(',').map(x => parseInt(x));
-    let _0x8b9c = [];
-    const _0x1a3d = _0x5f6a.reduce((a,b) => a+b, 0);
-    const rng = ((s) => {
-        let seed = s;
-        return () => {
-            seed = (seed * 9301 + 49297) % 233280;
-            return seed / 233280;
-        };
-    })(_0x9e1f);
-    
-    const _0x4e7b = [];
-    for(let i = 0; i < _0x5f6a.length; i++) {
-        _0x4e7b.push(Math.floor(rng() * 256));
-    }
-    
-    for(let i = 0; i < _0x5f6a.length; i++) {
-        _0x8b9c.push(_0x5f6a[i] ^ _0x4e7b[i % _0x4e7b.length]);
-    }
-    
-    return String.fromCharCode(..._0x8b9c);
-}
+const _0xf1 = 'QDh1UEpAc2l9c05rfkB0UG52cVBwXVtqbV05YHdVdGpzb19hcEhKU3BUN198QF5oN0k6aXBIcFZwTF5Vf0BdYXFzOWCAXU5sc1FKUHpQWlhtPDlpd1lPan1RSlA9UFpgN0w6X3NVXmhxUV9hO110UG5+cFBLQHNpfXNOa35AdFBudnFQcFVbam1dOWB3VXRqc29fYXBISlNwUDdffEBeaDdJOmlwSHBWcEw5VH9AXWFxczlggF1ObHNRSlB6UIBYbTw5aXdZT2p9UUpQPVBaYYBMOl9zVV5ocVFfYTtddFBufnBQS0BzaX1zTmt+QHRQbnZxUHJRW2ptXTlgd1V0anNvX2FwSEpTcEw3X3xAXmg3STppcEhwVnBUdFR/QF1hcXM5YIBdTmxzUUpQelBaWG08OWl3WU9qfVFKUD1QcGCATDpfc1VeaHFRX2E7XXRQbn5wUElAc2l9c05rfkB0UG52cVBvUVtq';
+const _0xf2 = 'bV05YHdVdGpzb19hcEhKU3BMN198QF5oN0k6aXBIcFZwUF5Uf0BdYXFzOWCAXU5sc1FKUHpQWlhtPDlpd1lPan1RSlA9UFpgf0w6X3NVXmhxUV9hO110UD5JcFZwXDlgd1V0anNvX2FwSEpTQFFwWG08OWl3WU9qfVFKUD1QSlSATDpfe1VeanBISlNwVDdffEBeaDdJOmlwSHBWcHJbVH9AXWlxTXVQbn5wUEpAc2l9c05rfkB0UG52cVA7TFtqbTg5YH9RSlB6UHBYbTw5aXdZT2p9UUpQPVCAVX9MOl97VV5qcEhKU3BQN198QF5oN0k6aXBIcFZwYFtUf0BdaXFNdVBufnBQSkBzaX1zTmt+QHRQbnZxUDhMW2ptODlgf1FKUHpQgFhtPDlpd1lPan1RSlA9UEpVf0w6X3tVXmpwSEpTcFA3X3xAXmg3STppcEhwVnBUW1R/QF1pcU11UG5+cFBKQHNp';
+const _0xf3 = 'fXNOa35AdFBudnFQgExbam04OWB/UUpQelBwWG08OWl3WU9qfVFKUD1QWlR/TDpfe1VeanBISlNwTDdffEBeaDdJOmlwSHBWcEhbVH9AXWlxTXVQbn5wUEtAc2l9c05rfkB0UG52cVA8TDpfe1VeanBISlNwUDdffEBeaDdJOmlwSHBWcG5bam04OWB/UUpQelCAWG08OWl3WU9qfVFKUD1QgFV/QF1pcU11UG5+cFBJQHNpfXNOa35AdFBudnFQOUw6X3tVXmpwSEpTcFQ3X3xAXmg3STppcEhwVnBcW2ptODlgf1FKUHpQcFhtPDlpd1lPan1RSlA9UEpVf0BdaXFNdVBufnBQS0BzaX1zTmt+QHRQbnZxUIFMOl97VV5qcEhKU3BQN198QF5oN0k6aXBIcFZwUFtqbTg5YH9RSlB6UHBYbTw5aXdZT2p9UUpQPVBaVH9AXWlxTXVQPklwVnA3OWB/UYBs';
+const _0xshift = 7;
 
-function getDecodedAnswers() {
+function _0xdecode() {
     try {
-        return JSON.parse(_0x2d4e());
-    } catch(e) {
-        console.error('Erreur de configuration');
+        // Étape 1 : Reconstruction
+        const combined = _0xf1 + _0xf2 + _0xf3;
+        
+        // Étape 2 : Décodage Base64
+        const decoded1 = atob(combined);
+        
+        // Étape 3 : Inversion
+        const reversed = decoded1.split('').reverse().join('');
+        
+        // Étape 4 : Rotation inverse
+        let unrotated = '';
+        for (let i = 0; i < reversed.length; i++) {
+            const charCode = reversed.charCodeAt(i);
+            const newCharCode = (charCode - _0xshift + 256) % 256;
+            unrotated += String.fromCharCode(newCharCode);
+        }
+        
+        // Étape 5 : Décodage Base64 final
+        const final = atob(unrotated);
+        
+        return final;
+    } catch (e) {
+        console.error('Erreur décodage:', e);
         return null;
     }
 }
 
-// Export pour utilisation
-window.getAnswers = getDecodedAnswers;
+// ============================================
+// FONCTION PUBLIQUE
+// ============================================
+
+function decodeAnswers(dummyParam) {
+    try {
+        const decoded = _0xdecode();
+        if (!decoded) {
+            console.error('❌ Décodage a retourné null');
+            return null;
+        }
+        return JSON.parse(decoded);
+    } catch(e) {
+        console.error('❌ Erreur JSON.parse:', e);
+        return null;
+    }
+}
+
+// Variable globale pour compatibilité
+const encodedAnswers = "_OBFUSCATED_";
+
+// Export alternatif
+window.getAnswers = function() {
+    return decodeAnswers();
+};
+
+// ============================================
+// AUTO-TEST AU CHARGEMENT
+// ============================================
+
+console.log('%c🔐 Système de réponses chargé', 'color: green; font-weight: bold;');
+
+(function() {
+    const testAnswers = decodeAnswers();
+    if (testAnswers && testAnswers.qcm && testAnswers.exercice) {
+        console.log('%c✅ Réponses validées:', 'color: green; font-weight: bold;', {
+            qcm: Object.keys(testAnswers.qcm).length + ' questions',
+            exercice: Object.keys(testAnswers.exercice).length + ' questions'
+        });
+    } else {
+        console.error('%c❌ ERREUR: Réponses invalides!', 'color: red; font-weight: bold;');
+        console.log('Détails:', testAnswers);
+    }
+})();
