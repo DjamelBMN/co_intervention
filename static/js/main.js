@@ -243,7 +243,7 @@ function showStudentNameModal() {
             <input 
                 type="text" 
                 id="student-lastname" 
-                placeholder="Ex: DUPONT"
+                placeholder="Ex: BENAMAR"
                 style="
                     width: 100%;
                     padding: 15px;
@@ -266,7 +266,7 @@ function showStudentNameModal() {
             <input 
                 type="text" 
                 id="student-firstname" 
-                placeholder="Ex: Jean"
+                placeholder="Ex: RIAD"
                 style="
                     width: 100%;
                     padding: 15px;
