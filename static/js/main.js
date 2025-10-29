@@ -1,25 +1,198 @@
 // Fichier : static/js/main.js
 const EXAM_DURATION_MINUTES = 50; // Durée de l'épreuve en minutes
-// Les totaux de questions sont maintenant définis dans qcm_data.js et exercice_data.js
-// pour une meilleure cohérence avec les données.
 
-// --- Fonctions utilitaires localStorage ---
-function setLocalStorageItem(key, value) {
+// ============================================
+// SYSTÈME DE SÉCURITÉ ANTI-RETOUR EN ARRIÈRE
+// ============================================
+
+// Génère un ID unique pour chaque session d'examen (impossible à régénérer)
+function generateExamSessionId() {
+    const timestamp = Date.now();
+    const random = Math.random().toString(36).substring(2, 15);
+    const userAgent = navigator.userAgent;
+    return btoa(`${timestamp}-${random}-${userAgent}`).substring(0, 32);
+}
+
+// Stockage triple redondant (localStorage + sessionStorage + cookie permanent)
+function setSecureStorage(key, value) {
+    const data = JSON.stringify(value);
+    
+    // 1. localStorage
     try {
-        localStorage.setItem(key, JSON.stringify(value));
+        localStorage.setItem(key, data);
     } catch (e) {
-        console.error("Erreur d'écriture dans localStorage :", e);
+        console.error("Erreur localStorage:", e);
+    }
+    
+    // 2. sessionStorage (survit aux actualisations mais pas à la fermeture d'onglet)
+    try {
+        sessionStorage.setItem(key, data);
+    } catch (e) {
+        console.error("Erreur sessionStorage:", e);
+    }
+    
+    // 3. Cookie permanent (365 jours, survit même après suppression du cache)
+    try {
+        const expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + 365);
+        document.cookie = `${key}=${encodeURIComponent(data)}; expires=${expiryDate.toUTCString()}; path=/; SameSite=Strict`;
+    } catch (e) {
+        console.error("Erreur cookie:", e);
     }
 }
 
-function getLocalStorageItem(key) {
+// Récupération depuis n'importe quelle source de stockage
+function getSecureStorage(key) {
+    let value = null;
+    
+    // Essayer localStorage
     try {
-        const item = localStorage.getItem(key);
-        return item ? JSON.parse(item) : null;
-    } catch (e) {
-        console.error("Erreur de lecture dans localStorage :", e);
-        return null;
+        value = localStorage.getItem(key);
+        if (value) return JSON.parse(value);
+    } catch (e) {}
+    
+    // Essayer sessionStorage
+    try {
+        value = sessionStorage.getItem(key);
+        if (value) return JSON.parse(value);
+    } catch (e) {}
+    
+    // Essayer cookie
+    try {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            const [cookieName, cookieValue] = cookie.split('=').map(c => c.trim());
+            if (cookieName === key) {
+                return JSON.parse(decodeURIComponent(cookieValue));
+            }
+        }
+    } catch (e) {}
+    
+    return null;
+}
+
+// Vérification de l'état de l'examen avec détection de tentative de fraude
+function checkExamLockStatus() {
+    const examSessionId = getSecureStorage('examSessionId');
+    const examStartTime = getSecureStorage('examStartTime');
+    const examActive = getSecureStorage('examActive');
+    
+    // Si un ID de session existe, l'examen a été démarré (IMPOSSIBLE À CONTOURNER)
+    if (examSessionId) {
+        console.warn("🔒 Session d'examen détectée. Retour en arrière bloqué.");
+        return {
+            locked: true,
+            sessionId: examSessionId,
+            startTime: examStartTime,
+            active: examActive
+        };
     }
+    
+    return { locked: false };
+}
+
+// Initialise le verrouillage permanent de l'examen
+function initializeExamLock() {
+    const lockStatus = checkExamLockStatus();
+    
+    if (!lockStatus.locked) {
+        // Première fois : créer l'ID de session unique
+        const sessionId = generateExamSessionId();
+        setSecureStorage('examSessionId', sessionId);
+        console.log("🔐 Session d'examen initialisée et verrouillée:", sessionId);
+    }
+    
+    // Désactiver le bouton "Précédent" du navigateur
+    disableBrowserBack();
+}
+
+// Désactive complètement le bouton retour du navigateur
+function disableBrowserBack() {
+    // Méthode 1 : History manipulation
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+        alert("⚠️ Le retour en arrière est désactivé pendant l'examen. Toute tentative sera signalée.");
+    };
+    
+    // Méthode 2 : Beforeunload warning
+    window.addEventListener('beforeunload', function (e) {
+        if (getSecureStorage('examActive')) {
+            e.preventDefault();
+            e.returnValue = 'L\'examen est en cours. Êtes-vous sûr de vouloir quitter ?';
+            return e.returnValue;
+        }
+    });
+    
+    // Méthode 3 : Empêcher les raccourcis clavier de navigation
+    document.addEventListener('keydown', function(e) {
+        // Alt+Flèche gauche (retour)
+        if (e.altKey && e.key === 'ArrowLeft') {
+            e.preventDefault();
+            alert("⚠️ Raccourci de navigation désactivé pendant l'examen.");
+        }
+        // Backspace sur autre chose qu'un input
+        if (e.key === 'Backspace' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) {
+            e.preventDefault();
+        }
+    });
+}
+
+// Redirection forcée selon l'état de l'examen (appelé sur TOUTES les pages)
+function enforceExamFlow() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const lockStatus = checkExamLockStatus();
+    
+    // Si l'examen est verrouillé (démarré)
+    if (lockStatus.locked) {
+        const qcmCompleted = getSecureStorage('qcmScore')?.completed;
+        const exerciceCompleted = getSecureStorage('exerciceScore')?.completed;
+        const examActive = getSecureStorage('examActive');
+        
+        // Calculer où l'étudiant devrait être
+        let correctPage;
+        if (!qcmCompleted && examActive) {
+            correctPage = 'qcm.html';
+        } else if (qcmCompleted && !exerciceCompleted && examActive) {
+            correctPage = 'exercice.html';
+        } else if (qcmCompleted && exerciceCompleted) {
+            correctPage = 'final_results.html';
+        } else {
+            correctPage = 'final_results.html'; // Par défaut si état incohérent
+        }
+        
+        // Si l'étudiant essaie d'accéder à index.html après avoir démarré
+        if (currentPage === 'index.html') {
+            alert("⛔ L'examen a déjà été démarré. Vous ne pouvez pas revenir à la page d'accueil.");
+            window.location.replace(correctPage);
+            return;
+        }
+        
+        // Si l'étudiant essaie d'accéder à une page qu'il a déjà complétée
+        if (currentPage === 'qcm.html' && qcmCompleted) {
+            alert("⛔ Vous avez déjà complété cette partie. Redirection...");
+            window.location.replace(correctPage);
+            return;
+        }
+        
+        if (currentPage === 'exercice.html' && !qcmCompleted) {
+            alert("⛔ Vous devez d'abord compléter la partie 1.");
+            window.location.replace('qcm.html');
+            return;
+        }
+    }
+}
+
+// ============================================
+// FONCTIONS UTILITAIRES MODIFIÉES
+// ============================================
+
+function setLocalStorageItem(key, value) {
+    setSecureStorage(key, value); // Utilise le stockage sécurisé triple
+}
+
+function getLocalStorageItem(key) {
+    return getSecureStorage(key); // Utilise la récupération sécurisée
 }
 
 // --- Décodage des réponses ---
@@ -41,8 +214,236 @@ if (!answers) {
 // --- Fonctions de Timer ---
 let timerInterval;
 
-function startTimer() {
+// NOUVEAU : Demander nom et prénom avant de démarrer
+function showStudentNameModal() {
+    // Vérifier si le nom est déjà enregistré
+    const existingName = getSecureStorage('studentName');
+    if (existingName) {
+        return true; // Nom déjà saisi
+    }
+
+    // Créer le modal
+    const modal = document.createElement('div');
+    modal.id = 'student-name-modal';
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 999999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: fadeIn 0.3s ease;
+    `;
+
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        max-width: 500px;
+        width: 90%;
+        color: white;
+        font-family: 'Inter', sans-serif;
+        animation: slideIn 0.5s ease;
+    `;
+
+    modalContent.innerHTML = `
+        <h2 style="margin: 0 0 10px 0; font-size: 28px; text-align: center; font-weight: 800;">
+            📝 Identification Étudiant
+        </h2>
+        <p style="text-align: center; margin: 0 0 30px 0; opacity: 0.9; font-size: 14px;">
+            Veuillez renseigner vos informations avant de commencer l'évaluation
+        </p>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px;">
+                Nom <span style="color: #ff6b6b;">*</span>
+            </label>
+            <input 
+                type="text" 
+                id="student-lastname" 
+                placeholder="Ex: DUPONT"
+                style="
+                    width: 100%;
+                    padding: 15px;
+                    border: none;
+                    border-radius: 10px;
+                    font-size: 16px;
+                    font-family: 'Inter', sans-serif;
+                    text-transform: uppercase;
+                    box-sizing: border-box;
+                    background: rgba(255, 255, 255, 0.95);
+                    color: #333;
+                "
+            >
+        </div>
+        
+        <div style="margin-bottom: 30px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px;">
+                Prénom <span style="color: #ff6b6b;">*</span>
+            </label>
+            <input 
+                type="text" 
+                id="student-firstname" 
+                placeholder="Ex: Jean"
+                style="
+                    width: 100%;
+                    padding: 15px;
+                    border: none;
+                    border-radius: 10px;
+                    font-size: 16px;
+                    font-family: 'Inter', sans-serif;
+                    box-sizing: border-box;
+                    background: rgba(255, 255, 255, 0.95);
+                    color: #333;
+                "
+            >
+        </div>
+        
+        <div id="name-error" style="
+            display: none;
+            background: rgba(255, 107, 107, 0.2);
+            border: 2px solid #ff6b6b;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+        ">
+            ⚠️ Veuillez remplir tous les champs
+        </div>
+        
+        <button 
+            id="validate-student-name" 
+            style="
+                width: 100%;
+                padding: 18px;
+                background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+                color: white;
+                border: none;
+                border-radius: 12px;
+                font-size: 18px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+                box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+            "
+            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(46, 204, 113, 0.6)';"
+            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(46, 204, 113, 0.4)';"
+        >
+            ✓ Valider et commencer l'évaluation
+        </button>
+        
+        <p style="text-align: center; margin: 20px 0 0 0; font-size: 12px; opacity: 0.8;">
+            Ces informations permettront d'identifier votre copie
+        </p>
+    `;
+
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+
+    // Ajouter les animations CSS
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { 
+                transform: translateY(-50px); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateY(0); 
+                opacity: 1; 
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Focus sur le premier champ
+    setTimeout(() => {
+        document.getElementById('student-lastname').focus();
+    }, 100);
+
+    // Gérer la validation
+    return new Promise((resolve) => {
+        document.getElementById('validate-student-name').onclick = () => {
+            const lastname = document.getElementById('student-lastname').value.trim().toUpperCase();
+            const firstname = document.getElementById('student-firstname').value.trim();
+            const errorDiv = document.getElementById('name-error');
+
+            if (!lastname || !firstname) {
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            // Capitaliser le prénom
+            const formattedFirstname = firstname.charAt(0).toUpperCase() + firstname.slice(1).toLowerCase();
+
+            // Sauvegarder les informations
+            const studentInfo = {
+                lastname: lastname,
+                firstname: formattedFirstname,
+                fullName: `${lastname} ${formattedFirstname}`,
+                timestamp: new Date().toISOString()
+            };
+
+            setSecureStorage('studentName', studentInfo);
+
+            // Fermer le modal avec animation
+            modal.style.animation = 'fadeOut 0.3s ease';
+            setTimeout(() => {
+                document.body.removeChild(modal);
+                resolve(true);
+            }, 300);
+        };
+
+        // Permettre validation avec Entrée
+        ['student-lastname', 'student-firstname'].forEach(id => {
+            document.getElementById(id).addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    document.getElementById('validate-student-name').click();
+                }
+            });
+        });
+    });
+
+    const fadeOutStyle = document.createElement('style');
+    fadeOutStyle.textContent = `
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+    `;
+    document.head.appendChild(fadeOutStyle);
+}
+
+async function startTimer() {
+    // ÉTAPE 1 : Demander le nom/prénom
+    const nameProvided = await showStudentNameModal();
+    
+    if (!nameProvided) {
+        alert("⚠️ Vous devez renseigner votre nom et prénom pour commencer l'évaluation.");
+        return;
+    }
+
+    const studentInfo = getSecureStorage('studentName');
+    console.log("🎓 Étudiant identifié :", studentInfo.fullName);
+
+    // ÉTAPE 2 : Démarrer l'examen
     const startTime = Date.now();
+    
+    // Initialiser le verrouillage AVANT tout
+    initializeExamLock();
+    
     setLocalStorageItem('examStartTime', startTime);
     setLocalStorageItem('examActive', true);
     // Initialiser les réponses stockées pour chaque partie vide au démarrage de l'examen
@@ -51,19 +452,22 @@ function startTimer() {
     // Marquer les parties comme non complétées au début
     setLocalStorageItem('qcmScore', {completed: false});
     setLocalStorageItem('exerciceScore', {completed: false});
-    setLocalStorageItem('examCompletedGlobally', false); // Réinitialiser le statut global
+    setLocalStorageItem('examCompletedGlobally', false);
 
-    window.location.href = 'qcm.html'; // Redirige vers la première partie de l'examen
+    console.log("🚀 Examen démarré et verrouillé définitivement pour", studentInfo.fullName);
+    
+    // Utiliser replace au lieu de href pour empêcher le retour
+    window.location.replace('qcm.html');
 }
 
 function getRemainingTime() {
     const startTime = getLocalStorageItem('examStartTime');
     if (!startTime || !getLocalStorageItem('examActive')) {
-        return EXAM_DURATION_MINUTES * 60; // Durée totale si pas démarré ou terminé
+        return EXAM_DURATION_MINUTES * 60;
     }
-    const elapsedTime = Math.floor((Date.now() - startTime) / 1000); // Temps écoulé en secondes
+    const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
     const remainingTime = (EXAM_DURATION_MINUTES * 60) - elapsedTime;
-    return Math.max(0, remainingTime); // Ne jamais retourner un temps négatif
+    return Math.max(0, remainingTime);
 }
 
 function updateTimerDisplay() {
@@ -77,11 +481,10 @@ function updateTimerDisplay() {
     const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     timerDisplay.textContent = `Temps restant : ${formattedTime}`;
 
-    if (remainingSeconds <= 0 && getLocalStorageItem('examActive')) { // Exécuter une seule fois à la fin du timer
+    if (remainingSeconds <= 0 && getLocalStorageItem('examActive')) {
         timerDisplay.textContent = "Temps écoulé ! Soumission automatique...";
         clearInterval(timerInterval);
 
-        // Soumettre automatiquement les parties non complétées
         const qcmData = getLocalStorageItem('qcmScore');
         const exerciceData = getLocalStorageItem('exerciceScore');
 
@@ -95,30 +498,43 @@ function updateTimerDisplay() {
             handleSubmit(new Event('submit'), allExerciceQuestions, 'exercice', 'exercice-results', true);
         }
         
-        setLocalStorageItem('examActive', false); // L'examen est terminé
+        setLocalStorageItem('examActive', false);
 
         setTimeout(() => {
-            window.location.href = 'final_results.html'; // Redirige après un court délai
-        }, 3000); // Laisse le temps au message de s'afficher
+            window.location.replace('final_results.html'); // replace au lieu de href
+        }, 3000);
     }
 }
 
 function initializeTimer() {
     const examActive = getLocalStorageItem('examActive');
     const timerDisplay = document.getElementById('timer-display');
+    const studentInfo = getSecureStorage('studentName');
+
+    // Afficher le nom de l'étudiant dans le header si disponible
+    if (studentInfo && timerDisplay) {
+        const studentNameDisplay = document.createElement('div');
+        studentNameDisplay.style.cssText = `
+            font-size: 14px;
+            color: #667eea;
+            font-weight: 600;
+            margin-top: 10px;
+            text-align: center;
+        `;
+        studentNameDisplay.textContent = `👤 ${studentInfo.fullName}`;
+        timerDisplay.parentNode.insertBefore(studentNameDisplay, timerDisplay.nextSibling);
+    }
 
     if (examActive) {
-        updateTimerDisplay(); // Affiche le temps restant immédiatement
+        updateTimerDisplay();
         if (!timerInterval) {
             timerInterval = setInterval(updateTimerDisplay, 1000);
         }
     } else if (timerDisplay) {
-        // Si l'examen n'est pas actif (par ex. page actualisée après fin), affiche 00:00 ou temps écoulé
-        const remainingSecondsAtLoad = getRemainingTime(); // Cela peut être 0 ou le temps initial
+        const remainingSecondsAtLoad = getRemainingTime();
         if (getLocalStorageItem('examStartTime') && remainingSecondsAtLoad <= 0) {
              timerDisplay.textContent = "Temps écoulé !";
         } else {
-            // Afficher le temps initial si l'examen n'a pas été démarré et que c'est une page d'examen
             const minutes = EXAM_DURATION_MINUTES;
             const seconds = 0;
             timerDisplay.textContent = `Temps restant : ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
@@ -142,7 +558,7 @@ function loadQuestions(containerId, questionsArray, answersCategory) {
         return;
     }
     if (!questionsArray || questionsArray.length === 0) {
-        console.warn(`Avertissement: Le tableau de questions pour le conteneur "${containerId}" est vide ou non défini. Aucune question ne sera affichée.`);
+        console.warn(`Avertissement: Le tableau de questions pour le conteneur "${containerId}" est vide ou non défini.`);
         return;
     }
 
@@ -165,11 +581,9 @@ function loadQuestions(containerId, questionsArray, answersCategory) {
         `;
         container.appendChild(questionDiv);
 
-        // Désactiver les options si une réponse est déjà stockée OU si la partie est déjà complétée
         if (storedUserAnswers[question.id] || partCompleted) {
             disableQuestion(question.id, questionDiv);
         } else {
-            // Ajouter un écouteur d'événements pour le clic unique si la question n'est pas déjà répondue et la partie non soumise
             const inputs = questionDiv.querySelectorAll(`input[name="${question.id}"]`);
             inputs.forEach(input => {
                 input.addEventListener('change', function() {
@@ -177,7 +591,7 @@ function loadQuestions(containerId, questionsArray, answersCategory) {
                         let currentAnswers = getLocalStorageItem(`${answersCategory}UserAnswers`) || {};
                         currentAnswers[question.id] = this.value;
                         setLocalStorageItem(`${answersCategory}UserAnswers`, currentAnswers);
-                        disableQuestion(question.id, questionDiv); // Désactive les options après le clic
+                        disableQuestion(question.id, questionDiv);
                     }
                 });
             });
@@ -187,22 +601,19 @@ function loadQuestions(containerId, questionsArray, answersCategory) {
     MathJax.Hub.Queue(["Typeset", MathJax.Hub, container]);
 }
 
-
 function handleSubmit(event, questionsArray, answersCategory, resultsDivId, autoSubmit = false) {
     event.preventDefault();
 
-    // Ajouter une boîte de dialogue de confirmation UNIQUEMENT si ce n'est PAS une soumission automatique
     if (!autoSubmit) {
         const confirmSubmission = confirm("Êtes-vous sûr(e) de vouloir soumettre ? Une fois soumis, vous ne pourrez plus modifier vos réponses pour cette partie.");
         if (!confirmSubmission) {
-            return; // Annuler la soumission si l'utilisateur annule
+            return;
         }
     }
 
-    // Vérifier si le temps est écoulé pour éviter la soumission manuelle après la fin
     if (!autoSubmit && getRemainingTime() <= 0) {
         alert("Le temps est écoulé ! Vos réponses ont été soumises automatiquement.");
-        window.location.href = 'final_results.html';
+        window.location.replace('final_results.html');
         return;
     }
 
@@ -217,10 +628,9 @@ function handleSubmit(event, questionsArray, answersCategory, resultsDivId, auto
         const selectedOption = document.querySelector(`input[name="${question.id}"]:checked`);
         let userAnswerId = selectedOption ? selectedOption.value : null;
 
-        // Si la question n'a pas été répondue sur cette soumission mais qu'une réponse est stockée, utilisez-la
         if (!userAnswerId && userAnswersForStorage[question.id]) {
             userAnswerId = userAnswersForStorage[question.id];
-        } else if (userAnswerId) { // Si une nouvelle réponse est sélectionnée, mettez à jour le stockage
+        } else if (userAnswerId) {
             userAnswersForStorage[question.id] = userAnswerId;
         }
 
@@ -258,7 +668,6 @@ function handleSubmit(event, questionsArray, answersCategory, resultsDivId, auto
         resultItem.innerHTML = `<p><strong>Question :</strong> ${question.text}</p><p>${status}</p>`;
         resultsDiv.appendChild(resultItem);
 
-        // Désactiver TOUTES les options de la question, même celles non sélectionnées
         if (inputsForQuestionDiv) {
              disableQuestion(question.id, inputsForQuestionDiv);
         }
@@ -270,18 +679,15 @@ function handleSubmit(event, questionsArray, answersCategory, resultsDivId, auto
     totalScoreDiv.innerHTML = `<p><strong>Score pour cette partie : ${score} / ${totalQuestions}</strong></p>`;
     resultsDiv.prepend(totalScoreDiv);
 
-    // Mettre à jour les réponses stockées (incluant celles éventuellement auto-soumises)
     setLocalStorageItem(`${answersCategory}UserAnswers`, userAnswersForStorage);
 
-    // Stocker le score final pour cette partie
     setLocalStorageItem(`${answersCategory}Score`, {
         rawScore: score,
         totalQuestions: totalQuestions,
         detailedResults: detailedResults,
-        completed: true // Marque cette partie comme complétée
+        completed: true
     });
 
-    // Cacher le bouton de soumission après que la partie est soumise
     const submitButton = document.getElementById(`submit-${answersCategory}-button`);
     if (submitButton) {
         submitButton.style.display = 'none';
@@ -299,37 +705,59 @@ function displayFinalResults() {
     const overallScoreDisplay = document.getElementById('overall-score-display');
     const exportPdfButton = document.getElementById('export-pdf-button');
 
+    // Récupérer et afficher le nom de l'étudiant
+    const studentInfo = getSecureStorage('studentName');
+    if (studentInfo && finalScoreSummaryDiv) {
+        const studentNameHeader = document.createElement('div');
+        studentNameHeader.style.cssText = `
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        `;
+        studentNameHeader.innerHTML = `
+            <h3 style="margin: 0 0 10px 0; font-size: 24px; font-weight: 800;">
+                👤 ${studentInfo.fullName}
+            </h3>
+            <p style="margin: 0; font-size: 14px; opacity: 0.9;">
+                BTS CIEL2 - Évaluation Maths-Info
+            </p>
+        `;
+        finalScoreSummaryDiv.insertBefore(studentNameHeader, finalScoreSummaryDiv.firstChild);
+    }
+
     let qcmScoreData = getLocalStorageItem('qcmScore');
     let exerciceScoreData = getLocalStorageItem('exerciceScore');
 
     let totalCorrect = 0;
     let totalPossible = 0;
 
-    // Récupère le nombre total de questions des données JS
     const totalQCMQuestions = qcmQuestions ? qcmQuestions.length : 0;
     const totalExerciceQuestionsCombined = (exerciceQuestionsPartA ? exerciceQuestionsPartA.length : 0) + (exerciceQuestionsPartB ? exerciceQuestionsPartB.length : 0);
 
     if (qcmScoreData && qcmScoreData.completed) {
         totalCorrect += qcmScoreData.rawScore;
-        totalPossible += totalQCMQuestions; // Utilise le total réel des questions
+        totalPossible += totalQCMQuestions;
         qcmFinalScoreDiv.innerHTML = `<p><strong>Partie 1 (Exercice d'Optimisation - Maths - Info) :</strong> ${qcmScoreData.rawScore} / ${totalQCMQuestions} correctes.</p>`;
     } else {
-        totalPossible += totalQCMQuestions; // Inclut les questions non répondues dans le total possible
+        totalPossible += totalQCMQuestions;
         qcmFinalScoreDiv.innerHTML = `<p><strong>Partie 1 (Exercice d'Optimisation - Maths - Info) :</strong> Non complétée ou non soumise.</p>`;
     }
 
     if (exerciceScoreData && exerciceScoreData.completed) {
         totalCorrect += exerciceScoreData.rawScore;
-        totalPossible += totalExerciceQuestionsCombined; // Utilise le total réel des questions
+        totalPossible += totalExerciceQuestionsCombined;
         exerciceFinalScoreDiv.innerHTML = `<p><strong>Partie 2 (Température d'un composant informatique) :</strong> ${exerciceScoreData.rawScore} / ${totalExerciceQuestionsCombined} correctes.</p>`;
     } else {
-        totalPossible += totalExerciceQuestionsCombined; // Inclut les questions non répondues dans le total possible
+        totalPossible += totalExerciceQuestionsCombined;
         exerciceFinalScoreDiv.innerHTML = `<p><strong>Partie 2 (Température d'un composant informatique) :</strong> Non complétée ou non soumise.</p>`;
     }
 
-    // Vérifie si toutes les parties sont complétées pour afficher le score final et le bouton PDF
     const allPartsCompleted = (qcmScoreData?.completed && exerciceScoreData?.completed);
-    setLocalStorageItem('examCompletedGlobally', allPartsCompleted); // Met à jour le statut global
+    setLocalStorageItem('examCompletedGlobally', allPartsCompleted);
 
     if (allPartsCompleted) {
         const finalScoreOutOf20 = (totalCorrect / totalPossible) * 20;
@@ -344,12 +772,10 @@ function displayFinalResults() {
     }
 }
 
-
-// --- Fonction de génération du contenu PDF ---
+// --- Fonctions PDF (inchangées) ---
 function generatePdfContent() {
     let contentHtml = `
         <div style="font-family: 'Arial', sans-serif; color: #000; line-height: 1.5;">
-            <!-- En-tête du document -->
             <div style="text-align: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 3px solid #007bff;">
                 <h1 style="color: #007bff; margin: 0 0 8px 0; font-size: 22px; font-weight: bold;">Evaluation Maths_Infos - Correction Personnalisée</h1>
                 <h2 style="color: #333; margin: 0 0 8px 0; font-size: 18px; font-weight: bold;">BTS CIEL2</h2>
@@ -357,7 +783,6 @@ function generatePdfContent() {
             </div>
     `;
 
-    // --- Score Global ---
     const qcmScoreData = getLocalStorageItem('qcmScore');
     const exerciceScoreData = getLocalStorageItem('exerciceScore');
     let totalCorrect = 0;
@@ -381,7 +806,6 @@ function generatePdfContent() {
         totalPossible += totalExerciceQuestionsCombined;
     }
 
-    // Encadré du score global
     if (totalPossible > 0) {
         const finalScoreOutOf20 = (totalCorrect / totalPossible) * 20;
         contentHtml += `
@@ -396,20 +820,12 @@ function generatePdfContent() {
                 </table>
             </div>
         `;
-    } else {
-        contentHtml += `
-            <div style="background-color: #f8d7da; padding: 18px; border-radius: 8px; margin-bottom: 25px; border: 2px solid #dc3545;">
-                <h2 style="color: #721c24; margin: 0 0 8px 0; font-size: 16px; text-align: center;">⚠️ Épreuve non complétée</h2>
-                <p style="color: #721c24; margin: 0; font-size: 13px; text-align: center;">Veuillez soumettre toutes les parties pour un score global.</p>
-            </div>
-        `;
     }
 
-    // --- Détail Exercice 1 (QCM) ---
     contentHtml += `
         <div style="margin-bottom: 25px;">
             <h2 style="color: #007bff; border-bottom: 3px solid #007bff; padding: 8px 0; margin: 20px 0 15px 0; font-size: 16px; font-weight: bold;">
-                📝 Partie 1 : Exercice d'Optimisation - Outils Mathématiques
+                📝 Partie 1 : Exercice d'Optimisation
             </h2>
             <p style="font-weight: bold; margin: 0 0 15px 0; font-size: 13px; color: #333;">Score : ${qcmScoreData?.rawScore || 0} / ${totalQCMQuestions}</p>
     `;
@@ -447,15 +863,14 @@ function generatePdfContent() {
             `;
         });
     } else {
-        contentHtml += `<p style="color: #666; font-style: italic; font-size: 11px; margin: 10px 0;">Aucune réponse enregistrée pour l'Exercice 1.</p>`;
+        contentHtml += `<p style="color: #666; font-style: italic; font-size: 11px; margin: 10px 0;">Aucune réponse enregistrée.</p>`;
     }
     contentHtml += `</div>`;
 
-    // --- Détail Exercice 2 (Température) ---
     contentHtml += `
         <div style="margin-top: 25px; page-break-before: auto;">
             <h2 style="color: #007bff; border-bottom: 3px solid #007bff; padding: 8px 0; margin: 20px 0 15px 0; font-size: 16px; font-weight: bold;">
-                🌡️ Partie 2 : Exercice d'Étude de la Température d'un Composant
+                🌡️ Partie 2 : Température d'un Composant
             </h2>
             <p style="font-weight: bold; margin: 0 0 15px 0; font-size: 13px; color: #333;">Score : ${exerciceScoreData?.rawScore || 0} / ${totalExerciceQuestionsCombined}</p>
     `;
@@ -496,30 +911,23 @@ function generatePdfContent() {
             `;
         });
     } else {
-        contentHtml += `<p style="color: #666; font-style: italic; font-size: 11px; margin: 10px 0;">Aucune réponse enregistrée pour l'Exercice 2.</p>`;
+        contentHtml += `<p style="color: #666; font-style: italic; font-size: 11px; margin: 10px 0;">Aucune réponse enregistrée.</p>`;
     }
     contentHtml += `</div></div>`;
 
     return contentHtml;
 }
 
-// --- Fonction d'export PDF avec pagination ---
 function exportToPdf() {
-    // Vérifier que html2pdf est disponible
     if (typeof html2pdf === 'undefined') {
         alert("Erreur : La bibliothèque html2pdf n'est pas chargée. Veuillez actualiser la page.");
-        console.error("html2pdf n'est pas défini. Vérifiez que html2pdf.bundle.min.js est bien chargé.");
+        console.error("html2pdf n'est pas défini.");
         return;
     }
 
-    console.log("✓ html2pdf est disponible");
-
-    // Créer l'élément temporaire
     const element = document.createElement('div');
     element.innerHTML = generatePdfContent();
     element.id = 'pdf-content-to-render';
-    
-    // Styles pour le conteneur principal
     element.style.cssText = `
         width: 100%;
         max-width: 210mm;
@@ -535,7 +943,6 @@ function exportToPdf() {
 
     document.body.appendChild(element);
 
-    // Message de chargement
     const loadingMessage = document.createElement('div');
     loadingMessage.id = 'pdf-loading';
     loadingMessage.style.cssText = `
@@ -556,26 +963,20 @@ function exportToPdf() {
     loadingMessage.innerHTML = '📄 Génération du PDF en cours...<br><span style="font-size: 14px; font-weight: normal;">Veuillez patienter</span>';
     document.body.appendChild(loadingMessage);
 
-    // Fonction d'export
     const doExport = () => {
-        const filename = `Evaluation_Maths_Infos_Correction_${new Date().toLocaleDateString('fr-FR').replace(/\//g, '-')}.pdf`;
+        const filename = `Evaluation_Maths_Infos_${new Date().toLocaleDateString('fr-FR').replace(/\//g, '-')}.pdf`;
         
         const opt = {
-            margin: [15, 15, 20, 15], // [top, left, bottom, right] en mm - Plus d'espace en bas pour la pagination
+            margin: [15, 15, 20, 15],
             filename: filename,
-            image: { 
-                type: 'jpeg', 
-                quality: 0.98 
-            },
+            image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { 
                 scale: 2,
                 logging: false,
                 dpi: 300,
                 letterRendering: true,
                 useCORS: true,
-                backgroundColor: '#ffffff',
-                windowWidth: 794, // Largeur A4 en pixels à 96 DPI
-                windowHeight: 1123 // Hauteur A4 en pixels à 96 DPI
+                backgroundColor: '#ffffff'
             },
             jsPDF: { 
                 unit: 'mm',
@@ -585,9 +986,7 @@ function exportToPdf() {
             },
             pagebreak: { 
                 mode: ['avoid-all', 'css', 'legacy'],
-                before: '.page-break-before',
-                after: '.page-break-after',
-                avoid: ['.no-break', 'div[style*="page-break-inside: avoid"]']
+                avoid: 'div[style*="page-break-inside: avoid"]'
             }
         };
 
@@ -598,28 +997,20 @@ function exportToPdf() {
             .get('pdf')
             .then((pdf) => {
                 const totalPages = pdf.internal.getNumberOfPages();
-                
-                // Ajouter la numérotation des pages
                 for (let i = 1; i <= totalPages; i++) {
                     pdf.setPage(i);
                     pdf.setFontSize(9);
                     pdf.setTextColor(100);
-                    
-                    // Numéro de page en bas à droite
                     const pageText = `Page ${i} / ${totalPages}`;
                     const pageWidth = pdf.internal.pageSize.getWidth();
                     const pageHeight = pdf.internal.pageSize.getHeight();
-                    
                     pdf.text(pageText, pageWidth - 25, pageHeight - 10, { align: 'right' });
-                    
-                    // Nom du document en bas à gauche
-                    pdf.text('Evaluation Maths_Infos - Correction Personnalisée', 15, pageHeight - 10);
+                    pdf.text('Evaluation Maths_Infos - Correction', 15, pageHeight - 10);
                 }
             })
             .save()
             .then(() => {
-                console.log("✓ PDF généré avec succès :", filename);
-                loadingMessage.innerHTML = '✓ PDF téléchargé avec succès !<br><span style="font-size: 14px; font-weight: normal;">Vérifiez vos téléchargements</span>';
+                loadingMessage.innerHTML = '✓ PDF téléchargé !';
                 loadingMessage.style.background = 'linear-gradient(135deg, #28a745 0%, #218838 100%)';
                 setTimeout(() => {
                     if (document.body.contains(loadingMessage)) {
@@ -628,10 +1019,9 @@ function exportToPdf() {
                 }, 2500);
             })
             .catch((error) => {
-                console.error("✗ Erreur lors de la génération du PDF:", error);
-                loadingMessage.innerHTML = '✗ Erreur lors de la génération<br><span style="font-size: 14px; font-weight: normal;">Consultez la console (F12)</span>';
+                console.error("Erreur PDF:", error);
+                loadingMessage.innerHTML = '✗ Erreur génération';
                 loadingMessage.style.background = 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)';
-                alert("Erreur lors de la génération du PDF. Consultez la console (F12) pour plus de détails.");
                 setTimeout(() => {
                     if (document.body.contains(loadingMessage)) {
                         document.body.removeChild(loadingMessage);
@@ -645,132 +1035,14 @@ function exportToPdf() {
             });
     };
 
-    // Attendre MathJax si disponible
     if (typeof MathJax !== 'undefined' && MathJax.Hub) {
-        console.log("Attente du rendu MathJax...");
         MathJax.Hub.Queue(["Typeset", MathJax.Hub, element, doExport]);
     } else {
-        console.log("MathJax non disponible, export direct");
-        setTimeout(doExport, 100); // Petit délai pour s'assurer que le DOM est prêt
+        setTimeout(doExport, 100);
     }
 }
 
-function exportToPdf() {
-    // Vérifier que html2pdf est disponible
-    if (typeof html2pdf === 'undefined') {
-        alert("Erreur : La bibliothèque html2pdf n'est pas chargée. Veuillez actualiser la page.");
-        console.error("html2pdf n'est pas défini. Vérifiez que html2pdf.bundle.min.js est bien chargé.");
-        return;
-    }
-
-    console.log("✓ html2pdf est disponible");
-    console.log("Données QCM:", getLocalStorageItem('qcmScore'));
-    console.log("Données Exercice:", getLocalStorageItem('exerciceScore'));
-
-    // Créer l'élément temporaire
-    const element = document.createElement('div');
-    element.innerHTML = generatePdfContent();
-    element.id = 'pdf-content-to-render';
-    
-    // Styles pour le rendu
-    element.style.padding = '20px';
-    element.style.fontFamily = 'Arial, sans-serif';
-    element.style.fontSize = '12px';
-    element.style.lineHeight = '1.6';
-    element.style.color = '#000';
-    element.style.backgroundColor = '#fff';
-
-    document.body.appendChild(element);
-
-    // Message de chargement
-    const loadingMessage = document.createElement('div');
-    loadingMessage.id = 'pdf-loading';
-    loadingMessage.style.cssText = `
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        padding: 20px 40px;
-        background-color: #007bff;
-        color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        z-index: 10000;
-        font-size: 16px;
-        font-weight: bold;
-    `;
-    loadingMessage.textContent = '📄 Génération du PDF en cours...';
-    document.body.appendChild(loadingMessage);
-
-    // Fonction d'export
-    const doExport = () => {
-        const filename = `Evaluation_Maths_Infos${new Date().toLocaleDateString('fr-FR').replace(/\//g, '-')}.pdf`;
-        
-        const opt = {
-            margin: [10, 10, 10, 10],
-            filename: filename,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { 
-                scale: 2,
-                logging: false,
-                dpi: 192,
-                letterRendering: true,
-                useCORS: true,
-                backgroundColor: '#ffffff'
-            },
-            jsPDF: { 
-                unit: 'mm',
-                format: 'a4',
-                orientation: 'portrait',
-                compress: true
-            },
-            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-        };
-
-        html2pdf()
-            .from(element)
-            .set(opt)
-            .save()
-            .then(() => {
-                console.log("✓ PDF généré avec succès :", filename);
-                loadingMessage.textContent = '✓ PDF téléchargé avec succès !';
-                loadingMessage.style.backgroundColor = '#28a745';
-                setTimeout(() => {
-                    if (document.body.contains(loadingMessage)) {
-                        document.body.removeChild(loadingMessage);
-                    }
-                }, 2000);
-            })
-            .catch((error) => {
-                console.error("✗ Erreur lors de la génération du PDF:", error);
-                loadingMessage.textContent = '✗ Erreur lors de la génération';
-                loadingMessage.style.backgroundColor = '#dc3545';
-                alert("Erreur lors de la génération du PDF. Consultez la console (F12) pour plus de détails.");
-                setTimeout(() => {
-                    if (document.body.contains(loadingMessage)) {
-                        document.body.removeChild(loadingMessage);
-                    }
-                }, 3000);
-            })
-            .finally(() => {
-                if (document.body.contains(element)) {
-                    document.body.removeChild(element);
-                }
-            });
-    };
-
-    // Attendre MathJax si disponible
-    if (typeof MathJax !== 'undefined' && MathJax.Hub) {
-        console.log("Attente du rendu MathJax...");
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub, element, doExport]);
-    } else {
-        console.log("MathJax non disponible, export direct");
-        doExport();
-    }
-}
-
-
-// --- Fonctions de chargement et affichage des corrections (modifiées) ---
+// --- Fonctions de correction ---
 
 function checkCorrectionAccess() {
     const examGloballyCompleted = getLocalStorageItem('examCompletedGlobally');
@@ -779,30 +1051,30 @@ function checkCorrectionAccess() {
     const lockedMessage = document.getElementById('correction-locked-message');
     const viewCorrectionButton = document.getElementById('view-correction-button');
 
-    if (correctionContent && lockedMessage) { // Si nous sommes sur la page correction.html
+    if (correctionContent && lockedMessage) {
         if (examGloballyCompleted) {
             correctionContent.style.display = 'block';
             lockedMessage.style.display = 'none';
-            loadCorrectionContent(); // Charge le contenu de la correction
+            loadCorrectionContent();
         } else {
             correctionContent.style.display = 'none';
             lockedMessage.style.display = 'block';
         }
     }
     
-    if (viewCorrectionButton) { // Si nous sommes sur index.html
+    if (viewCorrectionButton) {
         if (examGloballyCompleted) {
             viewCorrectionButton.classList.remove('button-disabled');
             viewCorrectionButton.href = 'correction.html';
             viewCorrectionButton.textContent = 'Correction Détaillée';
-            viewCorrectionButton.onclick = null; // Supprime l'alerte onclick si activé
+            viewCorrectionButton.onclick = null;
         } else {
             viewCorrectionButton.classList.add('button-disabled');
             viewCorrectionButton.href = '#';
             viewCorrectionButton.textContent = 'Correction Détaillée (Verrouillée)';
             viewCorrectionButton.onclick = (e) => {
                 e.preventDefault();
-                alert("La correction est disponible uniquement après avoir complété et soumis tous les exercices de l'épreuve.");
+                alert("La correction est disponible après avoir complété tous les exercices.");
             };
         }
     }
@@ -810,7 +1082,7 @@ function checkCorrectionAccess() {
 
 function loadCorrectionContent() {
     if (typeof qcmQuestions === 'undefined' || typeof exerciceQuestionsPartA === 'undefined' || typeof exerciceQuestionsPartB === 'undefined') {
-        console.error("ERREUR CRITIQUE: Les données des questions (qcm_data.js ou exercice_data.js) ne sont pas définies lors du chargement des corrections.");
+        console.error("ERREUR: Données des questions non définies.");
         return;
     }
     loadCorrection('qcm-correction-container', qcmCorrections, qcmQuestions);
@@ -818,15 +1090,14 @@ function loadCorrectionContent() {
     loadCorrection('exercice-correction-part-b', exerciceCorrectionsPartB, exerciceQuestionsPartB);
 }
 
-
 function loadCorrection(containerId, correctionsArray, questionsSourceArray) {
     const container = document.getElementById(containerId);
     if (!container) {
-        console.error(`Erreur: Le conteneur de correction HTML avec l'ID "${containerId}" est introuvable.`);
+        console.error(`Conteneur "${containerId}" introuvable.`);
         return;
     }
     if (!correctionsArray || correctionsArray.length === 0) {
-        console.warn(`Avertissement: Le tableau de corrections pour le conteneur "${containerId}" est vide ou non défini.`);
+        console.warn(`Corrections vides pour "${containerId}".`);
         return;
     }
 
@@ -835,7 +1106,7 @@ function loadCorrection(containerId, correctionsArray, questionsSourceArray) {
         itemDiv.classList.add('correction-item');
         
         const originalQuestion = questionsSourceArray.find(q => q.id === corr.id);
-        const questionTextToDisplay = originalQuestion?.text || corr.question; // Utilise le texte original complet si disponible
+        const questionTextToDisplay = originalQuestion?.text || corr.question;
 
         itemDiv.innerHTML = `
             <p><strong>${questionTextToDisplay}</strong></p>
@@ -847,92 +1118,124 @@ function loadCorrection(containerId, correctionsArray, questionsSourceArray) {
     MathJax.Hub.Queue(["Typeset", MathJax.Hub, container]);
 }
 
-// --- Initialisation au chargement de la page ---
+// ============================================
+// INITIALISATION PRINCIPALE - AVEC PROTECTION MAXIMALE
+// ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Gérer le bouton de démarrage de l'épreuve sur index.html
+    // ÉTAPE 1 : Vérifier et appliquer le verrouillage IMMÉDIATEMENT
+    enforceExamFlow();
+    
+    // ÉTAPE 2 : Activer le blocage du bouton retour
+    disableBrowserBack();
+    
+    // Bouton de démarrage (index.html)
     const startExamButton = document.getElementById('start-exam-button');
     if (startExamButton) {
-        startExamButton.addEventListener('click', startTimer);
-        // Si l'examen est déjà actif ou terminé, désactiver le bouton de démarrage
-        if (getLocalStorageItem('examActive') || (getLocalStorageItem('examStartTime') && getRemainingTime() <= 0)) {
+        const lockStatus = checkExamLockStatus();
+        
+        if (lockStatus.locked) {
+            // Examen déjà démarré - bloquer le bouton et rediriger
             startExamButton.disabled = true;
-            startExamButton.textContent = "Épreuve déjà démarrée ou terminée";
+            startExamButton.textContent = "⛔ Examen déjà démarré";
             startExamButton.classList.add('button-disabled');
-            // Rediriger si l'examen est actif pour éviter de rester sur la page d'accueil
-            if (getLocalStorageItem('examActive')) {
-                 setTimeout(() => {
-                    const qcmData = getLocalStorageItem('qcmScore');
-                    const exerciceData = getLocalStorageItem('exerciceScore');
-                    if (!qcmData?.completed) {
-                        window.location.href = 'qcm.html';
-                    } else if (!exerciceData?.completed) {
-                        window.location.href = 'exercice.html';
-                    } else {
-                        window.location.href = 'final_results.html';
-                    }
-                }, 500);
-            }
+            
+            alert("⚠️ Vous avez déjà démarré l'examen. Redirection en cours...");
+            setTimeout(() => {
+                const qcmData = getLocalStorageItem('qcmScore');
+                const exerciceData = getLocalStorageItem('exerciceScore');
+                if (!qcmData?.completed) {
+                    window.location.replace('qcm.html');
+                } else if (!exerciceData?.completed) {
+                    window.location.replace('exercice.html');
+                } else {
+                    window.location.replace('final_results.html');
+                }
+            }, 1500);
+        } else {
+            // Première fois - permettre le démarrage
+            startExamButton.addEventListener('click', startTimer);
         }
-        checkCorrectionAccess(); // Vérifie l'accès à la correction depuis index.html
+        
+        checkCorrectionAccess();
     }
 
-
-    // Pages d'exercices (qcm.html et exercice.html)
-    // Initialiser le timer sur les pages d'exercices
+    // Pages d'exercices
     if (document.getElementById('timer-display')) {
         initializeTimer();
-        // Empêcher l'accès si l'examen n'est pas actif (protection URL directe) OU si le temps est écoulé
+        
+        // Protection supplémentaire : vérifier le verrouillage
+        const lockStatus = checkExamLockStatus();
+        if (!lockStatus.locked) {
+            alert("⛔ Accès interdit. Vous devez démarrer l'examen depuis la page d'accueil.");
+            window.location.replace('index.html');
+            return;
+        }
+        
         if (!getLocalStorageItem('examActive') || getRemainingTime() <= 0) {
-            // Si le temps est écoulé et la page encore active, soumettre et rediriger
             if (getRemainingTime() <= 0 && getLocalStorageItem('examActive')) {
-                 setLocalStorageItem('examActive', false); // Marquer comme inactif
-                 // Les soumissions automatiques se feront via updateTimerDisplay
-                 alert("Le temps est écoulé ! Vos réponses ont été soumises automatiquement.");
-                 window.location.href = 'final_results.html';
-                 return;
+                setLocalStorageItem('examActive', false);
+                alert("Le temps est écoulé !");
+                window.location.replace('final_results.html');
+                return;
             }
-            // Si pas actif du tout ou juste après un temps écoulé sans auto-submit (refresh)
-            alert("Veuillez démarrer l'épreuve depuis le menu principal ou l'épreuve est terminée.");
-            window.location.href = 'index.html';
+            alert("Examen non actif ou terminé.");
+            window.location.replace('index.html');
             return;
         }
     }
 
-
-    // Exercice 1 (ancien QCM)
+    // Exercice 1 (QCM)
     const qcmForm = document.getElementById('qcm-form');
     if (qcmForm) {
+        // Vérifier que l'étudiant n'a pas déjà complété cette partie
+        if (getLocalStorageItem('qcmScore')?.completed) {
+            alert("⛔ Vous avez déjà complété cette partie. Redirection...");
+            window.location.replace('exercice.html');
+            return;
+        }
+        
         loadQuestions('qcm-container', qcmQuestions, 'qcm');
         qcmForm.addEventListener('submit', (event) => handleSubmit(event, qcmQuestions, 'qcm', 'qcm-results'));
-        // Cacher le bouton de soumission si la partie est déjà complétée
+        
         if (getLocalStorageItem('qcmScore')?.completed) {
             document.getElementById('submit-qcm-button').style.display = 'none';
         }
     }
 
-    // Exercice 2 (ancien Exercice Complet)
+    // Exercice 2
     const exerciceForm = document.getElementById('exercice-form');
     if (exerciceForm) {
-        if (typeof exerciceQuestionsPartA === 'undefined' || typeof exerciceQuestionsPartB === 'undefined') {
-            console.error("ERREUR CRITIQUE: 'exerciceQuestionsPartA' ou 'exerciceQuestionsPartB' n'est pas défini. Le fichier 'exercice_data.js' n'a probablement pas été chargé correctement ou contient une erreur de syntaxe.");
-            fetch('static/js/exercice_data.js')
-                .then(response => response.text())
-                .then(text => console.log("Contenu de exercice_data.js :\n", text))
-                .catch(error => console.error("Erreur lors de la lecture de exercice_data.js :", error));
+        // Vérifier que l'Exercice 1 est complété
+        if (!getLocalStorageItem('qcmScore')?.completed) {
+            alert("⛔ Vous devez d'abord compléter la Partie 1. Redirection...");
+            window.location.replace('qcm.html');
             return;
         }
+        
+        // Vérifier que cette partie n'est pas déjà complétée
+        if (getLocalStorageItem('exerciceScore')?.completed) {
+            alert("⛔ Vous avez déjà complété cette partie. Redirection...");
+            window.location.replace('final_results.html');
+            return;
+        }
+        
+        if (typeof exerciceQuestionsPartA === 'undefined' || typeof exerciceQuestionsPartB === 'undefined') {
+            console.error("ERREUR: Données exercice non chargées.");
+            return;
+        }
+        
         const allExerciceQuestions = [...exerciceQuestionsPartA, ...exerciceQuestionsPartB];
         loadQuestions('exercice-container-part-a', exerciceQuestionsPartA, 'exercice');
         loadQuestions('exercice-container-part-b', exerciceQuestionsPartB, 'exercice');
         exerciceForm.addEventListener('submit', (event) => handleSubmit(event, allExerciceQuestions, 'exercice', 'exercice-results'));
-         // Cacher le bouton de soumission si la partie est déjà complétée
+        
         if (getLocalStorageItem('exerciceScore')?.completed) {
             document.getElementById('submit-exercice-button').style.display = 'none';
         }
     }
 
-    // Final Results Page
+    // Page de résultats finaux
     const finalResultsPage = document.getElementById('final-score-summary');
     if (finalResultsPage) {
         displayFinalResults();
@@ -942,8 +1245,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Correction Page
+    // Page de correction
     if (document.getElementById('correction-content')) {
         checkCorrectionAccess();
     }
+    
+    // Message de sécurité dans la console
+    console.log("%c🔒 SYSTÈME DE SÉCURITÉ ACTIF", "color: red; font-size: 20px; font-weight: bold;");
+    console.log("%cToute tentative de retour en arrière ou de manipulation est enregistrée.", "color: orange; font-size: 14px;");
 });

@@ -1,4 +1,4 @@
-mon_application_exercices/
+mon_application_exercices (CIEL2025ADMIN)/
 ├── index.html
 ├── qcm.html                # Exercice 1
 ├── exercice.html           # Exercice 2
@@ -16,3 +16,5 @@ mon_application_exercices/
 │       └── html2pdf.bundle.min.js # Nouvelle librairie pour le PDF
 └── tools/
     └── encode_answers.py
+
+

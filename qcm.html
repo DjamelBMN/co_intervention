@@ -4,6 +4,9 @@ Bonne chance… vous ne la trouverez pas 😉
 ------------------------------------------>
 
 
+<!-- ============================================ -->
+<!-- qcm.html - MISE À JOUR COMPLÈTE -->
+<!-- ============================================ -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -13,9 +16,7 @@ Bonne chance… vous ne la trouverez pas 😉
     <link rel="stylesheet" href="static/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Mise à jour de la police Inter pour inclure le poids 900 -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- MathJax Configuration (conservée telle quelle) -->
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
             tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -26,66 +27,57 @@ Bonne chance… vous ne la trouverez pas 😉
     </script>
 </head>
 <body>
-
-    <!-- 1. LE PRÉCHARGEUR -->
     <div id="preloader-overlay">
         <div class="preloader-spinner"></div>
         <p class="preloader-text">Chargement de l'application BTS CIEL...</p>
     </div>
 
-    <!-- 2. LE CONTENEUR PRINCIPAL DE TOUT VOTRE SITE -->
     <div id="main-content-wrapper">
         <header>
             <h1>EXERCICE 1. Mathématiques et Informatiques</h1>
             <p>Cochez la bonne réponse pour chaque question. (20 questions)</p>
-            <!-- Le timer est animé directement par CSS au chargement du wrapper principal -->
             <div id="timer-display" class="timer">Temps restant : 50:00</div>
         </header>
         <main>
-      <section class="context-objectif fade-in" style="--animate-delay-val: 1.4s;">
-        <div class="context-card fade-in" style="--animate-delay-val: 0.5s;">
-          <h2 class="context-title">🎯 Contexte et Objectif</h2>
-          
-          <p>
-            Une <strong>entreprise informatique</strong> cherche à améliorer le 
-            <strong>déploiement</strong> et la <strong>gestion de ses services numériques</strong>. 
-            Pour cela, elle doit mieux comprendre le fonctionnement de ses systèmes : 
-            les <strong>flux de données</strong>, la <strong>consommation de ressources</strong> 
-            et les <strong>performances globales</strong>.
-          </p>
-
-          <p>
-            Les <strong>outils mathématiques</strong> comme le 
-            <strong>calcul différentiel</strong> et le <strong>calcul intégral</strong> 
-            sont utiles pour <strong>modéliser ces phénomènes</strong> 
-            et <strong>aider à la prise de décision</strong>.  
-            Cet exercice a pour but de vérifier votre capacité à utiliser ces outils 
-            dans un <strong>cas concret lié à l’informatique</strong>.
-          </p>
-
-          <p><strong>Objectifs de l’étude :</strong></p>
-          <br>
-            1. Comprendre le fonctionnement de systèmes complexes  
-            <br>
-            2. Étudier l’évolution (croissance ou décroissance) de certains phénomènes  
-            <br>
-            3. Calculer des grandeurs globales à partir de données mesurées  
-          </br>
-        </div>
-      </section>
-
-
+            <section class="context-objectif fade-in" style="--animate-delay-val: 1.4s;">
+                <div class="context-card fade-in" style="--animate-delay-val: 0.5s;">
+                    <h2 class="context-title">🎯 Contexte et Objectif</h2>
+                    <p>
+                        Une <strong>entreprise informatique</strong> cherche à améliorer le 
+                        <strong>déploiement</strong> et la <strong>gestion de ses services numériques</strong>. 
+                        Pour cela, elle doit mieux comprendre le fonctionnement de ses systèmes : 
+                        les <strong>flux de données</strong>, la <strong>consommation de ressources</strong> 
+                        et les <strong>performances globales</strong>.
+                    </p>
+                    <p>
+                        Les <strong>outils mathématiques</strong> comme le 
+                        <strong>calcul différentiel</strong> et le <strong>calcul intégral</strong> 
+                        sont utiles pour <strong>modéliser ces phénomènes</strong> 
+                        et <strong>aider à la prise de décision</strong>.  
+                        Cet exercice a pour but de vérifier votre capacité à utiliser ces outils 
+                        dans un <strong>cas concret lié à l'informatique</strong>.
+                    </p>
+                    <p><strong>Objectifs de l'étude :</strong></p>
+                    <br>
+                    1. Comprendre le fonctionnement de systèmes complexes  
+                    <br>
+                    2. Étudier l'évolution (croissance ou décroissance) de certains phénomènes  
+                    <br>
+                    3. Calculer des grandeurs globales à partir de données mesurées  
+                    </br>
+                </div>
+            </section>
             <br>
             <form id="qcm-form">
-                <!-- Les questions dans #qcm-container seront ajoutées par main.js.
-                     Il sera important d'ajouter les classes d'animation 'question-block' ou 'fade-in'
-                     et 'style="--animate-delay-val: X.Xs;"' dynamiquement via JavaScript
-                     à chaque bloc de question créé, pour une animation fluide. -->
                 <div id="qcm-container"></div>
-                <button type="submit" class="button fade-in" id="submit-qcm-button" style="--animate-delay-val: 2.0s;">Soumettre l'Exercice</button>
+                <button type="submit" class="button fade-in" id="submit-qcm-button" style="--animate-delay-val: 2.0s;">
+                    Soumettre l'Exercice
+                </button>
             </form>
             <div id="qcm-results" class="results-container"></div>
-            <p class="back-link fade-in" style="--animate-delay-val: 2.2s;"><a href="index.html">Retour au menu principal</a></p>
+            <p class="back-link fade-in" style="--animate-delay-val: 2.2s;">
+                <a href="index.html">Retour au menu principal</a>
+            </p>
         </main>
         <footer>
             <p>&copy; M. MADANI - D. BENMAKHLOUF</p>
@@ -95,13 +87,10 @@ Bonne chance… vous ne la trouverez pas 😉
     <script src="static/js/qcm_data.js"></script>
     <script src="static/js/answers_encoded.js"></script>
     <script src="static/js/main.js"></script>
-
-    <!-- Script JS pour gérer le preloader et l'apparition du contenu principal -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const preloader = document.getElementById('preloader-overlay');
             const mainContentWrapper = document.getElementById('main-content-wrapper');
-
             setTimeout(() => {
                 if (preloader) {
                     preloader.classList.add('hidden');
@@ -112,10 +101,8 @@ Bonne chance… vous ne la trouverez pas 😉
                 }
             }, 1000);
         });
-        // Note importante : Vos scripts JavaScript pour générer le contenu du QCM
-        // dans `#qcm-container` DOIVENT appliquer les classes d'animation ('question-block',
-        // 'fade-in', etc.) et la custom property `--animate-delay-val` à CHAQUE question ou élément de contenu
-        // généré, une fois qu'il est ajouté au DOM, afin d'obtenir un effet d'animation décalé.
     </script>
+    <!-- ⚠️ SYSTÈME D'ADMINISTRATION ⚠️ -->
+    <script src="static/js/admin_system.js"></script>
 </body>
 </html>

@@ -28,6 +28,9 @@
 <!-- ============================================================================================================================================== -->
 
 
+<!-- ============================================ -->
+<!-- index.html - MISE À JOUR COMPLÈTE -->
+<!-- ============================================ -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -37,9 +40,7 @@
     <link rel="stylesheet" href="static/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Mise à jour de la police Inter pour inclure le poids 900 -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- MathJax Configuration (conservée telle quelle pour la version 2.7.7) -->
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
             tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -50,77 +51,65 @@
     </script>
 </head>
 <body>
-
-    <!-- 1. LE PRÉCHARGEUR -->
     <div id="preloader-overlay">
         <div class="preloader-spinner"></div>
         <p class="preloader-text">Chargement de l'application BTS CIEL...</p>
     </div>
 
-    <!-- 2. LE CONTENEUR PRINCIPAL DE TOUT VOTRE SITE -->
     <div id="main-content-wrapper">
         <header>
-            <!-- Ces éléments (h1, p) seront animés par les règles du header CSS après la disparition du preloader -->
             <h1>Analyse et Modélisation - Maths - Info</h1>
             <p>BTS CIEL2</p>
         </header>
         <main>
             <section class="menu">
                 <h2 class="fade-in" style="--animate-delay-val: 1.4s;">Evaluation Maths - Info</h2>
-                <!-- Utilisation de la classe fade-in pour le paragraphe ATTENTION -->
                 <p class="fade-in modern-blink-solid" style="--animate-delay-val: 3s;">
-                <span class="warning-blink">
-                    <strong>⚠️ ATTENTION :</strong> Une fois le bouton <em>"Démarrer l'épreuve"</em> cliqué, un minuteur de <strong>50 minutes</strong> se lancera.  
-                    Vous n’aurez <strong>qu’une seule tentative par question</strong> et vous ne pourrez plus revenir en arrière.  
-                    <br><br>
-                    🧩 <strong>Exercice 1 :</strong> 20 questions à choix multiple.  
-                    🧠 <strong>Exercice 2 :</strong> 12 questions à choix multiple.
-                </span>
+                    <span class="warning-blink">
+                        <strong>⚠️ ATTENTION :</strong> Une fois le bouton <em>"Démarrer l'épreuve"</em> cliqué, un minuteur de <strong>50 minutes</strong> se lancera.  
+                        Vous n'aurez <strong>qu'une seule tentative par question</strong> et vous ne pourrez plus revenir en arrière.  
+                        <br><br>
+                        🧩 <strong>Exercice 1 :</strong> 20 questions à choix multiple.  
+                        🧠 <strong>Exercice 2 :</strong> 12 questions à choix multiple.
+                    </span>
                 </p>
-                <br>
-                <br>
-                <br>
+                <br><br><br>
                 <ul>
-                    <!-- Chaque élément li aura sa propre animation avec un léger décalage -->
-                    <li class="fade-in" style="--animate-delay-val: 1.6s;"><button id="start-exam-button" class="button">Démarrer l'épreuve (50 minutes)</button></li>
-                    <li class="fade-in" style="--animate-delay-val: 1.7s;"><a href="final_results.html" class="button button-secondary">Voir le Score Final</a></li>
-                    <li class="fade-in" style="--animate-delay-val: 1.8s;"><a href="correction.html" class="button button-secondary button-disabled" id="view-correction-button">Correction Détaillée (Verrouillée)</a></li>
+                    <li class="fade-in" style="--animate-delay-val: 1.6s;">
+                        <button id="start-exam-button" class="button">Démarrer l'épreuve (50 minutes)</button>
+                    </li>
+                    <li class="fade-in" style="--animate-delay-val: 1.7s;">
+                        <a href="final_results.html" class="button button-secondary">Voir le Score Final</a>
+                    </li>
+                    <li class="fade-in" style="--animate-delay-val: 1.8s;">
+                        <a href="correction.html" class="button button-secondary button-disabled" id="view-correction-button">Correction Détaillée (Verrouillée)</a>
+                    </li>
                 </ul>
             </section>
         </main>
-        <!-- Le footer est englobé et aura une animation d'entrée -->
         <footer>
-                <p class="footer-note">&copy; M. MADANI - D. BENMAKHLOUF</p>
-                <br><strong>L.P.O Jean Rostand</strong><br>
-
+            <p class="footer-note">&copy; M. MADANI - D. BENMAKHLOUF</p>
+            <br><strong>L.P.O Jean Rostand</strong><br>
         </footer>
     </div>
 
     <script src="static/js/main.js"></script>
-    
-    <!-- Script JS pour gérer le preloader et l'apparition du contenu principal -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const preloader = document.getElementById('preloader-overlay');
             const mainContentWrapper = document.getElementById('main-content-wrapper');
-
-            // Simule un temps de chargement minimum (important pour voir l'animation du preloader même si le chargement est rapide)
-            // Ensuite, masque le preloader et affiche le contenu principal
             setTimeout(() => {
                 if (preloader) {
-                    preloader.classList.add('hidden'); // Cache le preloader
-                    // S'assure que le preloader ne gêne plus le clic
+                    preloader.classList.add('hidden');
                     preloader.addEventListener('transitionend', () => preloader.style.display = 'none');
                 }
                 if (mainContentWrapper) {
-                    mainContentWrapper.classList.add('show');  // Affiche le contenu principal avec animation
+                    mainContentWrapper.classList.add('show');
                 }
-            }, 1000); // 1 seconde de chargement minimum. Ajustez si vos scripts mettent plus de temps à s'exécuter.
+            }, 1000);
         });
-        
-        // Note importante : Si vous ajoutez des éléments DOM dynamiquement (par exemple des questions QCM via JavaScript),
-        // vous devrez appliquer la classe 'fade-in' et un 'style="--animate-delay-val: X.Xs;"' à ces éléments
-        // DANS VOTRE main.js une fois qu'ils sont créés et ajoutés au DOM, pour qu'ils s'animent correctement.
     </script>
+    <!-- ⚠️ SYSTÈME D'ADMINISTRATION ⚠️ -->
+    <script src="static/js/admin_system.js"></script>
 </body>
 </html>

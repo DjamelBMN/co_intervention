@@ -2,8 +2,9 @@
 Exercice 2 : Toujours pas de réponses ici… à vous de jouer 😉
 Un peu d'inspiration ne fait pas de mal ...
 --------------------------------------------------->
-
-
+<!-- ============================================ -->
+<!-- exercice.html - MISE À JOUR COMPLÈTE -->
+<!-- ============================================ -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -14,7 +15,6 @@ Un peu d'inspiration ne fait pas de mal ...
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- MathJax Configuration -->
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
             tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -31,35 +31,31 @@ Un peu d'inspiration ne fait pas de mal ...
         <div id="timer-display" class="timer">Temps restant : 50:00</div>
     </header>
     <main>
-<section class="context-objectif">
-  <h2>🎯 Contexte et Objectif</h2>
-  <p>
-    Dans le domaine des <strong>systèmes embarqués</strong> ou de l'<strong>Internet des Objets (IoT)</strong> 
-    en environnement industriel (<em>contexte CIEL</em>), la surveillance de la température 
-    des composants électroniques est essentielle pour garantir leur <strong>fiabilité</strong> 
-    et leur <strong>durée de vie</strong>. Une température excessive peut entraîner 
-    des pannes ou une dégradation des performances.
-  </p>
-
-  <div class="math-block">
-    <span>Modèle de température :</span>
-    <p class="math-display">$$T(t) = 50 - 30e^{-0.1t} \quad \text{pour } t \geq 0$$</p>
-  </div>
-
-  <p>
-    Votre objectif est d’analyser ce modèle de température, de 
-    <strong>prédire son comportement au fil du temps</strong> et de 
-    <strong>déterminer des seuils critiques</strong> pour la gestion 
-    opérationnelle du composant.
-  </p>
-</section>
+        <section class="context-objectif">
+            <h2>🎯 Contexte et Objectif</h2>
+            <p>
+                Dans le domaine des <strong>systèmes embarqués</strong> ou de l'<strong>Internet des Objets (IoT)</strong> 
+                en environnement industriel (<em>contexte CIEL</em>), la surveillance de la température 
+                des composants électroniques est essentielle pour garantir leur <strong>fiabilité</strong> 
+                et leur <strong>durée de vie</strong>. Une température excessive peut entraîner 
+                des pannes ou une dégradation des performances.
+            </p>
+            <div class="math-block">
+                <span>Modèle de température :</span>
+                <p class="math-display">$$T(t) = 50 - 30e^{-0.1t} \quad \text{pour } t \geq 0$$</p>
+            </div>
+            <p>
+                Votre objectif est d'analyser ce modèle de température, de 
+                <strong>prédire son comportement au fil du temps</strong> et de 
+                <strong>déterminer des seuils critiques</strong> pour la gestion 
+                opérationnelle du composant.
+            </p>
+        </section>
         <form id="exercice-form">
             <h3 class="part-title">Partie A : Étude de la fonction de température</h3>
             <div id="exercice-container-part-a"></div>
-
             <h3 class="part-title">Partie B : Surveillance et Gestion</h3>
             <div id="exercice-container-part-b"></div>
-
             <button type="submit" class="button" id="submit-exercice-button">Soumettre l'Exercice</button>
         </form>
         <div id="exercice-results" class="results-container"></div>
@@ -72,5 +68,7 @@ Un peu d'inspiration ne fait pas de mal ...
     <script src="static/js/exercice_data.js"></script>
     <script src="static/js/answers_encoded.js"></script>
     <script src="static/js/main.js"></script>
+    <!-- ⚠️ SYSTÈME D'ADMINISTRATION ⚠️ -->
+    <script src="static/js/admin_system.js"></script>
 </body>
 </html>

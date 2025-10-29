@@ -1,3 +1,6 @@
+<!-- ============================================ -->
+<!-- final_results.html - MISE À JOUR COMPLÈTE -->
+<!-- ============================================ -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -8,7 +11,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- MathJax Configuration -->
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
             tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -24,11 +26,11 @@
         <p>BTS CIEL2</p>
     </header>
     <main>
-    <section id="final-score-summary" class="results-container">
-        <h2 style="display: block; width: 100%; text-align: center !important; font-size: 5em; font-weight: bold; margin-bottom: 20px;">
-            Calcul du Score
-        </h2>
-    </section>
+        <section id="final-score-summary" class="results-container">
+            <h2 style="display: block; width: 100%; text-align: center !important; font-size: 5em; font-weight: bold; margin-bottom: 20px;">
+                Calcul du Score
+            </h2>
+        </section>
         <div id="detailed-final-results" class="results-container">
             <h3>Détail des scores par partie :</h3>
             <br>
@@ -38,7 +40,9 @@
             <br>
             <div class="score-summary" id="overall-score-display"></div>
             <br>
-            <button id="export-pdf-button" class="button button-disabled">Exporter les réponses et la correction en PDF</button>
+            <button id="export-pdf-button" class="button button-disabled">
+                Exporter les réponses et la correction en PDF
+            </button>
         </div>
         <p class="back-link"><a href="index.html">Retour au menu principal</a></p>
     </main>
@@ -46,17 +50,13 @@
         <p>&copy; M. MADANI - D. BENMAKHLOUF</p>
     </footer>
 
-    <!-- IMPORTANT: Charger les scripts dans cet ordre précis -->
-    <!-- 1. Données des questions -->
     <script src="static/js/qcm_data.js"></script>
     <script src="static/js/exercice_data.js"></script>
     <script src="static/js/correction_data.js"></script>
     <script src="static/js/answers_encoded.js"></script>
-    
-    <!-- 2. Bibliothèque HTML2PDF - DOIT être chargé AVANT main.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
-    <!-- 3. Script principal - DOIT être chargé EN DERNIER -->
     <script src="static/js/main.js"></script>
+    <!-- ⚠️ SYSTÈME D'ADMINISTRATION ⚠️ -->
+    <script src="static/js/admin_system.js"></script>
 </body>
 </html>
