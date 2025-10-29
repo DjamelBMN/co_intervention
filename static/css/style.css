@@ -4,7 +4,7 @@
 
                                                     /* 
 
-                                                    Ah, te voilà… étudiant, collègue ou simplement explorateur du code 🕵️‍♂️
+                                                                        Ah, te voilà… explorateur du code 🕵️‍♂️
                                                     
                                                     Tu viens d’ouvrir le grimoire du CSS — un territoire capricieux où chaque ligne a son humeur.
                                                     
@@ -1742,3 +1742,17 @@ p.math-display * {
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+
+
+.warning-blink {
+    color: var(--color-error);
+    animation: blink 1s infinite;
+    font-size: 1.5em; /* augmente la taille du texte */
+    font-weight: 500;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
