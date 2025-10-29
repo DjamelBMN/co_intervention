@@ -1,6 +1,14 @@
 // ============================================
 // SYSTÈME DE RÉPONSES SÉCURISÉ
 // Multi-couches: Base64 + Rotation + Inversion
+
+// // 🔒 Code protégé — ingénierie inverse interdite.
+// Toute tentative de décryptage sera clairement identifier 😉
+// CHAQUE CLIQUE EST ENREGISTRE MEME L'OUVERTURE DE LA CONSOLE VIA F12 ou shift ctrl C😉
+
+                // D. BENMAKHLOUF
+
+               // OBFUSCATION LEGERE...
 // ============================================
 
 const _0xf1 = 'QDh1UEpAc2l9c05rfkB0UG52cVBwXVtqbV05YHdVdGpzb19hcEhKU3BUN198QF5oN0k6aXBIcFZwTF5Vf0BdYXFzOWCAXU5sc1FKUHpQWlhtPDlpd1lPan1RSlA9UFpgN0w6X3NVXmhxUV9hO110UG5+cFBLQHNpfXNOa35AdFBudnFQcFVbam1dOWB3VXRqc29fYXBISlNwUDdffEBeaDdJOmlwSHBWcEw5VH9AXWFxczlggF1ObHNRSlB6UIBYbTw5aXdZT2p9UUpQPVBaYYBMOl9zVV5ocVFfYTtddFBufnBQS0BzaX1zTmt+QHRQbnZxUHJRW2ptXTlgd1V0anNvX2FwSEpTcEw3X3xAXmg3STppcEhwVnBUdFR/QF1hcXM5YIBdTmxzUUpQelBaWG08OWl3WU9qfVFKUD1QcGCATDpfc1VeaHFRX2E7XXRQbn5wUElAc2l9c05rfkB0UG52cVBvUVtq';

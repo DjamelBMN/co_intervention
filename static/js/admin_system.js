@@ -1,8 +1,14 @@
 // Fichier : static/js/admin_system.js
 // Système d'administration avec tracking et réinitialisation
 
+// // 🔒 Code protégé — ingénierie inverse interdite.
+// Toute tentative de décryptage sera clairement identifier 😉
+// CHAQUE CLIQUE EST ENREGISTRE MEME L'OUVERTURE DE LA CONSOLE VIA F12 ou shift ctrl C😉
+
+                // D. BENMAKHLOUF
+
 // ============================================
-// CONFIGURATION ADMIN (OBFUSQUÉE)
+// CONFIGURATION ADMIN (OBFUSQUÉE LEGEREMENT)
 // ============================================
 
 // Code admin obfusqué avec algorithme personnalisé
